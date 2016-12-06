@@ -123,7 +123,7 @@ USE_TZ = True
 django_env = os.environ.get('DJANGO_ENV')
 
 if django_env == "production":
-    STATIC_URL = 'app/spectrum_backend/static/'
+    STATIC_URL = '/app/spectrum_backend/static/'
 else:
     STATIC_URL = '/static/'  
 

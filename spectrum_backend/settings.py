@@ -120,8 +120,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+if os.environ['DJANGO_ENV'] && os.environ['DJANGO_ENV'] == "production":
+    STATIC_URL = 'app/spectrum_backend/static/'
+else:
+    STATIC_URL = '/static/'  
 
-STATIC_URL = '/static/'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 print(STATIC_ROOT)

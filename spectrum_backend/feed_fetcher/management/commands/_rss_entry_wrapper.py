@@ -5,8 +5,9 @@ from django.utils import timezone
 class RSSEntryWrapper:
   FOX_NEWS_PUBLICATION = "Fox News"
 
-  def __init__(self, entry):
+  def __init__(self, feed, entry):
     self.entry = entry
+    self.feed = feed
     self.title = self.__parsed_title()
     self.description = self.__parsed_description()
     self.url = self.__parsed_url()
@@ -24,7 +25,7 @@ class RSSEntryWrapper:
   def __parsed_description(self):
     if hasattr(self.entry, 'description'):
       return self.entry.description
-    elif feed.publication.name == self.FOX_NEWS_PUBLICATION:
+    elif self.feed.publication.name == self.FOX_NEWS_PUBLICATION:
       return self.__fox_news_description(self.entry.link)
     else:
       return None

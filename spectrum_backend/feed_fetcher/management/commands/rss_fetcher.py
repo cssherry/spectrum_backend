@@ -21,8 +21,9 @@ class Command(BaseCommand):
         feed_counter += 1
         description = self.__fox_news_description(entry.link) if (feed.publication.name == FOX_NEWS_PUBLICATION) else entry.description
         image_url = entry.media_content[0]["url"] if (hasattr(entry, 'media_content') and entry.media_content[0]) else None
+        author = entry.author if (hasattr(entry, 'author')) Else None
         try:
-          feed_item = FeedItem(feed=feed, title=entry.title, description=description, author=entry.author, url=self.__parsed_url(entry.link), image_url=image_url, publication_date=self.__publication_time(entry.published))
+          feed_item = FeedItem(feed=feed, title=entry.title, description=description, author=author, url=self.__parsed_url(entry.link), image_url=image_url, publication_date=self.__publication_time(entry.published))
           feed_item.save()
           if hasattr(entry, 'tags'):
             for tag in entry.tags:
@@ -32,7 +33,6 @@ class Command(BaseCommand):
                 print(e)
         except IntegrityError as e:
           print(e)
-
 
 
   # TODO: Move all these to model validations/clean

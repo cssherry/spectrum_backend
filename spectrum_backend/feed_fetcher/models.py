@@ -33,8 +33,8 @@ class Feed(models.Model):
 class FeedItem(models.Model):
   feed = models.ForeignKey(Feed)
   title = models.CharField(max_length=200)
-  author = models.CharField(max_length=200)
-  description = models.CharField(max_length=500)
+  author = models.CharField(max_length=200, null=True)
+  description = models.CharField(max_length=50000, null=True)
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=300, unique=True)
   image_url = models.CharField(max_length=300, null=True)

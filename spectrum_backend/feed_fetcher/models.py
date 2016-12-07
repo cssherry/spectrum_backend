@@ -49,3 +49,7 @@ class Tag(models.Model):
   name = models.CharField(max_length=100)
   feed_item = models.ForeignKey(FeedItem)
 
+  def __str__(self):
+    return u'%s' % (self.name)
+
+

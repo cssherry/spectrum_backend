@@ -1,6 +1,6 @@
-from datetime import datetime
 import re
 import dateutil.parser
+from django.utils import timezone
 
 class RSSEntryWrapper:
   FOX_NEWS_PUBLICATION = "Fox News"
@@ -52,7 +52,7 @@ class RSSEntryWrapper:
     if hasattr(self.entry, 'published'):
       return dateutil.parser.parse(self.entry.published)
     else:
-      return datetime.datetime.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
+      return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
 
   def __parsed_tags(self):
     tags = []

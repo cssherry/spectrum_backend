@@ -5,6 +5,7 @@ feedparser==5.2.1
 gunicorn==19.6.0
 pbr==1.8.0
 psycopg2==2.6.2
+python-dateutil==2.6.0
 pytz==2016.7
 six==1.9.0
 stevedore==1.8.0

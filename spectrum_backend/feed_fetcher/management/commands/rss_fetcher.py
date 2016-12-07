@@ -7,6 +7,7 @@ from datetime import datetime
 import feedparser
 import re
 from urllib import parse
+from dateutil import parser
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
@@ -23,28 +24,22 @@ class Command(BaseCommand):
         image_url = entry.media_content[0]["url"] if (hasattr(entry, 'media_content') and entry.media_content[0]) else None
         author = entry.author if (hasattr(entry, 'author')) else None
         try:
-          feed_item = FeedItem(feed=feed, title=entry.title, description=description, author=author, url=self.__parsed_url(entry.link), image_url=image_url, publication_date=self.__publication_time(entry.published))
+          feed_item = FeedItem(feed=feed, title=entry.title, description=description, author=author, url=self.__parsed_url(entry.link), image_url=image_url, publication_date=parser.parse(entry.published))
           feed_item.save()
           if hasattr(entry, 'tags'):
             for tag in entry.tags:
               try:
                 tag = Tag(name=tag.term, feed_item=feed_item).save()
               except IntegrityError as e:
-                print(e)
+                pass
         except IntegrityError as e:
-          print(e)
+          pass
 
 
   # TODO: Move all these to model validations/clean
   def __parsed_url(self, url_string):
     query_param_delimiter = "?"
     return url_string.split(query_param_delimiter)[0]
-
-  def __publication_time(self, time_string):
-    format_string = '%a, %d %b %Y %H:%M:%S %Z'
-    output_format_string = "%Y-%m-%d %H:%M:%S%Z"
-    input_date = datetime.strptime(time_string, format_string)
-    return datetime.strftime(input_date, output_format_string)
 
   def __fox_news_description(self, url):
     matches = re.search("^.+\/([a-zA-Z0-9\-]+).html$", url)

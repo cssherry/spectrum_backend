@@ -52,4 +52,7 @@ class Tag(models.Model):
   def __str__(self):
     return u'%s' % (self.name)
 
+  class Meta:
+    unique_together = ('name', 'feed_item')
+
 

@@ -8,8 +8,8 @@ class Publication(models.Model):
     ('RC', 'Right-Center'),
     ('R', 'Right'),
   )
-  name = models.CharField(max_length=200, unique=True)
-  base_url = models.CharField(max_length=200, unique=True)
+  name = models.CharField(max_length=500, unique=True)
+  base_url = models.CharField(max_length=500, unique=True)
   bias = models.CharField(max_length=2, choices=BIASES)
   #timestamps?
 
@@ -21,8 +21,8 @@ class Publication(models.Model):
 
 class Feed(models.Model):
   publication = models.ForeignKey(Publication)
-  category = models.CharField(max_length=200)
-  rss_url = models.CharField(max_length=200, unique=True)
+  category = models.CharField(max_length=500)
+  rss_url = models.CharField(max_length=500, unique=True)
 
   def __str__(self):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
@@ -32,12 +32,12 @@ class Feed(models.Model):
 
 class FeedItem(models.Model):
   feed = models.ForeignKey(Feed)
-  title = models.CharField(max_length=200)
-  author = models.CharField(max_length=200, null=True)
-  description = models.CharField(max_length=50000, null=True)
+  title = models.CharField(max_length=500)
+  author = models.CharField(max_length=500, null=True)
+  description = models.TextField(null=True)
   publication_date = models.DateTimeField()
-  url = models.CharField(max_length=300, unique=True)
-  image_url = models.CharField(max_length=300, null=True)
+  url = models.CharField(max_length=500, unique=True)
+  image_url = models.CharField(max_length=500, null=True)
 
   def __str__(self):
     return u'%s (%s - %s) %s (%s)' % (self.title, self.feed.publication.name, self.feed.category, self.description, self.url)
@@ -46,7 +46,7 @@ class FeedItem(models.Model):
     ordering = ['publication_date']
 
 class Tag(models.Model):
-  name = models.CharField(max_length=200)
+  name = models.CharField(max_length=500)
   feed_item = models.ForeignKey(FeedItem)
 
   def __str__(self):

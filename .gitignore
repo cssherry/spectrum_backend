@@ -1,0 +1,5 @@
+venv
+*.pyc
+staticfiles
+.env
+spectrum_backend/static

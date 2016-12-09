@@ -30,6 +30,15 @@ class Feed(models.Model):
   class Meta:
     ordering = ['category'] # any way to do this by publication name + category?
 
+  def tags(self):
+    feed_items = self.feeditem_set.all()
+    tags = set()
+    for feed_item in feed_items:
+      for tag in feed_item.tag_set.all():
+        tags.add(tag.name)
+
+    return tags
+
 class FeedItem(models.Model):
   feed = models.ForeignKey(Feed)
   title = models.CharField(max_length=500)

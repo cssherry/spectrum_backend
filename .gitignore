@@ -1,5 +1,70 @@
-venv
+*.pyo
+.sconsign.dblite
+__pycache__
+spectrum_env
+/static
+
+.project
+.pydevproject
+
+# Vagrant directory #
+#####################
+.vagrant
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 *.pyc
-staticfiles
-.env
-spectrum_backend/static
+
+# Dev tools files #
+###################
+cscope.files
+cscope.out
+tags
+*.sconsign.dblite
+.python-version
+
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm #
+#########################################################################
+/*.iml
+## Directory-based project format:
+.idea/
+
+# Editor Backups #
+##################
+*~
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

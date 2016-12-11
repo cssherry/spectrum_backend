@@ -40,43 +40,6 @@ class Feed(models.Model):
 
     return tags
 
-class FeedItem(models.Model):
-  feed = models.ForeignKey(Feed)
-  title = models.CharField(max_length=500)
-  author = models.CharField(max_length=500, null=True)
-  description = models.TextField(null=True)
-  publication_date = models.DateTimeField()
-  url = models.CharField(max_length=500, unique=True)
-  image_url = models.CharField(max_length=500, null=True)
-  topics = models.ManyToManyField(Topic)
-
-  def __str__(self):
-    return u'%s (%s - %s) %s (%s)' % (self.title, self.feed.publication.name, self.feed.category, self.description, self.url)
-
-  class Meta:
-    ordering = ['publication_date']
-
-  def identify_topics(self):
-    for topic in Topic.objects.all():
-      for topic_word in topic.topicword_set.all():
-        in_title = self.title.find(topic_word.lower())
-        in_description = self.description.find(topic_word.lower())
-        if in_title or in_description:
-          self.topics.add(topic)
-
-class Tag(models.Model):
-  name = models.CharField(max_length=500)
-  feed_item = models.ForeignKey(FeedItem)
-
-  def __str__(self):
-    return u'%s' % (self.name)
-
-  class Meta:
-    unique_together = ('name', 'feed_item')
-
-  def publication_name(self):
-    return self.feed_item.feed.publication.name
-
 class Topic(models.Model): # last seen?
   base_tag_string = models.CharField(max_length=500)
 
@@ -101,3 +64,61 @@ class TopicWord(models.Model):
 
   def __str__(self):
     return u'%s (%s)' % (self.stem, self.pos_type)
+
+class Association(models.Model):
+  base_feed_item = models.ForeignKey('FeedItem', related_name='base_feed_item')
+  associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_feed_item')
+  topics = models.ManyToManyField('Topic')
+
+class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
+  feed = models.ForeignKey('Feed')
+  title = models.CharField(max_length=500)
+  author = models.CharField(max_length=500, null=True)
+  description = models.TextField(null=True)
+  publication_date = models.DateTimeField()
+  url = models.CharField(max_length=500, unique=True)
+  image_url = models.CharField(max_length=500, null=True)
+  topics = models.ManyToManyField(Topic)
+
+  def __str__(self):
+    return u'%s (%s - %s) %s (%s)' % (self.title, self.feed.publication.name, self.feed.category, self.description, self.url)
+
+  class Meta:
+    ordering = ['publication_date']
+
+  def identify_topics(self):
+    for topic in Topic.objects.all():
+      for topic_word in topic.topicword_set.all():
+        in_title = self.title.lower().find(topic_word.stem.lower()) != -1
+        in_description = self.description.find(topic_word.stem) != -1
+        if in_title or in_description:
+          self.topics.add(topic)
+          break
+
+  def identify_associations(self):
+    print("TITLE: %s" % self.title)
+    for topic in self.topics.all():
+      print("TOPIC: %s" % topic)
+      for feed_item in topic.feeditem_set.all():
+        if feed_item.id != self.id:
+          a1 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)
+          a2 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)
+          a1.topics.add(topic)
+          a2.topics.add(topic)
+
+  def best_associations(self):
+    sorted((self.association_set.all()), key=lambda topics: len(topics), reverse=True)
+
+
+class Tag(models.Model):
+  name = models.CharField(max_length=500)
+  feed_item = models.ForeignKey(FeedItem)
+
+  def __str__(self):
+    return u'%s' % (self.name)
+
+  class Meta:
+    unique_together = ('name', 'feed_item')
+
+  def publication_name(self):
+    return self.feed_item.feed.publication.name

@@ -35,7 +35,11 @@ class TagWrapper:
       name_array = self.name.split(', ')
       last_name = name_array[0]
       full_name = name_array[1] + " " + last_name
-      return [full_name, last_name]
+      full_name_with_initial = name_array[1] + ". " + last_name
+      if last_name.lower() in set(nltk.corpus.words.words()):
+        return [full_name, full_name_with_initial]
+      else:
+        return [full_name, last_name]
     else:
       return None
 

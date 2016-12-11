@@ -3,6 +3,8 @@
 __pycache__
 spectrum_env
 /static
+.env
+*/staticfiles
 
 .project
 .pydevproject

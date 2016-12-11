@@ -1,0 +1,18 @@
+{% extends 'skeleton.html' %}
+{% load static %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+<h2>Recent Articles:</h2>
+
+{% include page_template %}
+
+{% endblock %}
+
+{% block code %}
+<script type="text/javascript">
+  all_publications = '{{entries}}'
+</script>
+{% endblock %}

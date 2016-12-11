@@ -1,0 +1,33 @@
+{% load el_pagination_tags %}
+{% lazy_paginate 12 entries %}
+<div class="nospace group services row">
+  {% for entry in entries %}
+
+  <div class="col-md-4 col-sm-12 article">
+    <article>
+      <div class="article-title">
+        {% if entry.image_url %}
+        <img src="{{ entry.image_url }}" alt="{{ entry.title }}">
+        {% endif %}
+        <h6 class="heading">
+          {{ entry.title }}
+        </h6>
+      </div>
+
+      {% if entry.description %}
+        <div class='truncate'>{{ entry.description|safe }}</div>
+      {% endif %}
+
+      <footer><a href="{{ entry.url }}" target="_blank">Read »</a></footer>
+      <em>Related Articles</em>
+      <ul>
+      {% for related in entry.related_articles %}
+        <li>{{ related.title }} <a href="{{ related.url }}" target="_blank">»</a></li>
+      {% endfor %}
+    </ul>
+    </article>
+  </div>
+
+  {% endfor %}
+</div>
+{% show_pages %}

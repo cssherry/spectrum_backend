@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="support-no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}See the Spectrum{% endblock %}</title>
+    <meta name="description" content="{% block description %}View news from both sides of the aisle.{% endblock %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{static_version}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{% static 'images/favicon.png'%}?v={{static_version}}">
+    {% block bootstrap-css %}
+      <meta name="viewport" content="width=device-width">
+      <link rel="stylesheet" href="{% static 'ext/bootstrap/css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'ext/bootstrap/css/bootstrap-theme.min.css' %}">
+    {% endblock %}
+    {% block style %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block bootstrap-header %}
+    {% endblock %}
+    <div id="main" class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <script src="{% static 'ext/modernizr/modernizr-custom.js'%}"></script>
+    <script src="{% static 'ext/jquery-1.11.3/jquery-1.11.3.min.js'%}"></script>
+    <script src="{% static 'ext/jquery.mobile.custom-1.4.5/jquery.mobile.custom.min.js'%}"></script>
+    {% block bootstrap-js %}
+      <script src="{% static 'ext/bootstrap/js/bootstrap.min.js'%}"></script>
+    {% endblock %}
+
+    {% block code %}
+    {% endblock %}
+    <noscript>
+      <div>
+        JavaScript isn't enabled, you might experience weirdness.
+      </div>
+    </noscript>
+  </body>
+</html>

@@ -65,12 +65,22 @@ class Tag(models.Model):
   class Meta:
     unique_together = ('name', 'feed_item')
 
-class Topic(models.Model):
+  def publication_name(self):
+    return self.feed_item.feed.publication.name
+
+class Topic(models.Model): # last seen?
   base_tag_string = models.CharField(max_length=500)
 
 class TopicWord(models.Model):
+  TYPES = (
+    ('CD', 'numeral, cardinal'),
+    ('FW', 'foreign word'),
+    ('NAME', 'proper noun, organization\'s name'),
+    ('NAME', 'proper noun, person\'s name'),
+    ('LOC', 'proper noun, location'),
+    ('VERB', 'verb')
+  )
   stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
-  tag = models.ForeignKey(Topic)
-  pos_tag = models.CharField(max_length=10)
-
+  topic = models.ForeignKey(Topic)
+  pos_type = models.CharField(max_length=5, choices=TYPES)
 

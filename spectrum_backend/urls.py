@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from spectrum_backend.views import hello
-from spectrum_backend.views import my_homepage_view
+from spectrum_backend.views import homepage
+from django.views.generic import RedirectView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^hello/$', hello),
-    url(r'^$', my_homepage_view),
+    url(r'^$', homepage, name='homepage'),
+    url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     url(r'^feeds/', include('spectrum_backend.feed_fetcher.urls')),
 ]

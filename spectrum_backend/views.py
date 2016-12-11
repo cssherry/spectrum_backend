@@ -1,9 +1,9 @@
 from django.shortcuts import render
-import datetime
+from spectrum_backend.feed_fetcher.views import recent_articles
 
-def hello(request):
-  return HttpResponse("Hello world")
-
-def my_homepage_view(request):
-  now = datetime.datetime.now()
-  return render(request, 'current_datetime.html', {'current_date': now})
+def homepage(request):
+  context = {
+    'entries': recent_articles(request),
+    'page_template': 'home/article_template.html',
+  }
+  return render(request, 'home.html', context)

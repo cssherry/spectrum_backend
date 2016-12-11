@@ -31,7 +31,6 @@ class TagResource(resources.ModelResource):
     model = Tag
 
 class TagAdmin(ImportExportMixin, admin.ModelAdmin):
-  list_filter = ['feed']
   resource_class = TagResource
 
 admin.site.register(Publication, PublicationAdmin)

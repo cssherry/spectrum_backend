@@ -48,12 +48,21 @@ class FeedItem(models.Model):
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=500, unique=True)
   image_url = models.CharField(max_length=500, null=True)
+  topics = models.ManyToManyField(Topic)
 
   def __str__(self):
     return u'%s (%s - %s) %s (%s)' % (self.title, self.feed.publication.name, self.feed.category, self.description, self.url)
 
   class Meta:
     ordering = ['publication_date']
+
+  def identify_topics(self):
+    for topic in Topic.objects.all():
+      for topic_word in topic.topicword_set.all():
+        in_title = self.title.find(topic_word.lower())
+        in_description = self.description.find(topic_word.lower())
+        if in_title or in_description:
+          self.topics.add(topic)
 
 class Tag(models.Model):
   name = models.CharField(max_length=500)

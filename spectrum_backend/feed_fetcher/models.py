@@ -1,4 +1,5 @@
 from django.db import models
+import nltk
 
 class Publication(models.Model):
   BIASES = (
@@ -64,4 +65,22 @@ class Tag(models.Model):
   class Meta:
     unique_together = ('name', 'feed_item')
 
+  def publication_name(self):
+    return self.feed_item.feed.publication.name
+
+class Topic(models.Model): # last seen?
+  base_tag_string = models.CharField(max_length=500)
+
+class TopicWord(models.Model):
+  TYPES = (
+    ('CD', 'numeral, cardinal'),
+    ('FW', 'foreign word'),
+    ('NAME', 'proper noun, organization\'s name'),
+    ('NAME', 'proper noun, person\'s name'),
+    ('LOC', 'proper noun, location'),
+    ('VERB', 'verb')
+  )
+  stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
+  topic = models.ForeignKey(Topic)
+  pos_type = models.CharField(max_length=5, choices=TYPES)
 

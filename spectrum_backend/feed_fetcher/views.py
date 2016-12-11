@@ -3,15 +3,49 @@ import json, re
 from django.http import HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
+from urllib.parse import urlparse
 
 # Test API
 def test_api(request=None):
-  first_articles = get_articles(get_three())
+  first_articles = get_articles(get_associated_articles())
+  return HttpResponse(json.dumps(first_articles), content_type='application/json')
+
+# Get Related Articles
+def get_related(request):
+  if request.method == "POST":
+    data = request.POST
+  elif request.method == "GET":
+    data = request.GET
+  else:
+    return HttpResponse("GET or POST only", status=500)
+
+  first_articles = get_articles(get_associated_articles(title=data.get('title', None), url=data.get('url', None)))
   return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 # Just a dummy function for now
-def get_three(current_article_url=None):
-  return FeedItem.objects.all()[:3][::-1]
+def get_associated_articles(url=None, title=None):
+  current_article = None
+
+  if url:
+    current_article = FeedItem.objects.filter(url__icontains=clean_url(url))
+
+  if title and ((current_article and current_article.exists()) or not url):
+    current_article = FeedItem.objects.filter(title=title)
+
+  if not current_article:
+    current_article = FeedItem.objects.first()
+  else:
+    current_article = current_article[0]
+
+  associations = current_article.best_associations()[:3]
+  result = []
+  for ass in associations:
+    result.append(ass.associated_feed_item)
+  return result
+
+def clean_url(url_string):
+    p = urlparse(url_string)
+    return p.hostname + p.path
 
 def get_articles(article_objects, include_related=False):
   result = []
@@ -27,7 +61,7 @@ def get_articles(article_objects, include_related=False):
       'publication_bias': article_mod.feed.publication.bias
     }
     if include_related:
-      article['related_articles'] = get_articles(get_three(article['url']))
+      article['related_articles'] = get_articles(get_associated_articles(url=article['url'], title=article['title']))
     result.append(article)
   return result
 

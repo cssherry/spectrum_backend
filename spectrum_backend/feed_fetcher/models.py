@@ -66,9 +66,12 @@ class TopicWord(models.Model):
     return u'%s (%s)' % (self.stem, self.pos_type)
 
 class Association(models.Model):
-  base_feed_item = models.ForeignKey('FeedItem', related_name='base_feed_item')
-  associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_feed_item')
+  base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
+  associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
   topics = models.ManyToManyField('Topic')
+
+  def __str__(self):
+    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, len(self.topics.all()))
 
 class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
   feed = models.ForeignKey('Feed')
@@ -101,14 +104,13 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
       print("TOPIC: %s" % topic)
       for feed_item in topic.feeditem_set.all():
         if feed_item.id != self.id:
-          a1 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)
-          a2 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)
+          a1 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)[0]
+          a2 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)[0]
           a1.topics.add(topic)
           a2.topics.add(topic)
 
   def best_associations(self):
-    sorted((self.association_set.all()), key=lambda topics: len(topics), reverse=True)
-
+    return sorted((self.base_associations.all()), key=lambda association: len(association.topics.all()), reverse=True)
 
 class Tag(models.Model):
   name = models.CharField(max_length=500)

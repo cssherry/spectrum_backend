@@ -27,3 +27,5 @@ class Command(BaseCommand):
     topic = Topic.objects.get_or_create(base_tag_string="Donald J Trump")[0]
     TopicWord.objects.get_or_create(topic=topic, stem="Donald Trump", pos_type="XX")
     TopicWord.objects.get_or_create(topic=topic, stem="Trump", pos_type="XX")
+  except IntegrityError:
+    pass

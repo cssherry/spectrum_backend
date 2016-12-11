@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.db.utils import IntegrityError
 from spectrum_backend.feed_fetcher.models import Topic
 from spectrum_backend.feed_fetcher.models import TopicWord
 from spectrum_backend.feed_fetcher.models import Tag
@@ -9,9 +10,15 @@ from ._tag_wrapper import TagWrapper
 class Command(BaseCommand):
   NEW_YORK_TIMES_STRING = "New York Times"
   def handle(self, *args, **options):
+    count = 0
     for tag in Tag.objects.all():
-      if tag.publication_name == NEW_YORK_TIMES_STRING
+      if tag.publication_name() == self.NEW_YORK_TIMES_STRING:
+        count += 1
         tag_wrapper = TagWrapper(tag.name)
-        topic = Topic.objects.get_or_create(base_tag_string=tag.name)
-        for tag_word in tag_wrapper.words:
-          TopicWord.objects.get_or_create(topic=tag_word.stem, stem=tag_word, type="CD")
+        if tag_wrapper.has_tags():
+          topic = Topic.objects.get_or_create(base_tag_string=tag.name)[0]
+          for tag_word in tag_wrapper.words:
+            try:
+              TopicWord.objects.get_or_create(topic=topic, stem=tag_word.stem, pos_type=tag_word.pos_type)
+            except IntegrityError:
+              pass

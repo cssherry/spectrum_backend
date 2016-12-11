@@ -71,16 +71,24 @@ class Tag(models.Model):
 class Topic(models.Model): # last seen?
   base_tag_string = models.CharField(max_length=500)
 
+  def __str__(self):
+    words = "; ".join([topic.stem for topic in self.topicword_set.all()])
+    return u'%s (%s)' % (words, self.base_tag_string)
+
 class TopicWord(models.Model):
   TYPES = (
     ('CD', 'numeral, cardinal'),
     ('FW', 'foreign word'),
-    ('NAME', 'proper noun, organization\'s name'),
-    ('NAME', 'proper noun, person\'s name'),
     ('LOC', 'proper noun, location'),
-    ('VERB', 'verb')
+    ('NAME', 'proper noun, person\'s name'),
+    ('NOUN', 'common noun'),
+    ('ORG', 'proper noun, organization\'s name'),
+    ('VERB', 'verb'),
+    ('XX', 'uncategorized')
   )
   stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
   topic = models.ForeignKey(Topic)
   pos_type = models.CharField(max_length=5, choices=TYPES)
 
+  def __str__(self):
+    return u'%s (%s)' % (self.stem, self.pos_type)

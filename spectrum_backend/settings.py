@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'import_export',
     'el_pagination',
     'spectrum_backend.feed_fetcher',
+    'import_export',
 ]
 
 MIDDLEWARE = [

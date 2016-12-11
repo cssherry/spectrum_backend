@@ -1,1 +1,1 @@
-from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed
+from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed, Topic, TopicWord

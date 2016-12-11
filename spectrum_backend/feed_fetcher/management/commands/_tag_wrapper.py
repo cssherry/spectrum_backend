@@ -1,75 +1,49 @@
 import nltk
 import dateutil.parser
 from django.utils import timezone
+import re
 
 class TagWrapper:
 
   def __init__(self, name):
     self.name = name
-    self.words = []
+    self.words = self.__parsed_words()
+
+  def has_tags(self):
+    return self.words
 
   def __parsed_words(self):
-    for word in " ".split(self.name):
-      self.words << TagWordWrapper(word) # lemmatize
+    words = []
 
-  def __parsed_title(self):
-    if hasattr(self.entry, 'title'):
-      return self.entry.title
-    else:
-      return None
+    named_units = self.__categorize_and_separate_tag()
 
-  def __parsed_description(self):
-    if hasattr(self.entry, 'description'):
-      return self.entry.description
-    elif self.feed.publication.name == self.FOX_NEWS_PUBLICATION:
-      return self.__fox_news_description(self.entry.link)
-    else:
-      return None
+    for chunk in named_units:
+      words.append(TagWordWrapper(chunk))
 
-  def __parsed_author(self):
-    if hasattr(self.entry, 'author'):
-      return self.entry.author
-    else:
-      return None
+    return words
 
-  def __parsed_url(self):
-    query_param_delimiter = "?"
-    if hasattr(self.entry, 'link'):
-      return self.entry.link.split(query_param_delimiter)[0]
-    else:
-      return None
+  def __categorize_and_separate_tag(self):
+    if self.__proper_name_matches():
+      return self.__proper_name_matches()
 
-  def __parsed_image_url(self):
-    if hasattr(self.entry, 'media_content') and self.entry.media_content[0]:
-      return self.entry.media_content[0]["url"]
-    else:
-      return None
+    return []
 
-  def __parsed_publication_date(self):
-    if hasattr(self.entry, 'published'):
-      return dateutil.parser.parse(self.entry.published)
-    else:
-      return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
-
-  def __parsed_tags(self):
-    tags = []
-    if hasattr(self.entry, 'tags'):
-      for tag in self.entry.tags:
-        tags.append(tag.term)
-
-    return tags
-
-  def __fox_news_description(self, url):
-    matches = re.search("^.+\/([a-zA-Z0-9\-]+).html$", url)
-    if matches:
-      return matches.group(1).replace("-", " ")
+  def __proper_name_matches(self):
+    matches = re.search("^[A-Za-z]+, [A-Za-z ]+$", self.name)
+    not_a_list = not re.search(" and ", self.name)
+    if matches and not_a_list:
+      name_array = self.name.split(', ')
+      last_name = name_array[0]
+      full_name = name_array[1] + " " + last_name
+      return [full_name, last_name]
     else:
       return None
 
 class TagWordWrapper:
+  UNCATEGORIZED_TYPE = 'XX'
   def __init__(self, name):
     self.stem = name
-    self.pos_type = "CD" # need to parse by speech with NLTK here
+    self.pos_type = self.UNCATEGORIZED_TYPE
 
   def __get_continuous_chunks(self, text):
     chunked = ne_chunk(pos_tag(word_tokenize(text)))
@@ -87,3 +61,5 @@ class TagWordWrapper:
       else:
         continue
     return continuous_chunk
+
+

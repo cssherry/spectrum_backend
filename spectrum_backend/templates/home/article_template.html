@@ -12,11 +12,15 @@
         <h6 class="heading">
           {{ entry.title }}
         </h6>
-        <small class='a-color-{{ entry.feed.publication_bias }}'>{{ entry.feed.publication_bias_readable }}</small>
       </a>
+      <small class='a-color-{{ entry.feed.publication_bias }}'>{{ entry.feed.publication_bias_readable }}</small>
+      {% if entry.topics %}
+      <small>Topics: {{ entry.topics|join:", " }}</small>
+      {% endif %}
+
 
       {% if entry.description %}
-        <div class='truncate'>{{ entry.description|safe }}</div>
+        <div>{{ entry.description|safe }}</div>
       {% endif %}
 
       <footer><a href="{{ entry.url }}" target="_blank">Read »</a></footer>
@@ -25,7 +29,7 @@
       <ul>
         {% for related in entry.related_articles %}
           <li>{{ related.title }}
-            <span class="a-color-{{ related.feed.publication_bias }}">({{ related.feed.publication_bias_readable }})</span>
+            <small class="a-color-{{ related.feed.publication_bias }}">({{ related.feed.publication_bias_readable }})</small>
             <a href="{{ related.url }}" target="_blank">»</a>
           </li>
         {% endfor %}

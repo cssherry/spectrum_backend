@@ -19,10 +19,6 @@ html, body{
 
 .article {
   height: 400px;
-}
-
-.truncate {
-  max-height: 100px;
   overflow:auto;
 }
 

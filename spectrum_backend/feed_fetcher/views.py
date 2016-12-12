@@ -63,6 +63,11 @@ def get_articles(article_objects, include_related=False):
       'publication_bias': article_mod.feed.publication.bias,
       'publication_bias_readable': translate[article_mod.feed.publication.bias]
     }
+    topics = []
+    for topic in article_mod.topics.all():
+      topics.append(topic.base_tag_string)
+    article['topics'] = topics
+
     if include_related:
       article['related_articles'] = get_articles(get_associated_articles(url=article['url'], title=article['title']))
     result.append(article)

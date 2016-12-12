@@ -81,5 +81,5 @@ def return_recent_articles(request):
   return HttpResponse(article_string, content_type='application/json')
 
 def recent_articles(request):
-  articles = get_articles(FeedItem.objects.order_by('-publication_date').all()[:24], True)
+  articles = get_articles(FeedItem.objects.order_by('publication_date').all()[:30], True)
   return articles

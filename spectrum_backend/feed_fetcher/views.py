@@ -49,6 +49,8 @@ def clean_url(url_string):
 
 def get_articles(article_objects, include_related=False):
   result = []
+  translate = {'L': 'Left', 'LC': 'Left of Center', 'C': 'Center', 'R': 'Right', 'RC': 'Right of Center'}
+
   articles_json = json.loads(serializers.serialize('json', article_objects))
   for i, article in enumerate(articles_json):
     article = article['fields']
@@ -58,7 +60,8 @@ def get_articles(article_objects, include_related=False):
       'category': article_mod.feed.category,
       'publication_name': article_mod.feed.publication.name,
       'publication_url': article_mod.feed.publication.base_url,
-      'publication_bias': article_mod.feed.publication.bias
+      'publication_bias': article_mod.feed.publication.bias,
+      'publication_bias_readable': translate[article_mod.feed.publication.bias]
     }
     if include_related:
       article['related_articles'] = get_articles(get_associated_articles(url=article['url'], title=article['title']))

@@ -93,7 +93,7 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
     for topic in Topic.objects.all():
       for topic_word in topic.topicword_set.all():
         in_title = self.title.lower().find(topic_word.stem.lower()) != -1
-        in_description = self.description.find(topic_word.stem) != -1
+        in_description = self.description and self.description.find(topic_word.stem) != -1
         if in_title or in_description:
           self.topics.add(topic)
           break

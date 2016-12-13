@@ -2,6 +2,7 @@ import nltk
 import dateutil.parser
 from django.utils import timezone
 import re
+nltk.download('words')
 
 class TagWrapper:
 

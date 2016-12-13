@@ -5,26 +5,37 @@
 
   <div class="col-md-4 col-sm-12 article">
     <article>
-      <div class="article-title">
+      <a class="article-title" href="{{ entry.url }}" target="_blank">
         {% if entry.image_url %}
         <img src="{{ entry.image_url }}" alt="{{ entry.title }}">
         {% endif %}
         <h6 class="heading">
           {{ entry.title }}
         </h6>
-      </div>
+      </a>
+      <small class='a-color-{{ entry.feed.publication_bias }}'>{{ entry.feed.publication_bias_readable }}</small>
+      {% if entry.topics %}
+      <small>Topics: {{ entry.topics|join:", " }}</small>
+      {% endif %}
+
 
       {% if entry.description %}
-        <div class='truncate'>{{ entry.description|safe }}</div>
+        <div>{{ entry.description|safe }}</div>
       {% endif %}
 
       <footer><a href="{{ entry.url }}" target="_blank">Read »</a></footer>
+      {% if entry.related_articles %}
       <em>Related Articles</em>
       <ul>
-      {% for related in entry.related_articles %}
-        <li>{{ related.title }} <a href="{{ related.url }}" target="_blank">»</a></li>
-      {% endfor %}
-    </ul>
+        {% for related in entry.related_articles %}
+          <li>{{ related.title }}
+            <small class="a-color-{{ related.feed.publication_bias }}">({{ related.feed.publication_bias_readable }})</small>
+            <a href="{{ related.url }}" target="_blank">»</a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
     </article>
   </div>
 

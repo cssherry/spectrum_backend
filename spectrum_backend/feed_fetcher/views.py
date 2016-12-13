@@ -49,6 +49,8 @@ def clean_url(url_string):
 
 def get_articles(article_objects, include_related=False):
   result = []
+  translate = {'L': 'Left', 'LC': 'Left of Center', 'C': 'Center', 'R': 'Right', 'RC': 'Right of Center'}
+
   articles_json = json.loads(serializers.serialize('json', article_objects))
   for i, article in enumerate(articles_json):
     article = article['fields']
@@ -58,8 +60,14 @@ def get_articles(article_objects, include_related=False):
       'category': article_mod.feed.category,
       'publication_name': article_mod.feed.publication.name,
       'publication_url': article_mod.feed.publication.base_url,
-      'publication_bias': article_mod.feed.publication.bias
+      'publication_bias': article_mod.feed.publication.bias,
+      'publication_bias_readable': translate[article_mod.feed.publication.bias]
     }
+    topics = []
+    for topic in article_mod.topics.all():
+      topics.append(topic.base_tag_string)
+    article['topics'] = topics
+
     if include_related:
       article['related_articles'] = get_articles(get_associated_articles(url=article['url'], title=article['title']))
     result.append(article)
@@ -81,5 +89,5 @@ def return_recent_articles(request):
   return HttpResponse(article_string, content_type='application/json')
 
 def recent_articles(request):
-  articles = get_articles(FeedItem.objects.all()[:100][::-1], True)
+  articles = get_articles(FeedItem.objects.order_by('publication_date').all()[:30], True)
   return articles

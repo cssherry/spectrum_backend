@@ -19,10 +19,6 @@ html, body{
 
 .article {
   height: 400px;
-}
-
-.truncate {
-  max-height: 150px;
   overflow:auto;
 }
 
@@ -31,4 +27,24 @@ html, body{
   clear:left;
   height:50px;
   margin-right: 15px;
+}
+
+.a-color-L {
+  color: #020496 !important;
+}
+
+.a-color-LC {
+  color: #1556ae !important;
+}
+
+.a-color-C {
+  color: black;
+}
+
+.a-color-RC {
+  color: #ae1567 !important;
+}
+
+.a-color-R {
+  color: #920000 !important;
 }

@@ -20,8 +20,18 @@ class Publication(models.Model):
   class Meta:
     ordering = ['name']
 
+  def tags(self):
+    tags = set()
+    [tags.update(feed.tags()) for feed in self.feed_set.all()]
+    return tags
+
+  def feed_items(self):
+    feed_items = []
+    [feed_items.extend(feed.feeditem_set.all()) for feed in self.feed_set.all()]
+    return feed_items
+
 class Feed(models.Model):
-  publication = models.ForeignKey(Publication)
+  publication = models.ForeignKey('Publication')
   category = models.CharField(max_length=500)
   rss_url = models.CharField(max_length=500, unique=True)
 
@@ -32,46 +42,9 @@ class Feed(models.Model):
     ordering = ['category'] # any way to do this by publication name + category?
 
   def tags(self):
-    feed_items = self.feeditem_set.all()
     tags = set()
-    for feed_item in feed_items:
-      for tag in feed_item.tag_set.all():
-        tags.add(tag.name)
-
+    [tags.update(feed_item.tags()) for feed_item in self.feeditem_set.all()]
     return tags
-
-class Topic(models.Model): # last seen?
-  base_tag_string = models.CharField(max_length=500)
-
-  def __str__(self):
-    words = "; ".join([topic.stem for topic in self.topicword_set.all()])
-    return u'%s (%s)' % (words, self.base_tag_string)
-
-class TopicWord(models.Model):
-  TYPES = (
-    ('CD', 'numeral, cardinal'),
-    ('FW', 'foreign word'),
-    ('LOC', 'proper noun, location'),
-    ('NAME', 'proper noun, person\'s name'),
-    ('NOUN', 'common noun'),
-    ('ORG', 'proper noun, organization\'s name'),
-    ('VERB', 'verb'),
-    ('XX', 'uncategorized')
-  )
-  stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
-  topic = models.ForeignKey(Topic)
-  pos_type = models.CharField(max_length=5, choices=TYPES)
-
-  def __str__(self):
-    return u'%s (%s)' % (self.stem, self.pos_type)
-
-class Association(models.Model):
-  base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
-  associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
-  topics = models.ManyToManyField('Topic')
-
-  def __str__(self):
-    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, len(self.topics.all()))
 
 class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
   feed = models.ForeignKey('Feed')
@@ -81,19 +54,40 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=500, unique=True)
   image_url = models.CharField(max_length=500, null=True)
-  topics = models.ManyToManyField(Topic)
+  topics = models.ManyToManyField('Topic')
+
+  def tags(self):
+    return set([tag.name for tag in self.tag_set.all()])
+
+  def publication_name(self):
+    return self.feed.publication.name
+
+  def publication_bias(self):
+    return self.feed.publication.bias
+
+  def feed_category(self):
+    return self.feed.category
+
+  def short_description(self):
+    if len(self.description) > 30:
+      return "%s..." % self.description[0:30]
+    else:
+      return self.description
+
+  def friendly_publication_date(self):
+    return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
   def __str__(self):
-    return u'%s (%s - %s) %s (%s)' % (self.title, self.feed.publication.name, self.feed.category, self.description, self.url)
+    return u'%s (%s - %s) %s (%s) %s' % (self.title, self.publication_name(), self.feed_category(), self.short_description(), self.url, self.friendly_publication_date())
 
   class Meta:
-    ordering = ['publication_date']
+    ordering = ['-publication_date']
 
   def identify_topics(self):
     for topic in Topic.objects.all():
       for topic_word in topic.topicword_set.all():
         in_title = self.title.lower().find(topic_word.stem.lower()) != -1
-        in_description = self.description.find(topic_word.stem) != -1
+        in_description = self.description and self.description.find(topic_word.stem) != -1
         if in_title or in_description:
           self.topics.add(topic)
           break
@@ -114,7 +108,7 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
 
 class Tag(models.Model):
   name = models.CharField(max_length=500)
-  feed_item = models.ForeignKey(FeedItem)
+  feed_item = models.ForeignKey('FeedItem')
 
   def __str__(self):
     return u'%s' % (self.name)
@@ -124,3 +118,36 @@ class Tag(models.Model):
 
   def publication_name(self):
     return self.feed_item.feed.publication.name
+
+class Topic(models.Model): # last seen?
+  base_tag_string = models.CharField(max_length=500)
+
+  def __str__(self):
+    words = "; ".join([topic.stem for topic in self.topicword_set.all()])
+    return u'%s (%s)' % (words, self.base_tag_string)
+
+class TopicWord(models.Model):
+  TYPES = (
+    ('CD', 'numeral, cardinal'),
+    ('FW', 'foreign word'),
+    ('LOC', 'proper noun, location'),
+    ('NAME', 'proper noun, person\'s name'),
+    ('NOUN', 'common noun'),
+    ('ORG', 'proper noun, organization\'s name'),
+    ('VERB', 'verb'),
+    ('XX', 'uncategorized')
+  )
+  stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
+  topic = models.ForeignKey('Topic')
+  pos_type = models.CharField(max_length=5, choices=TYPES)
+
+  def __str__(self):
+    return u'%s (%s)' % (self.stem, self.pos_type)
+
+class Association(models.Model):
+  base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
+  associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
+  topics = models.ManyToManyField('Topic')
+
+  def __str__(self):
+    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, len(self.topics.all()))

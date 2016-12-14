@@ -3,10 +3,10 @@ from spectrum_backend.feed_fetcher.models import Feed
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
 
-def articles_by_publication():
+def articles_by_publication(limit = None):
   pub_hash = {}
   for publication in Publication.objects.all():
-    pub_hash[publication.name] = [__return_item(feed_item) for feed_item in publication.feed_items()]
+    pub_hash[publication.name] = [__return_item(feed_item) for feed_item in publication.feed_items()[0:limit]]
 
   return pub_hash
 
@@ -21,7 +21,7 @@ def __return_item(item):
     "title": item.title,
     "author": item.author,
     "description": item.description,
-    "tags": item.tags,
+    "tags": item.tags(),
     "url": item.url,
     "publication_date": item.publication_date,
   }

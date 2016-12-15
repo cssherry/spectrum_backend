@@ -2,6 +2,9 @@
 
 Set up Postgres role:
 ```
+brew install postgresql
+brew services start postgresql;
+createdb
 psql
 create role spectrum_backend with createdb login password 'seetheotherside';
 create database spectrum_backend;

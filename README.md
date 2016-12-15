@@ -33,3 +33,7 @@ Resume work on spectrum in new BASH instance:
 ```
 workon spectrum_backend
 ```
+Set up on Heroku to push changes or work with backend console:
+```
+heroku git:clone -a spectrum-backend
+```

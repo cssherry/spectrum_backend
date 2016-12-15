@@ -1,15 +1,5 @@
 # Spectrum Backend
 
-Set up Postgres role:
-```
-brew install postgresql
-brew services start postgresql;
-createdb
-psql
-create role spectrum_backend with createdb login password 'seetheotherside';
-create database spectrum_backend;
-```
-
 Set up virtualenv:
 ```
 pip install virtualenv
@@ -32,6 +22,10 @@ Set up working environment:
 mkvirtualenv spectrum_backend
 add2virtualenv .
 pip install -r requirements.txt
+```
+Set up databases:
+```
+python manage.py migrate
 ```
 
 Resume work on spectrum in new BASH instance:

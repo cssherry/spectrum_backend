@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 # Test API
 def test_api(request=None):
-  first_articles = get_articles(get_associated_articles())
+  first_articles = get_articles(FeedItem.objects.all()[:3])
   return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 # Get Related Articles

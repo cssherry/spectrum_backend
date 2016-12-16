@@ -1,5 +1,12 @@
 # Spectrum Backend
 
+Don't do this: Set up Postgres role:
+```
+psql
+create role spectrum_backend with createdb login password 'seetheotherside';
+create database spectrum_backend;
+```
+
 Set up virtualenv:
 ```
 pip install virtualenv

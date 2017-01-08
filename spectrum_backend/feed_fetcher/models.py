@@ -12,7 +12,9 @@ class Publication(models.Model):
   name = models.CharField(max_length=500, unique=True)
   base_url = models.CharField(max_length=500, unique=True)
   bias = models.CharField(max_length=2, choices=BIASES)
-  #timestamps?
+  html_content_tag = models.CharField(max_length=500)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
     return u'%s (%s)' % (self.name, self.bias)
@@ -25,15 +27,31 @@ class Publication(models.Model):
     [tags.update(feed.tags()) for feed in self.feed_set.all()]
     return tags
 
-  def feed_items(self):
+  def feeds(self, include_ignored=True):
+    if include_ignored:
+      return self.feed_set.all()
+    else:
+      return self.feed_set.filter(should_ignore=0)
+
+  def feed_items(self, include_ignored=True):
     feed_items = []
-    [feed_items.extend(feed.feeditem_set.all()) for feed in self.feed_set.all()]
+    [feed_items.extend(feed.feeditem_set.all()) for feed in Feed.all(include_ignored).filter(publication=self)]
     return feed_items
 
 class Feed(models.Model):
   publication = models.ForeignKey('Publication')
   category = models.CharField(max_length=500)
   rss_url = models.CharField(max_length=500, unique=True)
+  should_ignore = models.BooleanField(default=0)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+  @classmethod
+  def all(cls, include_ignored=True):
+    if include_ignored:
+      return cls.objects.all()
+    else:
+      return cls.objects.filter(should_ignore=0)
 
   def __str__(self):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
@@ -49,12 +67,18 @@ class Feed(models.Model):
 class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
   feed = models.ForeignKey('Feed')
   title = models.CharField(max_length=500)
-  author = models.CharField(max_length=500, null=True)
-  description = models.TextField(null=True)
+  author = models.CharField(max_length=500, default="")
+  summary = models.CharField(max_length=500, default="") # 1-2 lines from RSS feed description
+  description = models.CharField(max_length=500, default="") # 8-10 sentences from RSS feed or scraper
+  content = models.TextField(default="") # content of article, pulled either from RSS feed or scraping
+  raw_description = models.TextField(default="") # raw description from RSS feed
+  raw_content = models.TextField(default="") # raw contents of web scrape
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=500, unique=True)
-  image_url = models.CharField(max_length=500, null=True)
+  image_url = models.CharField(max_length=500, default="")
   topics = models.ManyToManyField('Topic')
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def tags(self):
     return set([tag.name for tag in self.tag_set.all()])
@@ -69,10 +93,10 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
     return self.feed.category
 
   def short_description(self):
-    if len(self.description) > 30:
-      return "%s..." % self.description[0:30]
+    if len(self.raw_description) > 30:
+      return "%s..." % self.raw_description[0:30]
     else:
-      return self.description
+      return self.raw_description
 
   def friendly_publication_date(self):
     return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -109,6 +133,8 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
 class Tag(models.Model):
   name = models.CharField(max_length=500)
   feed_item = models.ForeignKey('FeedItem')
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
     return u'%s' % (self.name)
@@ -121,6 +147,8 @@ class Tag(models.Model):
 
 class Topic(models.Model): # last seen?
   base_tag_string = models.CharField(max_length=500)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
     words = "; ".join([topic.stem for topic in self.topicword_set.all()])
@@ -140,6 +168,8 @@ class TopicWord(models.Model):
   stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
   topic = models.ForeignKey('Topic')
   pos_type = models.CharField(max_length=5, choices=TYPES)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
     return u'%s (%s)' % (self.stem, self.pos_type)
@@ -148,6 +178,8 @@ class Association(models.Model):
   base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
   associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
   topics = models.ManyToManyField('Topic')
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
     return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, len(self.topics.all()))

@@ -6,7 +6,7 @@ from django.core import serializers
 from datetime import datetime, timedelta
 import pprint
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
-# from spectrum_backend.feed_fetcher.management.commands import ArticleCrawler
+# from spectrum_backend.feed_fetcher.management.commands._article_crawler import ArticleCrawler
 
 def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False):
   """ Returns articles grouped by publication. See __return_item for specific fields
@@ -49,6 +49,8 @@ def pluck(cls, fields):
   """
   return serializers.serialize('json', cls.objects.all(), fields=fields)
 
+# def fox_news_urls_to_scrape():
+
 def articles_within_timeframe_in_hours(hours):
   """ Returns selected fields for all objects of a class
     `cls`: The class you want to JSON
@@ -58,7 +60,7 @@ def articles_within_timeframe_in_hours(hours):
   return FeedItem.objects.filter(created_at__gt=time_threshold)
 
 def delete_last_fetch():
-  """ Deletes most recent fetch within past hour. Be careful!"""
+  """ Deletes most recent fetch within past hour. Be very careful in production!"""
   return articles_within_timeframe_in_hours(1).delete()
 
 def articles_by_publication_date():

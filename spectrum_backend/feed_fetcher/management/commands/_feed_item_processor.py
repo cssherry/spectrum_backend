@@ -5,8 +5,8 @@ from ._html_parser import HTMLParser
 from ._url_parser import URLParser
 
 class FeedItemProcessor:
-  SUMMARY_MAX_SENTENCES = 3
-  DESCRIPTION_MAX_SENTENCES = 10
+  SUMMARY_MAX_SENTENCES = 1
+  DESCRIPTION_MAX_SENTENCES = 5
 
   def process(self, feed_item):
     self.feed_item = feed_item
@@ -32,13 +32,13 @@ class FeedItemProcessor:
     sentence_divider_reg_exp = '(?<=[a-z0-9])\. (?=[A-Z0-9])'
     description_text = HTMLParser().pull_description_from_html(self.feed_item.raw_description)
     sentences = re.split(sentence_divider_reg_exp, description_text)
-    self.summary = sentence_delimiter.join(sentences[0:self.SUMMARY_MAX_SENTENCES])
+    self.feed_item.summary = sentence_delimiter.join(sentences[0:self.SUMMARY_MAX_SENTENCES])
 
     if len(sentences) > self.SUMMARY_MAX_SENTENCES:
-      self.description = sentence_delimiter.join(sentences[0:self.DESCRIPTION_MAX_SENTENCES])
+      self.feed_item.description = sentence_delimiter.join(sentences[0:self.DESCRIPTION_MAX_SENTENCES])
 
     if len(sentences) > self.DESCRIPTION_MAX_SENTENCES:
-      self.content = sentence_delimiter.join(sentences)
+      self.feed_item.content = sentence_delimiter.join(sentences)
 
   def __process_author(self):
     pass

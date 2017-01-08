@@ -4,10 +4,11 @@ from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
 from django.core import serializers
 from datetime import datetime, timedelta
+import pprint
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
 # from spectrum_backend.feed_fetcher.management.commands import ArticleCrawler
 
-def articles_by_publication(limit = 5, include_extra_metadata = False, include_debug = False, include_ignored = False):
+def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False):
   """ Returns articles grouped by publication. See __return_item for specific fields
     `include_extra_metadata`: includes non-content fields like Author and image URL
     `include_debug`: includes raw content/description fields for parsing debugging
@@ -48,13 +49,17 @@ def pluck(cls, fields):
   """
   return serializers.serialize('json', cls.objects.all(), fields=fields)
 
-def articles_within_timeframe_in_hours(cls, hours):
+def articles_within_timeframe_in_hours(hours):
   """ Returns selected fields for all objects of a class
     `cls`: The class you want to JSON
     `fields`: The fields you want to pluck, in list format (e.g. `('name', 'created_at')`)
   """
   time_threshold = datetime.now() - timedelta(hours=hours)
   return FeedItem.objects.filter(created_at__gt=time_threshold)
+
+def delete_last_fetch():
+  """ Deletes most recent fetch within past hour. Be careful!"""
+  return articles_within_timeframe_in_hours(1).delete()
 
 def articles_by_publication_date():
   """ Returns all articles sorted by publication date, most recent first"""
@@ -66,12 +71,12 @@ def pp(object):
 
 def __return_item(item, include_extra_metadata, include_debug):
   base_object = {
-    "     publication_name": item.publication_name(),
-    "    feed_category": item.feed_category(),
-    "   title": HTMLParser().pull_text_from_html(item.title),
-    "  description": HTMLParser().pull_description_from_html(item.raw_description),
-    " url": item.url,
-    
+    "      publication_name": item.publication_name(),
+    "     feed_category": item.feed_category(),
+    "    title": item.title,
+    "   summary": item.summary,
+    "  description": item.description,
+    " url": item.url
   }
   rest_of_object = {
     "author": item.author,
@@ -83,7 +88,6 @@ def __return_item(item, include_extra_metadata, include_debug):
   }
 
   debug = {
-    "   title (raw)": item.title,
     "  description (raw)": item.raw_description,
   }
   if include_extra_metadata:

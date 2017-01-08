@@ -93,6 +93,38 @@ You can then log in at http://spectrum-backend.herokuapp.com/admin.
 
 ## Ongoing development
 
+## Database set-up
+
+Migrate and create database:
+```
+python manage.py migrate
+```
+
+This will create and migrate your database. We use a sqlite database locally. If you need to perform a potentially destructive action while developing, you can just rename/copy the db to back it up and restore it if the action fails.
+
+We also develop using the remote data, so you'll need to get into the Heroku backend. Create a superuser role on the backend. Ask Jesse for access to Heroku provisioning if you don't have access already.
+```
+heroku run python manage.py createsuperuser
+python manage.py createsuperuser
+
+```
+You can then log in at http://spectrum_backend.herokuapp.com/admin.
+
+## Seeding data from backend to local
+- Go to spectrum_backend.herokuapp.com. Make sure to set up an admin login first (heroku run manage.py createsuperuser)
+
+- Go to each of the models:
+![image](https://cloud.githubusercontent.com/assets/4327877/21754671/c16b4200-d5b9-11e6-8674-200eeee4d972.png)
+
+- In the top right corner, click 'Export'. Export as CSV. Repeat for the other models.
+![image](https://cloud.githubusercontent.com/assets/4327877/21754682/dfd9b6cc-d5b9-11e6-8e29-32aef1a1d488.png)
+
+- Run your Python server (heroku run manage.py runserver) after creating a superuser with the superuser command above. 
+
+- Go to 127.0.0.1/admin and go to the Import page on each of the models (probably best to do it in the order Publications, Feeds, Feed items, then Tags). Import the CSVs you exported for each model.
+
+## Ongoing development
+
 Resume work on spectrum in new BASH instance:
 
 ```
@@ -114,6 +146,5 @@ Freeze packages (if you added a new package into the virtual env):
 ```
 pip freeze > requirements.txt
 ```
-
 
 Please build your features on feature branches, e.g. `feature/new_bias_algorithm`. Then, push your feature branch `git push origin feature/new_bias_algorithm` and create a pull request on the GitHub repo. Your PR will be reviewed/merged from there.

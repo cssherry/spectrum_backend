@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
   def __parse_entry(self, feed, entry):
     entry_wrapper = RSSEntryWrapper(feed, entry)
-    feed_item = FeedItem.objects.get_or_create(url=entry_wrapper.url, defaults={'feed': feed, 'title': entry_wrapper.title, 'description': entry_wrapper.description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
+    feed_item = FeedItem.objects.get_or_create(url=entry_wrapper.url, defaults={'feed': feed, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
     feed_item = FeedItemProcessor().process(feed_item)
     feed_item.save()
     for tag in entry_wrapper.tags:

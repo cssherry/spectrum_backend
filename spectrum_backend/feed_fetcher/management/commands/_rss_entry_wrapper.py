@@ -21,31 +21,31 @@ class RSSEntryWrapper:
     if self.__matches_element_format('title'):
       return self.entry.title
     else:
-      return None
+      return ""
 
   def __parsed_description(self):
     if self.__matches_element_format('description'):
       return self.entry.description
     else:
-      return None
+      return ""
 
   def __parsed_author(self):
     if self.__matches_element_format('author'):
       return self.entry.author
     else:
-      return None
+      return ""
 
   def __parsed_url(self):
     if self.__matches_element_format('link'):
       return self.entry.link
     else:
-      return None
+      return ""
 
   def __parsed_image_url(self):
     if self.__matches_element_format('media_content') and self.entry.media_content[0]:
       return self.entry.media_content[0]["url"]
     else:
-      return None
+      return ""
 
   def __parsed_publication_date(self):
     if self.__matches_element_format('published'):

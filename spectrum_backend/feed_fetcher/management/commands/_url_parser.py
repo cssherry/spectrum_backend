@@ -11,4 +11,4 @@ class URLParser:
       if matches:
         return matches.group(1).replace("-", " ")
       else:
-        return None
+        return ""

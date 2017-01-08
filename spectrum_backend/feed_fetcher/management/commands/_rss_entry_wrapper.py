@@ -3,69 +3,60 @@ import dateutil.parser
 from django.utils import timezone
 
 class RSSEntryWrapper:
-  FOX_NEWS_PUBLICATION = "Fox News"
-
   def __init__(self, feed, entry):
     self.entry = entry
     self.feed = feed
     self.title = self.__parsed_title()
-    self.description = self.__parsed_description()
     self.url = self.__parsed_url()
+    self.raw_description = self.__parsed_description()
     self.author = self.__parsed_author()
     self.image_url = self.__parsed_image_url()
     self.publication_date = self.__parsed_publication_date()
     self.tags = self.__parsed_tags()
 
+  def __matches_element_format(self, element_name):
+    return hasattr(self.entry, element_name)
+
   def __parsed_title(self):
-    if hasattr(self.entry, 'title'):
+    if self.__matches_element_format('title'):
       return self.entry.title
     else:
       return None
 
   def __parsed_description(self):
-    if hasattr(self.entry, 'description'):
+    if self.__matches_element_format('description'):
       return self.entry.description
-    elif self.feed.publication.name == self.FOX_NEWS_PUBLICATION:
-      return self.__fox_news_description(self.entry.link)
     else:
       return None
 
   def __parsed_author(self):
-    if hasattr(self.entry, 'author'):
+    if self.__matches_element_format('author'):
       return self.entry.author
     else:
       return None
 
   def __parsed_url(self):
-    query_param_delimiter = "?"
-    if hasattr(self.entry, 'link'):
-      return self.entry.link.split(query_param_delimiter)[0]
+    if self.__matches_element_format('link'):
+      return self.entry.link
     else:
       return None
 
   def __parsed_image_url(self):
-    if hasattr(self.entry, 'media_content') and self.entry.media_content[0]:
+    if self.__matches_element_format('media_content') and self.entry.media_content[0]:
       return self.entry.media_content[0]["url"]
     else:
       return None
 
   def __parsed_publication_date(self):
-    if hasattr(self.entry, 'published'):
+    if self.__matches_element_format('published'):
       return dateutil.parser.parse(self.entry.published)
     else:
       return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
 
   def __parsed_tags(self):
     tags = []
-    if hasattr(self.entry, 'tags'):
+    if self.__matches_element_format('tags'):
       for tag in self.entry.tags:
         tags.append(tag.term)
 
     return tags
-
-  def __fox_news_description(self, url):
-    matches = re.search("^.+\/([a-zA-Z0-9\-]+).html$", url)
-    if matches:
-      return matches.group(1).replace("-", " ")
-    else:
-      return None

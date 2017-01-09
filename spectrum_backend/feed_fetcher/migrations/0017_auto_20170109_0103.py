@@ -12,8 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL('SET CONSTRAINTS ALL IMMEDIATE',
-                      reverse_sql=migrations.RunSQL.noop),
         migrations.AlterField(
             model_name='feeditem',
             name='author',
@@ -34,6 +32,4 @@ class Migration(migrations.Migration):
             name='title',
             field=models.CharField(max_length=1000),
         ),
-        migrations.RunSQL(migrations.RunSQL.noop,
-                      reverse_sql='SET CONSTRAINTS ALL IMMEDIATE')
     ]

@@ -1,1 +1,1 @@
-web: gunicorn spectrum_backend.wsgi --timeout 240
+web: gunicorn spectrum_backend.wsgi

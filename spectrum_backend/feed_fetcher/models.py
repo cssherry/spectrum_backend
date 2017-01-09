@@ -67,15 +67,15 @@ class Feed(models.Model):
 class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
   feed = models.ForeignKey('Feed')
   title = models.CharField(max_length=500)
-  author = models.CharField(max_length=500, default="")
+  author = models.CharField(max_length=500, default="", null=True)
   summary = models.CharField(max_length=500, default="") # 1-2 lines from RSS feed description
-  description = models.CharField(max_length=500, default="") # 8-10 sentences from RSS feed or scraper
+  description = models.CharField(max_length=500, default="", null=True) # 8-10 sentences from RSS feed or scraper
   content = models.TextField(default="") # content of article, pulled either from RSS feed or scraping
   raw_description = models.TextField(default="") # raw description from RSS feed
   raw_content = models.TextField(default="") # raw contents of web scrape
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=500, unique=True)
-  image_url = models.CharField(max_length=500, default="")
+  image_url = models.CharField(max_length=500, default="", null=True)
   topics = models.ManyToManyField('Topic')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)

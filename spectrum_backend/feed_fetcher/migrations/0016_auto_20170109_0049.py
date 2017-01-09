@@ -13,6 +13,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+
+        migrations.RunSQL('SET CONSTRAINTS ALL IMMEDIATE',
+                      reverse_sql=migrations.RunSQL.noop),
         migrations.AddField(
             model_name='association',
             name='created_at',
@@ -131,4 +134,6 @@ class Migration(migrations.Migration):
             name='summary',
             field=models.CharField(default='', max_length=500),
         ),
+        migrations.RunSQL(migrations.RunSQL.noop,
+                      reverse_sql='SET CONSTRAINTS ALL IMMEDIATE')
     ]

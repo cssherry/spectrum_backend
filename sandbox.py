@@ -6,7 +6,7 @@ from django.core import serializers
 from datetime import datetime, timedelta
 import pprint
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
-# from spectrum_backend.feed_fetcher.management.commands._article_crawler import ArticleCrawler
+from spectrum_backend.feed_fetcher.management.commands._article_crawler import ArticleCrawler
 
 def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False):
   """ Returns articles grouped by publication. See __return_item for specific fields
@@ -66,6 +66,20 @@ def delete_last_fetch():
 def articles_by_publication_date():
   """ Returns all articles sorted by publication date, most recent first"""
   return [__return_item(feed_item) for feed_item in FeedItem.objects.all()]
+
+def scraper_test_method():
+  feed_items = []
+  for publication in Publication.objects.all():
+    if publication.html_content_tag != "":
+      number = 0
+      print("Processing %s, %s items" % (publication.name, len(publication.feed_items())))
+      for feed_item in publication.feed_items()[0:1]:
+        number += 1
+        print("Processing %s/%s" % (number, 1))
+        ArticleCrawler().start_requests(feed_item.url, publication.html_content_tag, feed_item)
+        feed_items.append(feed_item)
+
+  return feed_items
 
 def pp(object):
   """ Pretty prints an object or set of objects"""

@@ -34,11 +34,21 @@ $ source ~/.bash_profile
 ```
 
 Set up working environment:
+
+(DEFAULT)
 ```
-mkvirtualenv spectrum_backend
+mkvirtualenv -p python3 spectrum_backend
 add2virtualenv .
+workon spectrum_backend
 pip install -r requirements.txt
 ```
+(ALTERNATIVE IF YOU USE ANACONDA - Anaconda doesn't play nicely with virtualenv)
+```
+conda create -n spectrum_backend python=3.5
+source activate spectrum_backend
+pip install -r requirements.txt
+```
+
 Set up databases:
 ```
 python manage.py migrate
@@ -92,6 +102,17 @@ Install new packages as needed:
 ```
 pip install -r requirements.txt
 ```
+
+Freeze packages (if you added a new package into the virtual env):
+Virtualenv:
+```
+pip freeze > requirements.txt
+```
+Anaconda:
+```
+conda env export -n spectrum_backend -f requirements.txt
+```
+
 
 Please build your features on feature branches, e.g. `feature/new_bias_algorithm`. Then, push your feature branch `git push origin feature/new_bias_algorithm` and create a pull request on the GitHub repo. Your PR will be reviewed/merged from there.
 

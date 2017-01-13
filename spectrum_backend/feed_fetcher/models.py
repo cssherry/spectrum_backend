@@ -12,7 +12,7 @@ class Publication(models.Model):
   name = models.CharField(max_length=500, unique=True)
   base_url = models.CharField(max_length=500, unique=True)
   bias = models.CharField(max_length=2, choices=BIASES)
-  html_content_tag = models.CharField(max_length=500)
+  html_content_tag = models.CharField(max_length=500, default="")
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 

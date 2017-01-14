@@ -14,7 +14,6 @@ Also add the Heroku remote:
 git remote add heroku https://git.heroku.com/spectrum-backend.git
 ```
 
-
 ## Environment set-up (DEFAULT IF YOU AREN'T USING PYTHON THROUGH ANACONDA)
 If you don't have it installed already, install Python 3 and pip.
 
@@ -52,33 +51,43 @@ pip install -r requirements.txt
 
 ## Database set-up
 
+We are using Postgres for our local DB and remote DB.
+
+Set up Postgres role:
+```
+brew install postgresql
+brew services start postgresql
+psql
+create role spectrum with createdb login password 'seetheotherside';
+create database spectrum_backend;
+```
+
 Migrate and create database:
 ```
 python manage.py migrate
 ```
 
-This will create and migrate your database. We use a sqlite database locally. If you need to perform a potentially destructive action while developing, you can just rename/copy the db to back it up and restore it if the action fails.
+We also develop using the remote data, so you'll need to get into the Heroku backend. Ask Jesse for access to Heroku provisioning if you don't have access already. Once you are set up:
 
-We also develop using the remote data, so you'll need to get into the Heroku backend. Create a superuser role on the backend. Ask Jesse for access to Heroku provisioning if you don't have access already.
+```
+heroku pg:backups:capture
+heroku pg:backups:download
+```
+
+You'll have a file called "latest.dump" in your spectrum_backend folder. Import this into your local DB with:
+
+```
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U spectrum -d spectrum_backend latest.dump
+```
+
+Create super user roles (only necessary if you need to edit admin records):
+
 ```
 heroku run python manage.py createsuperuser
 python manage.py createsuperuser
 
 ```
 You can then log in at http://spectrum-backend.herokuapp.com/admin.
-
-## Seeding data from backend to local
-- Go to spectrum-backend.herokuapp.com. Make sure to set up an admin login first (heroku run python manage.py createsuperuser)
-
-- Go to each of the models:
-![image](https://cloud.githubusercontent.com/assets/4327877/21754671/c16b4200-d5b9-11e6-8674-200eeee4d972.png)
-
-- In the top right corner, click 'Export'. Export as CSV. Repeat for the other models.
-![image](https://cloud.githubusercontent.com/assets/4327877/21754682/dfd9b6cc-d5b9-11e6-8e29-32aef1a1d488.png)
-
-- Run your Python server (python manage.py runserver) after creating a superuser with the superuser command above. 
-
-- Go to 127.0.0.1/admin and go to the Import page on each of the models (probably best to do it in the order Publications, Feeds, Feed items, then Tags). Import the CSVs you exported for each model.
 
 ## Ongoing development
 

@@ -7,27 +7,27 @@ from datetime import datetime, timedelta
 import pprint
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
 
-def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False):
+def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False, include_empty = False):
   """ Returns articles grouped by publication. See __return_item for specific fields
     `include_extra_metadata`: includes non-content fields like Author and image URL
     `include_debug`: includes raw content/description fields for parsing debugging
     `include_ignored`: includes feeds with non-supported feed content (e.g. business feeds)
-
+    `include_empty`: includes feeds with empty content (e.g. podcast articles, items that were unsuccessfully pulled)
   """
   pub_hash = {}
   for publication in Publication.objects.all():
-    pub_hash[publication.name] = [__return_item(feed_item, include_extra_metadata, include_debug) for feed_item in publication.feed_items(include_ignored)[0:limit]]
+    pub_hash[publication.name] = [__return_item(feed_item, include_extra_metadata, include_debug) for feed_item in publication.feed_items(include_ignored, include_empty)[0:limit]]
 
   return pub_hash
 
-def articles_by_feed(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False):
+def articles_by_feed(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False, include_empty = False):
   """ Returns articles grouped by publication and feed
     *Parameters are the same as articles_by_publication
   """
   feed_hash = {}
   for feed in Feed.all(include_ignored):
     name = "%s - %s" % (feed.publication.name, feed.category)
-    feed_hash[name] = [__return_item(feed_item, include_extra_metadata, include_debug) for feed_item in feed.feeditem_set.all()[0:limit]]
+    feed_hash[name] = [__return_item(feed_item, include_extra_metadata, include_debug) for feed_item in feed.feed_items(include_empty)[0:limit]]
 
   return feed_hash
 
@@ -72,25 +72,26 @@ def pp(object):
 
 def __return_item(item, include_extra_metadata, include_debug):
   base_object = {
-    "      publication_name": item.publication_name(),
-    "     feed_category": item.feed_category(),
-    "    title": item.title,
-    "   summary": item.summary,
-    "  description": item.description,
-    " url": item.url,
-    " content": item.content
+    "1. publication_name": item.publication_name(),
+    "2. publication_bias": item.publication_bias(),
+    "3. feed_category": item.feed_category(),
+    "4. title": item.title,
+    "5. summary": item.summary,
+    "6. description": item.description,
+    "7. content": item.content,
+    "8. url": item.url,
   }
   rest_of_object = {
-    "author": item.author,
-    "image_url": item.image_url,
-    "publication_bias": item.publication_bias(),
-    "publication_date": item.publication_date,
-    "publication_date_friendly": item.friendly_publication_date(),
-    "tags": item.tags(),
+    "9. author": item.author,
+    "10. image_url": item.image_url,
+    "11. publication_date": item.publication_date,
+    "12. publication_date_friendly": item.friendly_publication_date(),
+    "13. tags": item.tags(),
   }
 
   debug = {
-    "  description (raw)": item.raw_description,
+    "description (raw)": item.raw_description,
+    "content (raw)": item.raw_content,
   }
   if include_extra_metadata:
     base_object.update(rest_of_object)

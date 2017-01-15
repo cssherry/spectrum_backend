@@ -34,18 +34,18 @@ class FeedItemProcessor:
     self.feed_item.summary = " ".join(description_sentences[0:self.SUMMARY_MAX_SENTENCES])
 
     if len(description_sentences) > self.SUMMARY_MAX_SENTENCES:
-      self.feed_item.description = sentence_delimiter.join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
+      self.feed_item.description = " ".join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
 
     if len(description_sentences) > self.DESCRIPTION_MAX_SENTENCES:
-      self.feed_item.content = sentence_delimiter.join(description_sentences)
+      self.feed_item.content = " ".join(description_sentences)
 
-    if self.feed_item.raw_content:
+    if self.feed_item.raw_content != "":
       content_text = HTMLParser().pull_content_from_html(self.feed_item.raw_content)
-      self.content = content_text
+      self.feed_item.content = content_text
       content_sentences = sent_tokenize(content_text)
 
-      if self.feed_item.description == "":
-        self.feed_item.description = sentence_delimiter.join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
+      if self.feed_item.description == "" or len(description_sentences) < self.DESCRIPTION_MAX_SENTENCES:
+        self.feed_item.description = " ".join(content_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
 
   def __process_author(self):
     pass

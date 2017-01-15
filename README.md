@@ -62,7 +62,7 @@ create role spectrum with createdb login password 'seetheotherside';
 create database spectrum_backend;
 ```
 
-Migrate and create database:
+Exit out of psql, then migrate and create database:
 ```
 python manage.py migrate
 ```
@@ -79,8 +79,10 @@ You'll have a file called "latest.dump" in your spectrum_backend folder. Import 
 ```
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U spectrum -d spectrum_backend latest.dump
 ```
+Delete the latest.dump file with `rm latest.dump`.
 
-Create super user roles (only necessary if you need to edit admin records):
+
+## Create super user roles (only necessary if you need to edit admin records):
 
 ```
 heroku run python manage.py createsuperuser

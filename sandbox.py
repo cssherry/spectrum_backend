@@ -83,10 +83,10 @@ def __return_item(item, include_extra_metadata, include_debug):
   }
   rest_of_object = {
     "9. author": item.author,
-    "10. image_url": item.image_url,
-    "11. publication_date": item.publication_date,
-    "12. publication_date_friendly": item.friendly_publication_date(),
-    "13. tags": item.tags(),
+    "90. image_url": item.image_url,
+    "91. publication_date": item.publication_date,
+    "92. publication_date_friendly": item.friendly_publication_date(),
+    "93. tags": item.tags(),
   }
 
   debug = {

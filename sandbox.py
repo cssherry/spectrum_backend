@@ -5,6 +5,7 @@ from spectrum_backend.feed_fetcher.models import Tag
 from django.core import serializers
 from datetime import datetime, timedelta
 import pprint
+import json
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
 
 def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False, include_empty = False):
@@ -34,6 +35,21 @@ def articles_by_feed(limit = 5, include_extra_metadata = True, include_debug = F
 def one_of_each():
   """ Returns one article example from each feed. My favorite debugging method"""
   return articles_by_feed(limit = 1, include_extra_metadata = False)
+
+def download_bias_json():
+  bias_hash = {"L": [], "C": [], "R": []}
+  for feed_item in FeedItem.objects.all():
+    bias = feed_item.feed.publication.bias
+    item = __return_item(feed_item, include_extra_metadata=True, include_debug=False)
+    if bias == "L" or bias == "LC":
+      bias_hash["L"].append(item)
+    elif bias == "C":
+      bias_hash["C"].append(item)
+    else:
+      bias_hash["R"].append(item)
+
+  with open('data.json', 'w') as fp:
+    json.dump(bias_hash, fp)
 
 def to_json(cls):
   """ Returns all fields for all objects of a class
@@ -84,9 +100,8 @@ def __return_item(item, include_extra_metadata, include_debug):
   rest_of_object = {
     "9. author": item.author,
     "90. image_url": item.image_url,
-    "91. publication_date": item.publication_date,
-    "92. publication_date_friendly": item.friendly_publication_date(),
-    "93. tags": item.tags(),
+    "91. publication_date": item.friendly_publication_date(),
+    "92. tags": list(item.tags()),
   }
 
   debug = {

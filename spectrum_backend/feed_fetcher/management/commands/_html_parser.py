@@ -7,7 +7,11 @@ class HTMLParser:
     return self.__content_with_non_article_text_removed(parsed_html)
 
   def pull_text_from_html(self, html):
-    raw_string = BeautifulSoup(html, 'html.parser').get_text(separator=u' ')
+    parser = BeautifulSoup(html, 'html.parser')
+    for script in parser(["script", "style"]):
+      script.extract()
+      
+    raw_string = parser.get_text(separator=u' ')
     return raw_string.strip().replace(u'\xa0', u' ')
 
   def __content_with_non_article_text_removed(self, content):

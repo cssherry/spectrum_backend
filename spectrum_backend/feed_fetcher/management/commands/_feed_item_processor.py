@@ -4,6 +4,7 @@ from django.utils import timezone
 from ._html_parser import HTMLParser
 from ._url_parser import URLParser
 from nltk.tokenize import sent_tokenize
+import nltk
 nltk.download('punkt')
 
 class FeedItemProcessor:

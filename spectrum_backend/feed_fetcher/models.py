@@ -12,7 +12,7 @@ class Publication(models.Model):
   name = models.CharField(max_length=500, unique=True)
   base_url = models.CharField(max_length=500, unique=True)
   bias = models.CharField(max_length=2, choices=BIASES)
-  html_content_tag = models.CharField(max_length=500)
+  html_content_tag = models.CharField(max_length=500, default="")
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,9 +33,9 @@ class Publication(models.Model):
     else:
       return self.feed_set.filter(should_ignore=0)
 
-  def feed_items(self, include_ignored=True):
+  def feed_items(self, include_ignored=True, include_empty=True):
     feed_items = []
-    [feed_items.extend(feed.feeditem_set.all()) for feed in Feed.all(include_ignored).filter(publication=self)]
+    [feed_items.extend(feed.feed_items(include_empty)) for feed in Feed.all(include_ignored).filter(publication=self)]
     return feed_items
 
 class Feed(models.Model):
@@ -52,6 +52,12 @@ class Feed(models.Model):
       return cls.objects.all()
     else:
       return cls.objects.filter(should_ignore=0)
+
+  def feed_items(self, include_empty):
+    if include_empty:
+      return self.feeditem_set.all()
+    else:
+      return self.feeditem_set.exclude(summary="")
 
   def __str__(self):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)

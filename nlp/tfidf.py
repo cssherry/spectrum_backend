@@ -26,7 +26,8 @@ import unicodedata
 
 import nltk
 import numpy as np
-
+from spectrum_backend.feed_fetcher.models import FeedItem
+from spectrum_backend.feed_fetcher.models import Association
 
 def remove_diacritic(tokens):
     for i in range(len(tokens)):
@@ -252,6 +253,8 @@ tuples: (name, score
 
 
 def main():
+    # db_docs = FeedItem.items_eligible_for_similarity_score() # All feed_items with content field available
+
     bias_dic = read_json('data.json')
     print("number of C's: {}".format(len(bias_dic["C"])))
     print("number of L's: {}".format(len(bias_dic["L"])))
@@ -306,6 +309,28 @@ def main():
     elapsed_time = time.time() - t
     print("total elapsed_time = {}".format(elapsed_time))
 
+ # FINAL STEP (works for new or existing association): Association.objects.update_or_create(base_feed_item=main_doc, associated_feed_item=docs_we_found_similiarities_for, defaults={'similarity_score': new_or_updated_similarity_score})
+
+
+"""
+Mapping of JSON fields to db fields (can be called directly on feed_item)
+  base_object = {
+    "publication_name": item.publication_name(),
+    "publication_bias": item.publication_bias(),
+    "feed_category": item.feed_category(),
+    "title": item.title,
+    "summary": item.summary,
+    "description": item.description,
+    "content": item.content,
+    "url": item.url,
+  }
+  rest_of_object = {
+    "author": item.author,
+    "image_url": item.image_url,
+    "publication_date": item.friendly_publication_date(),
+    "tags": list(item.tags()),
+  }
+"""
 
 if __name__ == "__main__":
     main()

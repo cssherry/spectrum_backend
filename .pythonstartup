@@ -1,4 +1,5 @@
 from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed, Topic, TopicWord, Association
 import sandbox
-import pprint
-pp = pprint.PrettyPrinter(indent=2, width=200)
+from sandbox import pp, one_of_each
+from sandbox import articles_by_publication as samples
+from sandbox import articles_by_feed as feed_samples

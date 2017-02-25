@@ -60,6 +60,8 @@ tags
 *.sql
 *.sqlite
 *.sqlite3
+db.sqlite3 copy
+*.dump
 
 # OS generated files #
 ######################

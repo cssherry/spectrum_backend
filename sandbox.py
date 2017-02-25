@@ -39,6 +39,9 @@ def one_of_each():
   """ Returns one article example from each feed. My favorite debugging method"""
   return articles_by_feed(limit = 1, include_extra_metadata = False)
 
+def articles_with_content():
+  return FeedItem.objects.exclude(content__isnull=True).exclude(content__exact='')
+
 def download_bias_json():
   """ Downloads bias JSON by bias """
   bias_hash = {"L": [], "C": [], "R": []}

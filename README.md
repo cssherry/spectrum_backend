@@ -148,3 +148,9 @@ pip freeze > requirements.txt
 ```
 
 Please build your features on feature branches, e.g. `feature/new_bias_algorithm`. Then, push your feature branch `git push origin feature/new_bias_algorithm` and create a pull request on the GitHub repo. Your PR will be reviewed/merged from there.
+
+## Article fetching tasks and other jobs
+
+The following are the commands for the backend Python jobs:
+
+- `python manage.py rss_fetcher` - 

@@ -5,6 +5,9 @@ from spectrum_backend.feed_fetcher.models import Tag
 from ._rss_entry_wrapper import RSSEntryWrapper
 from ._feed_item_processor import FeedItemProcessor
 import feedparser
+import scrapy
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
@@ -14,6 +17,10 @@ class Command(BaseCommand):
 
       for entry in feed_result.entries:
         self.__parse_entry(feed, entry)
+
+    process = CrawlerProcess(get_project_settings())
+    process.crawl('articles')
+    process.start()
 
   def __parse_entry(self, feed, entry):
     entry_wrapper = RSSEntryWrapper(feed, entry)

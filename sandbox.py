@@ -6,6 +6,9 @@ from django.core import serializers
 from datetime import datetime, timedelta
 import pprint
 import json
+import os
+import codecs
+import sys
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
 
 def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False, include_empty = False):
@@ -37,8 +40,9 @@ def one_of_each():
   return articles_by_feed(limit = 1, include_extra_metadata = False)
 
 def download_bias_json():
+  """ Downloads bias JSON by bias """
   bias_hash = {"L": [], "C": [], "R": []}
-  for feed_item in FeedItem.objects.all():
+  for feed_item in FeedItem.objects.exclude(content__isnull=True).exclude(content__exact='')[:500]:
     bias = feed_item.feed.publication.bias
     item = __return_item(feed_item, include_extra_metadata=True, include_debug=False)
     if bias == "L" or bias == "LC":
@@ -48,8 +52,13 @@ def download_bias_json():
     else:
       bias_hash["R"].append(item)
 
-  with open('data.json', 'w') as fp:
-    json.dump(bias_hash, fp)
+  fileSystemEncoding = sys.getfilesystemencoding()                                                                                                           
+  OUTPUT_FILE = os.path.expanduser(u'./' + 'data.json')                                                                                     
+  with codecs.open(OUTPUT_FILE,
+                   encoding=fileSystemEncoding,
+                   mode="w") as f:
+    j = json.dumps(bias_hash, indent=1, sort_keys=True, separators=(',', ': '))
+    f.write(j)
 
 def to_json(cls):
   """ Returns all fields for all objects of a class
@@ -88,20 +97,20 @@ def pp(object):
 
 def __return_item(item, include_extra_metadata, include_debug):
   base_object = {
-    "1. publication_name": item.publication_name(),
-    "2. publication_bias": item.publication_bias(),
-    "3. feed_category": item.feed_category(),
-    "4. title": item.title,
-    "5. summary": item.summary,
-    "6. description": item.description,
-    "7. content": item.content,
-    "8. url": item.url,
+    "publication_name": item.publication_name(),
+    "publication_bias": item.publication_bias(),
+    "feed_category": item.feed_category(),
+    "title": item.title,
+    "summary": item.summary,
+    "description": item.description,
+    "content": item.content,
+    "url": item.url,
   }
   rest_of_object = {
-    "9. author": item.author,
-    "90. image_url": item.image_url,
-    "91. publication_date": item.friendly_publication_date(),
-    "92. tags": list(item.tags()),
+    "author": item.author,
+    "image_url": item.image_url,
+    "publication_date": item.friendly_publication_date(),
+    "tags": list(item.tags()),
   }
 
   debug = {

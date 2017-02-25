@@ -153,4 +153,6 @@ Please build your features on feature branches, e.g. `feature/new_bias_algorithm
 
 The following are the commands for the backend Python jobs:
 
-- `python manage.py rss_fetcher` - 
+- `python manage.py rss_fetcher` - This job runs every 10 minutes on Heroku to fetch the articles from the RSS feeds with records in the Feed model. Also crawls the articles.
+- `scrapy crawl articles` - This is an ad-hoc job to crawl articles. Automatically runs from the rss_fetcher so generally not needed.
+- `python manage.py clean_entries` - This is an ad-hoc job to clean the FeedItem entries based on changes to the data model or processing. The entry processing happens automatically with rss_fetcher so this is only necessary to clean old articles.

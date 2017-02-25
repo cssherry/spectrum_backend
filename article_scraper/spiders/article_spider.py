@@ -24,13 +24,14 @@ class ArticleSpider(scrapy.Spider):
     parsed_content = BeautifulSoup(feed_item.raw_content, 'html.parser').get_text(separator=u' ')
     feed_item.content = parsed_content.strip().replace(u'\xa0', u' ')
     self.log("%s %s" % (feed_item.id, feed_item.feed.publication))
+
     feed_item.save()
     yield None
 
   def __feed_items(self):
     urls = []
     for publication in Publication.objects.all():
-      if publication.html_content_tag != "":
+      if publication.html_content_tag != "" and not publication.skip_scraping:
         print("Processing %s, %s items" % (publication.name, len(publication.feed_items())))
         for feed_item in publication.feed_items():
           if feed_item.raw_content == "":

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timedelta
 import nltk
 
 class Publication(models.Model):
@@ -13,6 +14,7 @@ class Publication(models.Model):
   base_url = models.CharField(max_length=500, unique=True)
   bias = models.CharField(max_length=2, choices=BIASES)
   html_content_tag = models.CharField(max_length=500, default="")
+  skip_scraping = models.BooleanField(default=0)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,11 +55,21 @@ class Feed(models.Model):
     else:
       return cls.objects.filter(should_ignore=0)
 
-  def feed_items(self, include_empty):
+  def feed_items(self, include_empty = True):
     if include_empty:
       return self.feeditem_set.all()
     else:
       return self.feeditem_set.exclude(summary="")
+
+  def display_empty_content_report(self):
+    empty_feed_items = self.feed_items().filter(content='')
+    percentage = empty_feed_items.count() / (self.feed_items().count() or 1)
+    if percentage > 0.5:
+      broken_string = "BROKEN"
+    else:
+      broken_string = ""
+
+    print("For %s (%s) there are %s empty articles out of %s %s" % (self.publication.name, self.category, empty_feed_items.count(), self.feed_items().count(), broken_string))
 
   def __str__(self):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
@@ -94,6 +106,12 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
 
   def publication_bias(self):
     return self.feed.publication.bias
+
+  def content_missing(self):
+    if created_at > datetime.now() - timedelta(days=2):
+      return content == ""
+    else:
+      return False
 
   def feed_category(self):
     return self.feed.category

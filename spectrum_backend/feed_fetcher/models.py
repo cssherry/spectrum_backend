@@ -98,6 +98,10 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
+  @classmethod
+  def items_eligible_for_similarity_score(cls):
+    return cls.objects.exclude(content__exact="")
+
   def tags(self):
     return set([tag.name for tag in self.tag_set.all()])
 
@@ -107,12 +111,12 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   def publication_bias(self):
     return self.feed.publication.bias
 
-  def created_recently(self):
-    return self.created_at > timezone.now() - timedelta(days=2)
+  def not_created_recently(self):
+    return self.created_at < timezone.now() - timedelta(days=2)
 
-  def content_missing(self):
-    if self.created_recently():
-      return content == ""
+  def content_missing_from_scrape(self):
+    if self.not_created_recently():
+      return self.content == ""
     else:
       return False
 
@@ -152,10 +156,10 @@ class Tag(models.Model):
 class Association(models.Model):
   base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
   associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
-
+  similarity_score = models.FloatField()
 
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title)
+    return u'*BASE* %s *ASSOCIATION* %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, self.similarity_score)

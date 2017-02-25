@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
+from django.utils import timezone
 import nltk
 
 class Publication(models.Model):
@@ -107,8 +108,11 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   def publication_bias(self):
     return self.feed.publication.bias
 
+  def created_recently(self):
+    return self.created_at > timezone.now() - timedelta(days=2)
+
   def content_missing(self):
-    if created_at > datetime.now() - timedelta(days=2):
+    if self.created_recently():
       return content == ""
     else:
       return False

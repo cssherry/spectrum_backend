@@ -3,6 +3,7 @@ from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Publication
 import re
 from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"
@@ -34,7 +35,8 @@ class ArticleSpider(scrapy.Spider):
       if publication.html_content_tag != "" and not publication.skip_scraping:
         print("Processing %s, %s items" % (publication.name, len(publication.feed_items())))
         for feed_item in publication.feed_items():
-          if feed_item.raw_content == "":
+          was_created_recently = feed_item.created_recently()
+          if feed_item.raw_content == "" and was_created_recently:
             urls.append(feed_item)
 
     return urls

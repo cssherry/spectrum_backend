@@ -42,6 +42,10 @@ def one_of_each():
 def articles_with_content():
   return FeedItem.objects.exclude(content__isnull=True).exclude(content__exact='')
 
+def empty_content_report():
+  for feed in Feed.objects.all():
+    feed.display_empty_content_report()
+
 def download_bias_json():
   """ Downloads bias JSON by bias """
   bias_hash = {"L": [], "C": [], "R": []}

@@ -11,12 +11,12 @@ from scrapy.utils.project import get_project_settings
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    for feed in Feed.objects.all():
-      feed_result = feedparser.parse(feed.rss_url)
-      self.stdout.write(self.style.SUCCESS(self.__parse_message(feed)))
+    # for feed in Feed.objects.all():
+    #   feed_result = feedparser.parse(feed.rss_url)
+    #   self.stdout.write(self.style.SUCCESS(self.__parse_message(feed)))
 
-      for entry in feed_result.entries:
-        self.__parse_entry(feed, entry)
+    #   for entry in feed_result.entries:
+    #     self.__parse_entry(feed, entry)
 
     process = CrawlerProcess(get_project_settings())
     process.crawl('articles')

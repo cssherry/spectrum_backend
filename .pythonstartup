@@ -1,4 +1,4 @@
-from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed, Topic, TopicWord, Association
+from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed
 import sandbox
 from sandbox import pp, one_of_each
 from sandbox import articles_by_publication as samples

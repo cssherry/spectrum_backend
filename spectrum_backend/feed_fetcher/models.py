@@ -76,7 +76,7 @@ class Feed(models.Model):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
 
   class Meta:
-    ordering = ['category'] # any way to do this by publication name + category?
+    ordering = ['category']
 
   def tags(self):
     tags = set()
@@ -95,7 +95,6 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=1000, unique=True)
   image_url = models.CharField(max_length=1000, default="")
-  topics = models.ManyToManyField('Topic')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -135,29 +134,6 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   class Meta:
     ordering = ['-publication_date']
 
-  def identify_topics(self):
-    for topic in Topic.objects.all():
-      for topic_word in topic.topicword_set.all():
-        in_title = self.title.lower().find(topic_word.stem.lower()) != -1
-        in_description = self.description and self.description.find(topic_word.stem) != -1
-        if in_title or in_description:
-          self.topics.add(topic)
-          break
-
-  def identify_associations(self):
-    print("TITLE: %s" % self.title)
-    for topic in self.topics.all():
-      print("TOPIC: %s" % topic)
-      for feed_item in topic.feeditem_set.all():
-        if feed_item.id != self.id:
-          a1 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)[0]
-          a2 = Association.objects.get_or_create(base_feed_item=self, associated_feed_item=feed_item)[0]
-          a1.topics.add(topic)
-          a2.topics.add(topic)
-
-  def best_associations(self):
-    return sorted((self.base_associations.all()), key=lambda association: len(association.topics.all()), reverse=True)
-
 class Tag(models.Model):
   name = models.CharField(max_length=500)
   feed_item = models.ForeignKey('FeedItem')
@@ -173,41 +149,13 @@ class Tag(models.Model):
   def publication_name(self):
     return self.feed_item.feed.publication.name
 
-class Topic(models.Model): # last seen?
-  base_tag_string = models.CharField(max_length=500)
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
-
-  def __str__(self):
-    words = "; ".join([topic.stem for topic in self.topicword_set.all()])
-    return u'%s (%s)' % (words, self.base_tag_string)
-
-class TopicWord(models.Model):
-  TYPES = (
-    ('CD', 'numeral, cardinal'),
-    ('FW', 'foreign word'),
-    ('LOC', 'proper noun, location'),
-    ('NAME', 'proper noun, person\'s name'),
-    ('NOUN', 'common noun'),
-    ('ORG', 'proper noun, organization\'s name'),
-    ('VERB', 'verb'),
-    ('XX', 'uncategorized')
-  )
-  stem = models.CharField(max_length=500, unique=True) # uniqueness OK here? What if stems work for other topic words?
-  topic = models.ForeignKey('Topic')
-  pos_type = models.CharField(max_length=5, choices=TYPES)
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
-
-  def __str__(self):
-    return u'%s (%s)' % (self.stem, self.pos_type)
-
 class Association(models.Model):
   base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
   associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
-  topics = models.ManyToManyField('Topic')
+
+
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, len(self.topics.all()))
+    return u'%s = %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title)

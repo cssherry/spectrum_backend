@@ -2,6 +2,7 @@ from spectrum_backend.feed_fetcher.models import Publication
 from spectrum_backend.feed_fetcher.models import Feed
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
+from spectrum_backend.feed_fetcher.models import Association
 from django.core import serializers
 from datetime import datetime, timedelta
 import random
@@ -73,7 +74,7 @@ def seed_associations():
   other_items = FeedItem.objects.all()[11:21]
   for item in items:
     for other_item in other_items:
-      Association.create(base_feed_item=item, associated_feed_item=other_item, similarity_score=random.uniform(0, 1))
+      Association.objects.create(base_feed_item=item, associated_feed_item=other_item, similarity_score=random.uniform(0, 1))
 
 
 def to_json(cls):

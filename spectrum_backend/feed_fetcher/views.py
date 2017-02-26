@@ -7,13 +7,14 @@ from urllib.parse import urlparse
 
 # Test API
 def test_api(request=None):
-  first_articles = get_articles(FeedItem.objects.all()[:3])
+  first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
   return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-  current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))
+  current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0]
+  top_associations = current_article.top_associations(count=3)
 
-  return HttpResponse(json.dumps(current_article.top_associations(count=3)), content_type='application/json')
+  return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
   p = urlparse(url_string)

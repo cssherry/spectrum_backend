@@ -76,7 +76,7 @@ class Feed(models.Model):
     return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
 
   class Meta:
-    ordering = ['category']
+    ordering = ['publication__name']
 
   def tags(self):
     tags = set()
@@ -101,6 +101,13 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   @classmethod
   def items_eligible_for_similarity_score(cls):
     return cls.objects.exclude(content__exact="")
+
+  @classmethod
+  def get_fields(cls, list):
+    items = []
+    for item in list:
+      items.append(item.base_object())
+    return items
 
   def tags(self):
     return set([tag.name for tag in self.tag_set.all()])
@@ -132,28 +139,32 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   def friendly_publication_date(self):
     return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
-  def base_object(self):
-    return {
-      "publication_name": item.publication_name(),
-      "publication_bias": item.publication_bias(),
-      "feed_category": item.feed_category(),
-      "title": item.title,
-      "summary": item.summary,
-      "description": item.description,
-      "content": item.content,
-      "url": item.url,
-      "author": item.author,
-      "image_url": item.image_url,
-      "publication_date": item.friendly_publication_date(),
-      "tags": list(item.tags()),
+  def base_object(self, similarity_score=None):
+    base_object = {
+      "publication_name": self.publication_name(),
+      "publication_bias": self.publication_bias(),
+      "feed_category": self.feed_category(),
+      "title": self.title,
+      "summary": self.summary,
+      "description": self.description,
+      "content": self.content,
+      "url": self.url,
+      "author": self.author,
+      "image_url": self.image_url,
+      "publication_date": self.friendly_publication_date(),
+      "tags": list(self.tags()),
     }
+    if similarity_score:
+      base_object["similarity_score"] = similarity_score
+
+    return base_object
 
   def top_associations(self, count=3):
     associated_articles = []
     for association in self.base_associations.all():
-      associated_articles.extend(association.associated_feed_item.base_object())
+      associated_articles.append(association.associated_feed_item.base_object(association.similarity_score))
 
-    return associated_articles
+    return associated_articles[:3]
 
   def __str__(self):
     return u'%s (%s - %s) %s (%s) %s' % (self.title, self.publication_name(), self.feed_category(), self.short_description(), self.url, self.friendly_publication_date())
@@ -188,4 +199,4 @@ class Association(models.Model):
     return u'*BASE* %s *ASSOCIATION* %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, self.similarity_score)
 
   class Meta:
-    ordering = ['similarity_score']
+    ordering = ['-similarity_score']

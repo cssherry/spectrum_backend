@@ -132,6 +132,29 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   def friendly_publication_date(self):
     return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
+  def base_object(self):
+    return {
+      "publication_name": item.publication_name(),
+      "publication_bias": item.publication_bias(),
+      "feed_category": item.feed_category(),
+      "title": item.title,
+      "summary": item.summary,
+      "description": item.description,
+      "content": item.content,
+      "url": item.url,
+      "author": item.author,
+      "image_url": item.image_url,
+      "publication_date": item.friendly_publication_date(),
+      "tags": list(item.tags()),
+    }
+
+  def top_associations(self, count=3):
+    associated_articles = []
+    for association in self.base_associations.all():
+      associated_articles.extend(association.associated_feed_item.base_object())
+
+    return associated_articles
+
   def __str__(self):
     return u'%s (%s - %s) %s (%s) %s' % (self.title, self.publication_name(), self.feed_category(), self.short_description(), self.url, self.friendly_publication_date())
 
@@ -163,3 +186,6 @@ class Association(models.Model):
 
   def __str__(self):
     return u'*BASE* %s *ASSOCIATION* %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, self.similarity_score)
+
+  class Meta:
+    ordering = ['similarity_score']

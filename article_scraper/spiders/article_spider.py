@@ -35,7 +35,7 @@ class ArticleSpider(scrapy.Spider):
       if publication.html_content_tag != "" and not publication.skip_scraping:
         print("Processing %s, %s items" % (publication.name, len(publication.feed_items())))
         for feed_item in publication.feed_items():
-          was_created_recently = feed_item.created_recently()
+          was_created_recently = not feed_item.not_created_recently()
           if feed_item.raw_content == "" and was_created_recently:
             urls.append(feed_item)
 

@@ -23,7 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c#u+9)uv2ekd&4i0fdk70ibyqa10f*b!jmhy5t=a%%r+%vt_mq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+if os.environ.get('SPECTRUM_ENV') != 'production':
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '::1', 'spectrum-backend.herokuapp.com']
 

@@ -2,8 +2,10 @@ from spectrum_backend.feed_fetcher.models import Publication
 from spectrum_backend.feed_fetcher.models import Feed
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
+from spectrum_backend.feed_fetcher.models import Association
 from django.core import serializers
 from datetime import datetime, timedelta
+import random
 import pprint
 import json
 import os
@@ -67,6 +69,14 @@ def download_bias_json():
     j = json.dumps(bias_hash, indent=1, sort_keys=True, separators=(',', ': '))
     f.write(j)
 
+def seed_associations():
+  items = FeedItem.objects.all()[:10] # what is [::10]?
+  other_items = FeedItem.objects.all()[11:21]
+  for item in items:
+    for other_item in other_items:
+      Association.objects.create(base_feed_item=item, associated_feed_item=other_item, similarity_score=random.uniform(0, 1))
+
+
 def to_json(cls):
   """ Returns all fields for all objects of a class
     `cls`: The class you want to JSON 
@@ -103,29 +113,12 @@ def pp(object):
   return pprint.PrettyPrinter(indent=2, width=200).pprint(object)
 
 def __return_item(item, include_extra_metadata, include_debug):
-  base_object = {
-    "publication_name": item.publication_name(),
-    "publication_bias": item.publication_bias(),
-    "feed_category": item.feed_category(),
-    "title": item.title,
-    "summary": item.summary,
-    "description": item.description,
-    "content": item.content,
-    "url": item.url,
-  }
-  rest_of_object = {
-    "author": item.author,
-    "image_url": item.image_url,
-    "publication_date": item.friendly_publication_date(),
-    "tags": list(item.tags()),
-  }
+  base_object = item.base_object()
 
   debug = {
     "description (raw)": item.raw_description,
     "content (raw)": item.raw_content,
   }
-  if include_extra_metadata:
-    base_object.update(rest_of_object)
 
   if include_debug:
     base_object.update(debug) 

@@ -28,6 +28,11 @@ import nltk
 import numpy as np
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
+from django.core.management.base import BaseCommand, CommandError
+
+class Command(BaseCommand):
+  def handle(self, *args, **options):
+    main()
 
 def remove_diacritic(tokens):
     for i in range(len(tokens)):

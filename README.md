@@ -34,10 +34,12 @@ Finally, source your startup file so that these changes take effect immediately 
 $ source ~/.bash_profile
 ```
 
+Install requirements (need xcode toolbelt for psycopg2)
 ```
 mkvirtualenv -p python3 spectrum_backend
 add2virtualenv .
 workon spectrum_backend
+xcode-select --install
 pip install -r requirements.txt
 ```
 

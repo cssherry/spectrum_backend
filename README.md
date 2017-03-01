@@ -18,7 +18,7 @@ git remote add heroku https://git.heroku.com/spectrum-backend.git
 If you don't have it installed already, install Python 3 and pip.
 
 Set up virtualenv:
-```
+````
 pip install virtualenv
 pip install virtualenvwrapper
 ```
@@ -119,7 +119,7 @@ You can then log in at http://spectrum_backend.herokuapp.com/admin.
 - In the top right corner, click 'Export'. Export as CSV. Repeat for the other models.
 ![image](https://cloud.githubusercontent.com/assets/4327877/21754682/dfd9b6cc-d5b9-11e6-8e29-32aef1a1d488.png)
 
-- Run your Python server (heroku run manage.py runserver) after creating a superuser with the superuser command above. 
+- Run your Python server (heroku run manage.py runserver) after creating a superuser with the superuser command above.
 
 - Go to 127.0.0.1/admin and go to the Import page on each of the models (probably best to do it in the order Publications, Feeds, Feed items, then Tags). Import the CSVs you exported for each model.
 

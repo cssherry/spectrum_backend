@@ -112,19 +112,6 @@ python manage.py createsuperuser
 ```
 You can then log in at http://spectrum_backend.herokuapp.com/admin.
 
-## Seeding data from backend to local
-- Go to spectrum_backend.herokuapp.com. Make sure to set up an admin login first (heroku run manage.py createsuperuser)
-
-- Go to each of the models:
-![image](https://cloud.githubusercontent.com/assets/4327877/21754671/c16b4200-d5b9-11e6-8674-200eeee4d972.png)
-
-- In the top right corner, click 'Export'. Export as CSV. Repeat for the other models.
-![image](https://cloud.githubusercontent.com/assets/4327877/21754682/dfd9b6cc-d5b9-11e6-8e29-32aef1a1d488.png)
-
-- Run your Python server (heroku run manage.py runserver) after creating a superuser with the superuser command above.
-
-- Go to 127.0.0.1/admin and go to the Import page on each of the models (probably best to do it in the order Publications, Feeds, Feed items, then Tags). Import the CSVs you exported for each model.
-
 ## Ongoing development
 
 Resume work on spectrum in new BASH instance:

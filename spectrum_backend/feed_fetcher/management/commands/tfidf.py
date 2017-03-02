@@ -28,12 +28,14 @@ import nltk
 import numpy as np
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
-from spectrum_backend.feed_fetcher.models import FeedItemWordFrequency
+from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
 from django.core.management.base import BaseCommand, CommandError
+
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
     main()
+
 
 def remove_diacritic(tokens):
     for i in range(len(tokens)):
@@ -226,8 +228,10 @@ doc_list.  Need to then update the similarity scores
         # text = doc_dic["7. content"]
         text = title + text
         doc_frequency = calc_doc_frequency(text)
-        doc_dic["doc_frequency"] = doc_frequency
-        update_corpus_frequency(corpus_frequency, doc_dic["doc_frequency"])
+        doc_item.frequency_dictionary = doc_frequency
+        # doc_dic["doc_frequency"] = doc_frequency
+        # update_corpus_frequency(corpus_frequency, doc_dic["doc_frequency"])
+        update_corpus_frequency(corpus_frequency, doc_frequency)
         print(len(corpus_frequency))
         
     # now that updated, for each document, add in tfidf self score

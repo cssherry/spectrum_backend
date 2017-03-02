@@ -227,3 +227,13 @@ class Association(models.Model):
 
 class CorpusWordFrequency(models.Model):
     dictionary = JSONField()
+
+    @classmethod
+    def get_corpus_dictionary(cls):
+        return cls.objects.first() or cls.objects.create(dictionary={})
+
+    @classmethod
+    def set_corpus_dictionary(cls, dictionary):
+        corpus_dictionary = cls.get_corpus_dictionary()
+        corpus_dictionary.dictionary = dictionary
+        return corpus_dictionary.save()

@@ -20,10 +20,14 @@ def clean_url(url_string):
   p = urlparse(url_string)
   return p.hostname + p.path
 
-# def all_publications(request):
-#   publications = Publication.objects.all()
-#   publication_json = serializers.serialize('json', publications)
-#   return HttpResponse(publication_json, content_type='application/json')
+def all_publications(request):
+  publications = Publication.objects.all()
+  publication_json = json.loads(serializers.serialize('json', publications))
+  results = {
+    'publications': publication_json,
+    'media_bias': dict((k, v) for k, v in Publication.BIASES),
+  }
+  return HttpResponse(json.dumps(results), content_type='application/json')
 
 # # return first 100 articles
 # def return_recent_articles(request):

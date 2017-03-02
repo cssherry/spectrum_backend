@@ -128,11 +128,27 @@ def update_similarity_dict(doc_dict, name_of_other_doc, cosine_similarity):
         doc_dict[key][name_of_other_doc] = cosine_similarity
 
 
-def calc_cosine_similarity(doc_dict_1, doc_dict_2, corpus_frequency, n,
-                           prettyprint=False):
-    df1 = doc_dict_1["doc_frequency"]
-    df2 = doc_dict_2["doc_frequency"]
+def update_associations(doc_item_1, doc_item_2,
+                        cosine_similarity, threshold=0.4):
+    # for item 1
+    if cosine_similarity > threshold:
+        Association.base_feed_item = doc_item_1
+        Association.associated_feed_item = doc_item_2
+        Association.similarity_score = cosine_similarity
+        
+        Association.base_feed_item = doc_item_2
+        Association.associated_feed_item = doc_item_1
+        Association.similarity_score = cosine_similarity
 
+
+def calc_cosine_similarity(
+        frequency_1, frequency_2, self_score_1, self_score_2,
+        corpus_frequency, n):
+    df1 = frequency_1
+    df2 = frequency_2
+    tfidf_vec_length_1 = self_score_1
+    tfidf_vec_length_2 = self_score_2
+    
     common_words = set(list(df1.keys())) & set(list(df2.keys()))
     dot_product = 0
     for word in common_words:
@@ -140,32 +156,29 @@ def calc_cosine_similarity(doc_dict_1, doc_dict_2, corpus_frequency, n,
         tfidfw2 = calc_tfidf(word, df2, corpus_frequency, n)
         dot_product += tfidfw1 * tfidfw2
 
-    tfidf_vec_length_1 = doc_dict_1["tfidf_vec_length"]
-    tfidf_vec_length_2 = doc_dict_2["tfidf_vec_length"]
-
     if (tfidf_vec_length_1 > 0 and tfidf_vec_length_2 > 0):
         cosine_similarity = dot_product / (
             tfidf_vec_length_1 * tfidf_vec_length_2)
     else:
         cosine_similarity = -1
 
-    mashup_1 = get_pub_name_title_mashup(doc_dict_1)
-    mashup_2 = get_pub_name_title_mashup(doc_dict_2)
-    update_similarity_dict(doc_dict_1, mashup_2, cosine_similarity)
-    update_similarity_dict(doc_dict_2, mashup_1, cosine_similarity)
+    # mashup_1 = get_pub_name_title_mashup(doc_item_1)
+    # mashup_2 = get_pub_name_title_mashup(doc_item_2)
+    # update_similarity_dict(doc_item_1, mashup_2, cosine_similarity)
+    # update_similarity_dict(doc_item_2, mashup_1, cosine_similarity)
     
-    if prettyprint:
-        print("\n\nIntersecting : ")
-        print(doc_dict_1["4. title"])
-        print(doc_dict_2["4. title"])
-        print("doc 1 number of terms: {}".format(len(list(df1.keys()))))
-        print("doc 2 number of terms: {}".format(len(list(df2.keys()))))
-        print("number of common words = {}".format(len(common_words)))
-        # print(common_words)
-        print("dot product = {0:.2f}".format(dot_product))
-        print("tfidf_vec_length_1 = {0:.2f}".format(tfidf_vec_length_1))
-        print("tfidf_vec_length_2 = {0:.2f}".format(tfidf_vec_length_2))
-        print("cosine_similary = {0:.2f}".format(cosine_similarity))
+    # if prettyprint:
+    #     print("\n\nIntersecting : ")
+    #     print(doc_item_1["4. title"])
+    #     print(doc_item_2["4. title"])
+    #     print("doc 1 number of terms: {}".format(len(list(df1.keys()))))
+    #     print("doc 2 number of terms: {}".format(len(list(df2.keys()))))
+    #     print("number of common words = {}".format(len(common_words)))
+    #     # print(common_words)
+    #     print("dot product = {0:.2f}".format(dot_product))
+    #     print("tfidf_vec_length_1 = {0:.2f}".format(tfidf_vec_length_1))
+    #     print("tfidf_vec_length_2 = {0:.2f}".format(tfidf_vec_length_2))
+    #     print("cosine_similary = {0:.2f}".format(cosine_similarity))
 
     return cosine_similarity
 
@@ -185,14 +198,22 @@ FIRST. N is number of total documents in corpus.
 
     """
     for i in range(len(doc_list)):
-        doc_dict_1 = doc_list[i]
-        bias_1 = doc_dict_1["2. publication_bias"]
+        doc_item_1 = doc_list[i]
+        # bias_1 = doc_dict_1["2. publication_bias"]
+        bias_1 = doc_item_1.publication_bias()
+        frequency_1 = doc_item_1.frequency_dictionary()
+        self_score_1 = doc_item_1.self_score()
         for j in range(i, len(doc_list)):  # throws out self comp w/ bias check
-            doc_dict_2 = doc_list[j]
-            bias_2 = doc_dict_2["2. publication_bias"]
+            doc_item_2 = doc_list[j]
+            frequency_2 = doc_item_2.frequency_dictionary()
+            self_score_2 = doc_item_2.self_score()
+            # bias_2 = doc_dict_2.["2. publication_bias"]
+            bias_2 = doc_item_2.publication_bias()
             if bias_2 != bias_1:
-                calc_cosine_similarity(doc_dict_1, doc_dict_2,
-                                       corpus_frequency, n)
+                cosine_similarity = calc_cosine_similarity(
+                    frequency_1, frequency_2, self_score_1, self_score_2,
+                    corpus_frequency, n)
+                update_associations(doc_item_1, doc_item_2, cosine_similarity)
             else:
                 continue
 
@@ -229,39 +250,49 @@ doc_list.  Need to then update the similarity scores
         text = title + text
         doc_frequency = calc_doc_frequency(text)
         doc_item.frequency_dictionary = doc_frequency
+        doc_item.save()
         # doc_dic["doc_frequency"] = doc_frequency
         # update_corpus_frequency(corpus_frequency, doc_dic["doc_frequency"])
         update_corpus_frequency(corpus_frequency, doc_frequency)
         print(len(corpus_frequency))
+        CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
         
     # now that updated, for each document, add in tfidf self score
     for i in range(len(doc_list)):
-        doc_dic = doc_list[i]
-        tfidf_vec_length = calc_tfidf_vec_length(doc_dic["doc_frequency"],
+        doc_item = doc_list[i]
+        doc_frequency = doc_item.frequency_dictionary()
+        # tfidf_vec_length = calc_tfidf_vec_length(doc_item["doc_frequency"],
+        #                                          corpus_frequency, n)
+        tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
                                                  corpus_frequency, n)
-        # print(doc_dic["4. title"])
+        # print(doc_item["4. title"])
         # print("has tfidf_vec_length = {0:.2f}".format(tfidf_vec_length))
-        doc_dic["tfidf_vec_length"] = tfidf_vec_length
+        doc_item.self_score = tfidf_vec_length
+        doc_item.save()
 
 
-def get_top_similarities(doc_dict, prettyprint=True, threshold=0.4):
-    """Returns ordered list of matching documents given threshold as
-tuples: (name, score
+# def get_top_similarities(doc_dict, prettyprint=True, threshold=0.4):
+#     """Returns ordered list of matching documents given threshold as
+# tuples: (name, score
 
-    """
-    similarity = doc_dict["similarity"]
-    sorted_similarity = sorted(similarity.items(),
-                               key=operator.itemgetter(1), reverse=True)
-    #  This is a list of tuples
-    sorted_similarity = sorted_similarity[:5]
+#     """
+#     similarity = doc_dict["similarity"]
+#     sorted_similarity = sorted(similarity.items(),
+#                                key=operator.itemgetter(1), reverse=True)
+#     #  This is a list of tuples
+#     sorted_similarity = sorted_similarity[:5]
 
-    filtered = [(k, v) for (k, v) in sorted_similarity if v > threshold]
-    if filtered and prettyprint:
-        print("\n\nTop similarities for {}".format(
-            get_pub_name_title_mashup(doc_dict)))
-        for doc, score in filtered:
-            print("{0} : {1:.3f}".format(doc, score))
-    return filtered
+#     filtered = [(k, v) for (k, v) in sorted_similarity if v > threshold]
+#     if filtered and prettyprint:
+#         print("\n\nTop similarities for {}".format(
+#             get_pub_name_title_mashup(doc_dict)))
+#         for doc, score in filtered:
+#             print("{0} : {1:.3f}".format(doc, score))
+#     return filtered
+
+def get_top_associations(doc_item):
+    print("doesn't fucking work... fuck off")
+    pass
 
 
 def main():
@@ -305,7 +336,8 @@ Mapping of JSON fields to db fields (can be called directly on feed_item)
     t = time.time()
     
     # now have a list of all documents
-    corpus_frequency = dict()  # dictionary for holding corpus frequency
+    # corpus_frequency = dict()  # dictionary for holding corpus frequency
+    corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
     
     #  chop for testing
     doc_list_old = doc_list[::3]
@@ -318,12 +350,13 @@ Mapping of JSON fields to db fields (can be called directly on feed_item)
     exhaustive_similarities_calculation(doc_list_old, corpus_frequency, n)
     # find top similarities
     for i in range(n):
-        doc_dict = doc_list_old[i]
-        get_top_similarities(doc_dict)
+        doc_item = doc_list_old[i]
+        # get_top_similarities(doc_dict)
+        get_top_associations(doc_item)
 
     elapsed_time = time.time() - t
     print("elapsed_time = {}".format(elapsed_time))
-    
+    return
     # -----------------------------------------------------------------
     # now for doc_list_new, create online algorithm
     # so first update df and cf

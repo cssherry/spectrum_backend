@@ -61,8 +61,8 @@ def download_bias_json():
     else:
       bias_hash["R"].append(item)
 
-  fileSystemEncoding = sys.getfilesystemencoding()                                                                                                           
-  OUTPUT_FILE = os.path.expanduser(u'./' + 'data.json')                                                                                     
+  fileSystemEncoding = sys.getfilesystemencoding()
+  OUTPUT_FILE = os.path.expanduser(u'./' + 'data.json')
   with codecs.open(OUTPUT_FILE,
                    encoding=fileSystemEncoding,
                    mode="w") as f:
@@ -121,7 +121,7 @@ def __return_item(item, include_extra_metadata, include_debug):
   }
 
   if include_debug:
-    base_object.update(debug) 
+    base_object.update(debug)
 
   return base_object
 

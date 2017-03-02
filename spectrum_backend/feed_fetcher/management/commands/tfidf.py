@@ -33,8 +33,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-  def handle(self, *args, **options):
-    main()
+    def handle(self, *args, **options):
+        main()
 
 
 def remove_diacritic(tokens):
@@ -306,7 +306,7 @@ Mapping of JSON fields to db fields (can be called directly on feed_item)
     
     # now have a list of all documents
     corpus_frequency = dict()  # dictionary for holding corpus frequency
-
+    
     #  chop for testing
     doc_list_old = doc_list[::3]
     doc_list_new = doc_list[1::3]

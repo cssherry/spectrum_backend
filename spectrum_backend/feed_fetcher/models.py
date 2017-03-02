@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.contrib.postgres.fields import JSONField
 import nltk
 
 class Publication(models.Model):
@@ -95,7 +96,8 @@ class FeedItem(models.Model):
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=1000, unique=True)
   image_url = models.CharField(max_length=1000, default="")
-  self_score = models.FloatField()
+  self_score = models.FloatField(default=0)
+  frequency_dictionary = JSONField(default={})
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -202,14 +204,5 @@ class Association(models.Model):
   class Meta:
     ordering = ['-similarity_score']
 
-class FeedItemWordFrequency(models.Model):
-  word = models.CharField(max_length=500)
-  feed_item_frequency = models.FloatField()
-  feed_item = models.ForeignKey('FeedItem')
-
-  class Meta:
-    unique_together = ('word', 'feed_item')
-
 class CorpusWordFrequency(models.Model):
-  word = models.CharField(max_length=500, unique=True)
-  corpus_frequency = models.FloatField()
+  dictionary = JSONField()

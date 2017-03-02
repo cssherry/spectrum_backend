@@ -28,6 +28,7 @@ import nltk
 import numpy as np
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
+from spectrum_backend.feed_fetcher.models import FeedItemWordFrequency
 from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
@@ -75,11 +76,9 @@ def read_json(filename):
 
 
 def calc_doc_frequency(text):
-    """Take a document text and return a doc_frequency dictionary. If the
-text string is empty, return an empty doc_frequency dictionary"""
+    """Take a document text and a FeedItem document
+and populate a WordFrequencyDictionary for it"""
     doc_frequency = {}
-    if not text:
-        return doc_frequency
     tokens = tokenize_lemmatize_clean(text)
     for word in tokens:
         if word in doc_frequency:
@@ -218,9 +217,13 @@ doc_list.  Need to then update the similarity scores
 
     """
     for i in range(len(doc_list)):
-        doc_dic = doc_list[i]
-        title = doc_dic["4. title"]
-        text = doc_dic["7. content"]
+        doc_item = doc_list[i]
+        # doc_dic = doc_list[i]
+        
+        title = doc_item.title()
+        # title = doc_dic["4. title"]
+        text = doc_item.description()
+        # text = doc_dic["7. content"]
         text = title + text
         doc_frequency = calc_doc_frequency(text)
         doc_dic["doc_frequency"] = doc_frequency
@@ -258,16 +261,41 @@ tuples: (name, score
 
 
 def main():
-    # db_docs = FeedItem.items_eligible_for_similarity_score() # All feed_items with content field available
+    """
+Mapping of JSON fields to db fields (can be called directly on feed_item)
+  base_object = {
+    "publication_name": item.publication_name(),
+    "publication_bias": item.publication_bias(),
+    "feed_category": item.feed_category(),
+    "title": item.title,
+    "summary": item.summary,
+    "description": item.description,
+    "content": item.content,
+    "url": item.url,
+  }
+  rest_of_object = {
+    "author": item.author,
+    "image_url": item.image_url,
+    "publication_date": item.friendly_publication_date(),
+    "tags": list(item.tags()),
+  }
+"""
 
-    bias_dic = read_json('data.json')
-    print("number of C's: {}".format(len(bias_dic["C"])))
-    print("number of L's: {}".format(len(bias_dic["L"])))
-    print("number of R's: {}".format(len(bias_dic["R"])))
-    print("keys: {}".format(bias_dic.keys()))
-    doc_list = list()  # list of all documents
-    for key in bias_dic.keys():  # returns a list of dictionaries
-        doc_list.extend(bias_dic[key])
+    print(FeedItem.objects.count())
+    #  All feed_items with content field available
+    doc_list = FeedItem.items_eligible_for_similarity_score()
+    print(len(doc_list))
+    print(doc_list[0].publication_name())
+    print(doc_list[0].publication_bias())
+  
+    # bias_dic = read_json('data.json')
+    # print("number of C's: {}".format(len(bias_dic["C"])))
+    # print("number of L's: {}".format(len(bias_dic["L"])))
+    # print("number of R's: {}".format(len(bias_dic["R"])))
+    # print("keys: {}".format(bias_dic.keys()))
+    # doc_list = list()  # list of all documents
+    # for key in bias_dic.keys():  # returns a list of dictionaries
+    #     doc_list.extend(bias_dic[key])
     print("len original doc_list: {}".format(len(doc_list)))
     
     t = time.time()
@@ -316,26 +344,6 @@ def main():
 
  # FINAL STEP (works for new or existing association): Association.objects.update_or_create(base_feed_item=main_doc, associated_feed_item=docs_we_found_similiarities_for, defaults={'similarity_score': new_or_updated_similarity_score})
 
-
-"""
-Mapping of JSON fields to db fields (can be called directly on feed_item)
-  base_object = {
-    "publication_name": item.publication_name(),
-    "publication_bias": item.publication_bias(),
-    "feed_category": item.feed_category(),
-    "title": item.title,
-    "summary": item.summary,
-    "description": item.description,
-    "content": item.content,
-    "url": item.url,
-  }
-  rest_of_object = {
-    "author": item.author,
-    "image_url": item.image_url,
-    "publication_date": item.friendly_publication_date(),
-    "tags": list(item.tags()),
-  }
-"""
 
 if __name__ == "__main__":
     main()

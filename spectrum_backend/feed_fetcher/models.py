@@ -96,11 +96,15 @@ class FeedItem(models.Model):
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    summary = models.TextField(default="") # 1-2 lines from RSS feed description
-    description = models.TextField(default="") # 8-10 sentences from RSS feed or scraper
-    content = models.TextField(default="") # content of article, pulled either from RSS feed or scraping
-    raw_description = models.TextField(default="") # raw description from RSS feed
-    raw_content = models.TextField(default="") # raw contents of web scrape
+    # 1-2 lines from RSS feed description
+    summary = models.TextField(default="")
+    # 8-10 sentences from RSS feed or scraper
+    description = models.TextField(default="")
+    # content of article, pulled either from RSS feed or scraping
+    content = models.TextField(default="")
+    # raw description from RSS feed
+    raw_description = models.TextField(default="")
+    raw_content = models.TextField(default="")  # raw contents of web scrape
     publication_date = models.DateTimeField()
     url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
@@ -230,10 +234,14 @@ class CorpusWordFrequency(models.Model):
 
     @classmethod
     def get_corpus_dictionary(cls):
-        return cls.objects.first() or cls.objects.create(dictionary={})
+        return cls._corpus_dictionary().dictionary
 
     @classmethod
     def set_corpus_dictionary(cls, dictionary):
-        corpus_dictionary = cls.get_corpus_dictionary()
+        corpus_dictionary = cls._corpus_dictionary()
         corpus_dictionary.dictionary = dictionary
         return corpus_dictionary.save()
+
+    @classmethod
+    def _corpus_dictionary(cls):
+        return cls.objects.first() or cls.objects.create(dictionary={})

@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.contrib.postgres.fields import JSONField
 import nltk
 
 class Publication(models.Model):
@@ -83,7 +84,7 @@ class Feed(models.Model):
     [tags.update(feed_item.tags()) for feed_item in self.feeditem_set.all()]
     return tags
 
-class FeedItem(models.Model): # TODO: figure out how to order this earlier so Topic doesn't through error
+class FeedItem(models.Model):
   feed = models.ForeignKey('Feed')
   title = models.CharField(max_length=1000)
   author = models.CharField(max_length=1000, default="")
@@ -95,6 +96,8 @@ class FeedItem(models.Model): # TODO: figure out how to order this earlier so To
   publication_date = models.DateTimeField()
   url = models.CharField(max_length=1000, unique=True)
   image_url = models.CharField(max_length=1000, default="")
+  self_score = models.FloatField(default=0)
+  frequency_dictionary = JSONField(default={})
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -200,3 +203,6 @@ class Association(models.Model):
 
   class Meta:
     ordering = ['-similarity_score']
+
+class CorpusWordFrequency(models.Model):
+  dictionary = JSONField()

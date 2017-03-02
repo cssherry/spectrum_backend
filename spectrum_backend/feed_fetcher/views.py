@@ -7,27 +7,27 @@ from urllib.parse import urlparse
 
 # Test API
 def test_api(request=None):
-  first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
-  return HttpResponse(json.dumps(first_articles), content_type='application/json')
+    first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
+    return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-  current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0]
-  top_associations = current_article.top_associations(count=3)
+    current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0]
+    top_associations = current_article.top_associations(count=3)
 
-  return HttpResponse(json.dumps(top_associations), content_type='application/json')
+    return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
-  p = urlparse(url_string)
-  return p.hostname + p.path
+    p = urlparse(url_string)
+    return p.hostname + p.path
 
 def all_publications(request):
-  publications = Publication.objects.all()
-  publication_json = json.loads(serializers.serialize('json', publications))
-  results = {
-    'publications': publication_json,
-    'media_bias': dict((k, v) for k, v in Publication.BIASES),
-  }
-  return HttpResponse(json.dumps(results), content_type='application/json')
+    publications = Publication.objects.all()
+    publication_json = json.loads(serializers.serialize('json', publications))
+    results = {
+        'publications': publication_json,
+        'media_bias': dict((k, v) for k, v in Publication.BIASES),
+    }
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
 # # return first 100 articles
 # def return_recent_articles(request):

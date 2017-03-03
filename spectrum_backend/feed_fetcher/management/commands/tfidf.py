@@ -393,10 +393,10 @@ t = 0.00468 * n ^ 1.398
 
 So on other hardware, the exponential should remain about the same.
 So for 16k documents, this means 1 hour of computation time.
-
     """
     threshold = 0.4  # threshold for storage of matches
     Association.objects.all().delete()
+    
     print(FeedItem.objects.count())
     #  All feed_items with content field available
     doc_list = FeedItem.items_eligible_for_similarity_score()
@@ -437,12 +437,11 @@ So for 16k documents, this means 1 hour of computation time.
 
     # batch_calculate_similarities
     single_list_self_comparison(doc_list_old, corpus_frequency, n,
-                                        False, threshold)
+                                False, threshold)
     # find top similarities
 
     for i in range(n):
         doc_item = doc_list_old[i]
-        # get_top_similarities(doc_dict)
         get_top_associations(doc_item)
 
     elapsed_time = time.time() - t

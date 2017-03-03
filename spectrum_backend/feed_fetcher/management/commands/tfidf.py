@@ -107,8 +107,6 @@ def calc_tfidf(term, doc_frequency, corpus_frequency, n):
     """Calculate the term frequency inverse document frequency score for a term.
 If the term is not in the doc_frequency dictionary, return 0"""
     if term in doc_frequency:
-        if term not in corpus_frequency:
-            print("not in corpus: {}".format(term))
         tfidf = doc_frequency[term] * np.log(n / corpus_frequency[term])
     else:
         return 0
@@ -152,16 +150,10 @@ def calc_cosine_similarity(
     df2 = frequency_2
     tfidf_vec_length_1 = self_score_1
     tfidf_vec_length_2 = self_score_2
-    if (tfidf_vec_length_1 == 0 and tfidf_vec_length_2 == 0):
+    if (tfidf_vec_length_1 == 0 or tfidf_vec_length_2 == 0):
         return -1
     
     common_words = set(list(df1.keys())) & set(list(df2.keys()))
-    # print("words in doc 1: ")
-    # print(df1.keys())
-    # print("words in doc 2: ")
-    # print(df2.keys())
-    # print(len(common_words))
-    # print(common_words)
     dot_product = 0
     for word in common_words:
         tfidfw1 = calc_tfidf(word, df1, corpus_frequency, n)
@@ -171,12 +163,6 @@ def calc_cosine_similarity(
     cosine_similarity = dot_product / (
         tfidf_vec_length_1 * tfidf_vec_length_2)
 
-
-    # mashup_1 = get_pub_name_title_mashup(doc_item_1)
-    # mashup_2 = get_pub_name_title_mashup(doc_item_2)
-    # update_similarity_dict(doc_item_1, mashup_2, cosine_similarity)
-    # update_similarity_dict(doc_item_2, mashup_1, cosine_similarity)
-    
     return cosine_similarity
 
 
@@ -189,9 +175,9 @@ def get_pub_name_title_mashup(doc_dic):
 
 
 def single_list_self_comparison(doc_list,
-                                        corpus_frequency,
-                                        n, pretty_print=False,
-                                        storage_threshold=0.4):
+                                corpus_frequency,
+                                n, pretty_print=False,
+                                storage_threshold=0.4):
     """For each document, compare to each other doucment, store comparison
 in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
@@ -206,41 +192,13 @@ FIRST. N is number of total documents in corpus.
                                     n,
                                     pretty_print,
                                     storage_threshold)
-        # for j in range(i, len(doc_list)):  # throws out self comp w/ bias check
-        #     doc_item_2 = doc_list[j]
-        #     bias_2 = doc_item_2.publication_bias()
-        #     frequency_2 = doc_item_2.frequency_dictionary
-        #     self_score_2 = doc_item_2.self_score
-        #     if bias_2 != bias_1:
-        #         if pretty_print:
-        #             print("\n\nIntersecting : ")
-        #             print(doc_item_1.title)
-        #             print(doc_item_2.title)
-        #             print("doc 1 number of terms: {}".format(
-        #                 len(list(frequency_1.keys()))))
-        #             print("doc 2 number of terms: {}".format(
-        #                 len(list(frequency_2.keys()))))
-
-        #         cosine_similarity = calc_cosine_similarity(
-        #             frequency_1, frequency_2, self_score_1, self_score_2,
-        #             corpus_frequency, n)
-        #         if pretty_print:
-        #             print("cosine_similary={0:.2f}".format(cosine_similarity))
-        #             # print("number of common words = {}".format(len(common_words)))
-        #             # print(common_words)
-        #             # print("dot product = {0:.2f}".format(dot_product))
-        #             # print("tfidf_vec_length_1 = {0:.2f}".format(tfidf_vec_length_1))
-        #             # print("tfidf_vec_length_2 = {0:.2f}".format(tfidf_vec_length_2))
-        #         update_associations(doc_item_1, doc_item_2,
-        #                             cosine_similarity, storage_threshold)
-        #     else:
-        #         continue
 
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
-                                           corpus_frequency, n,
-                                           pretty_print=False,
-                                           storage_threshold=0.4):
+                                corpus_frequency, n,
+                                pretty_print=False,
+                                storage_threshold=0.4):
+
     for i in range(len(doc_list_new)):
         doc_item_1 = doc_list_new[i]
         bias_1 = doc_item_1.publication_bias()
@@ -265,11 +223,6 @@ def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                     corpus_frequency, n)
                 if pretty_print:
                     print("cosine_similary={0:.2f}".format(cosine_similarity))
-                    # print("number of common words = {}".format(len(common_words)))
-                    # print(common_words)
-                    # print("dot product = {0:.2f}".format(dot_product))
-                    # print("tfidf_vec_length_1 = {0:.2f}".format(tfidf_vec_length_1))
-                    # print("tfidf_vec_length_2 = {0:.2f}".format(tfidf_vec_length_2))
                 update_associations(doc_item_1, doc_item_2,
                                     cosine_similarity, storage_threshold)
             else:
@@ -287,26 +240,15 @@ matching.
     """
     for i in range(len(doc_list)):
         doc_item = doc_list[i]
-        # doc_dic = doc_list[i]
-        
         title = doc_item.title
-        # title = doc_dic["4. title"]
         summary = doc_item.description
         body = doc_item.content
         if not body and exclude_no_article:
             continue
-        # text = doc_dic["7. content"]
         text = title + summary + body
         doc_frequency = calc_doc_frequency(text)
-        # print("before delete {}".format(len(doc_item.frequency_dictionary)))
-        # doc_item.frequency_dictionary = {}
-        # doc_item.save()
-        # print("after delete {}".format(len(doc_item.frequency_dictionary)))
         doc_item.frequency_dictionary = doc_frequency
         doc_item.save()
-        # print("after update {}".format(len(doc_item.frequency_dictionary)))
-        # doc_dic["doc_frequency"] = doc_frequency
-        # update_corpus_frequency(corpus_frequency, doc_dic["doc_frequency"])
         update_corpus_frequency(corpus_frequency, doc_frequency)
         print(len(corpus_frequency))
     
@@ -327,6 +269,7 @@ matching.
         doc_item.self_score = tfidf_vec_length
         doc_item.save()
 
+        
 def get_top_associations(doc_item):
     title = doc_item.title
     bias = doc_item.publication_bias()

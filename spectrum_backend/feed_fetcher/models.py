@@ -134,6 +134,9 @@ class FeedItem(models.Model):
     def publication_bias(self):
         return self.feed.publication.bias
 
+    def publication_logo(self):
+        return self.feed.publication.logo_url
+
     def not_created_recently(self):
         return self.created_at < timezone.now() - timedelta(days=2)
 
@@ -159,6 +162,7 @@ class FeedItem(models.Model):
         base_object = {
             "publication_name": self.publication_name(),
             "publication_bias": self.publication_bias(),
+            "publication_logo": self.publication_logo(),
             "feed_category": self.feed_category(),
             "title": self.title,
             "summary": self.summary,

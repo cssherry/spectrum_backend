@@ -19,7 +19,7 @@ Usage:
 import codecs
 import json
 import math
-import operator
+# import operator
 import sys
 import time
 import unicodedata
@@ -29,7 +29,8 @@ import numpy as np
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+# from django.core.management.base import CommandError
 
 
 class Command(BaseCommand):
@@ -51,7 +52,6 @@ def tokenize_lemmatize_clean(doc_string):
     tokens = nltk.word_tokenize(lowers)
     stopwords = nltk.corpus.stopwords.words('english')
     tokens = [w for w in tokens if w not in stopwords]
-    # tokens = [token.lower() for token in tokens]
     # lemmatize words. try both noun and verb lemmatizations
     lmtzr = nltk.stem.wordnet.WordNetLemmatizer()
     # need to see if this is being used right...
@@ -260,12 +260,8 @@ matching.
     for i in range(len(doc_list)):
         doc_item = doc_list[i]
         doc_frequency = doc_item.frequency_dictionary
-        # tfidf_vec_length = calc_tfidf_vec_length(doc_item["doc_frequency"],
-        #                                          corpus_frequency, n)
         tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
                                                  corpus_frequency, n)
-        # print(doc_item["4. title"])
-        # print("has tfidf_vec_length = {0:.2f}".format(tfidf_vec_length))
         doc_item.self_score = tfidf_vec_length
         doc_item.save()
 
@@ -307,7 +303,6 @@ def test(threshold):
     t = time.time()
     
     # now have a list of all documents
-    # corpus_frequency = dict()  # dictionary for holding corpus frequency
     corpus_frequency = {}  # CorpusWordFrequency.get_corpus_dictionary()
     
     #  chop for testing
@@ -323,7 +318,6 @@ def test(threshold):
     single_list_self_comparison(doc_list_old, corpus_frequency, n,
                                 False, threshold)
     # find top similarities
-
     for i in range(n):
         doc_item = doc_list_old[i]
         get_top_associations(doc_item)
@@ -349,7 +343,6 @@ def test(threshold):
     print("after extension len doc_list_old = {}".format(len(doc_list_old)))
     for i in range(n):
         doc_item = doc_list_old[i]
-        # get_top_similarities(doc_dict)
         get_top_associations(doc_item)
 
     elapsed_time = time.time() - t

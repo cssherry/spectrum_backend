@@ -136,14 +136,17 @@ def update_similarity_dict(doc_dict, name_of_other_doc, cosine_similarity):
 def update_associations(doc_item_1, doc_item_2,
                         cosine_similarity, threshold=0.4):
     if cosine_similarity > threshold:
-        Association.objects.update_or_create(
-            base_feed_item=doc_item_1,
-            associated_feed_item=doc_item_2,
-            defaults={'similarity_score': cosine_similarity})
-        Association.objects.update_or_create(
-            base_feed_item=doc_item_2,
-            associated_feed_item=doc_item_1,
-            defaults={'similarity_score': cosine_similarity})
+        try:
+            Association.objects.update_or_create(
+                base_feed_item=doc_item_1,
+                associated_feed_item=doc_item_2,
+                defaults={'similarity_score': cosine_similarity})
+            Association.objects.update_or_create(
+                base_feed_item=doc_item_2,
+                associated_feed_item=doc_item_1,
+                defaults={'similarity_score': cosine_similarity})
+        except ValidationError:
+            pass
 
 
 def calc_cosine_similarity(
@@ -369,7 +372,7 @@ So on other hardware, the exponential should remain about the same.
 So for 16k documents, this means 1 hour of computation time.
 
     """
-    threshold = 0.2  # threshold for storage of matches
+    threshold = 0.1  # threshold for storage of matches
     print("somthing")
     if not new_list and old_list:
         print("Running initial job to build associations")

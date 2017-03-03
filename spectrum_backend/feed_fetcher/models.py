@@ -227,6 +227,7 @@ class Association(models.Model):
 
     class Meta:
         ordering = ['-similarity_score']
+        unique_together = ('base_feed_item', 'associated_feed_item')
 
 
 class CorpusWordFrequency(models.Model):

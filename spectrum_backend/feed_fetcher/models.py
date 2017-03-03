@@ -200,7 +200,19 @@ class FeedItem(models.Model):
                 associated_feed_item.base_object(
                     association.similarity_score))
 
-        return associated_articles[:3]
+        unique_publication_articles = []
+        unique_publication_names = []
+        extra_articles = []
+
+        for article in associated_articles:
+            if not article["publication_name"] in unique_publication_names:
+                unique_publication_articles.append(article)
+                unique_publication_names.append(article["publication_name"])
+            else:
+                extra_articles.append(article)
+
+        all_articles = unique_publication_articles + extra_articles
+        return all_articles[:3]
 
     def __str__(self):
         return u'%s (%s - %s) %s (%s) %s' % (

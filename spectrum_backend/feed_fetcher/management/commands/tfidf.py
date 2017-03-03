@@ -136,11 +136,11 @@ def update_associations(doc_item_1, doc_item_2,
         Association.objects.update_or_create(
             base_feed_item=doc_item_1,
             associated_feed_item=doc_item_2,
-            similarity_score=cosine_similarity)
+            defaults={'similarity_score': cosine_similarity})
         Association.objects.update_or_create(
             base_feed_item=doc_item_2,
             associated_feed_item=doc_item_1,
-            similarity_score=cosine_similarity)
+            defaults={'similarity_score': cosine_similarity})
 
 
 def calc_cosine_similarity(

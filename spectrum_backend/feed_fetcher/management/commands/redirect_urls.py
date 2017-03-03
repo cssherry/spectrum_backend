@@ -5,7 +5,8 @@ import urllib
 class Command(BaseCommand):
   def handle(self, *args, **options):
     query_param_delimiter = "?"
-    feed_items = FeedItem.objects.all()
+    feed_items = FeedItem.objects.all()[:10000]
+
     for feed_item in feed_items:
       try:
         url = urllib.request.urlopen(feed_item.url).geturl()

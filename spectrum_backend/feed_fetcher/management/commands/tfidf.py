@@ -346,54 +346,7 @@ def get_top_associations(doc_item):
             title_other, bias_other, similarity_score))
 
 
-def main(old_list, new_list=[]):
-    """Given a single list, will populate associations for that list
-relative only to itself. Otherwise, given a new list, assumes old list
-has already been populated and will build associations for the new
-list relative to each other and then to the old list.
-
-I estimate the time will grow polynomially. Usine least squares and
-converting the data to log-log space, we can find that the time in
-seconds grows roughly like:
-
-t = 0.00468 * n ^ 1.398
-
-So on other hardware, the exponential should remain about the same.
-So for 16k documents, this means 1 hour of computation time.
-
-    """
-    threshold = 0.4  # threshold for storage of matches
-
-    if not new_list:
-        # intial job to build associations
-        corpus_frequency = {}
-        n = len(old_list)  # total number of docs in corpus, right now
-        update_df_and_cf_with_new_docs(
-            old_list, corpus_frequency, n)
-        # batch_calculate_similarities
-        single_list_self_comparison(old_list,
-                                    corpus_frequency, n,
-                                    False, threshold)
-    elif old_list and new_list:
-        # update corpus
-        corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
-        n = len(old_list) + len(new_list)  # set n to total number of docs
-        update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
-        # now do exhaustive_update for docs with themselves:
-        single_list_self_comparison(new_list, corpus_frequency, n)
-        # now compare these docs with all other docs
-        dissimilar_lists_comparison(new_list,
-                                    old_list,
-                                    corpus_frequency, n)
-
-    else:
-        print("the first list must be populated with documents whose\
- associations have already been determined")
-        
-    return
-# ------------------------------------------------------------------
-    Association.objects.all().delete()
-    
+def test(threshold):
     print(FeedItem.objects.count())
     #  All feed_items with content field available
     doc_list = FeedItem.items_eligible_for_similarity_score()
@@ -434,8 +387,8 @@ So for 16k documents, this means 1 hour of computation time.
 
     elapsed_time = time.time() - t
     print("elapsed_time = {}".format(elapsed_time))
-    return
-    # -----------------------------------------------------------------
+
+# -----------------------------------------------------------------
     # now for doc_list_new, create online algorithm
     # so first update df and cf
     corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
@@ -445,7 +398,7 @@ So for 16k documents, this means 1 hour of computation time.
     single_list_self_comparison(doc_list_new, corpus_frequency, n)
     # now compare these docs with all other docs
     dissimilar_lists_comparison(doc_list_new, doc_list_old,
-                                           corpus_frequency, n)
+                                corpus_frequency, n)
     # find top similarities
     print("len doc_list_old = {}".format(len(doc_list_old)))
     print("len doc_list_new = {}".format(len(doc_list_new)))
@@ -458,6 +411,55 @@ So for 16k documents, this means 1 hour of computation time.
 
     elapsed_time = time.time() - t
     print("total elapsed_time = {}".format(elapsed_time))
+    return
+    
+        
+def main(old_list=[], new_list=[]):
+    """Given a single list, will populate associations for that list
+relative only to itself. Otherwise, given a new list, assumes old list
+has already been populated and will build associations for the new
+list relative to each other and then to the old list.
+
+I estimate the time will grow polynomially. Usine least squares and
+converting the data to log-log space, we can find that the time in
+seconds grows roughly like:
+
+t = 0.00468 * n ^ 1.398
+
+So on other hardware, the exponential should remain about the same.
+So for 16k documents, this means 1 hour of computation time.
+
+    """
+    threshold = 0.4  # threshold for storage of matches
+    print("somthing")
+    if not new_list and old_list:
+        print("Running initial job to build associations")
+        corpus_frequency = {}
+        n = len(old_list)  # total number of docs in corpus, right now
+        update_df_and_cf_with_new_docs(
+            old_list, corpus_frequency, n)
+        # batch_calculate_similarities
+        single_list_self_comparison(old_list,
+                                    corpus_frequency, n,
+                                    False, threshold)
+    elif old_list and new_list:
+        print("both lists are populated. Running update")
+        corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
+        n = len(old_list) + len(new_list)  # set n to total number of docs
+        update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
+        # now do exhaustive_update for docs with themselves:
+        single_list_self_comparison(new_list, corpus_frequency, n)
+        # now compare these docs with all other docs
+        dissimilar_lists_comparison(new_list,
+                                    old_list,
+                                    corpus_frequency, n)
+
+    else:
+        print("the first list must be populated with documents whose\
+ associations have already been determined")
+        print("running test")
+        # Association.objects.all().delete()
+        # test(threshold)
     return
 
 

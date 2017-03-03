@@ -327,26 +327,6 @@ matching.
         doc_item.self_score = tfidf_vec_length
         doc_item.save()
 
-
-# def get_top_similarities(doc_dict, prettyprint=True, threshold=0.4):
-#     """Returns ordered list of matching documents given threshold as
-# tuples: (name, score
-
-#     """
-#     similarity = doc_dict["similarity"]
-#     sorted_similarity = sorted(similarity.items(),
-#                                key=operator.itemgetter(1), reverse=True)
-#     #  This is a list of tuples
-#     sorted_similarity = sorted_similarity[:5]
-
-#     filtered = [(k, v) for (k, v) in sorted_similarity if v > threshold]
-#     if filtered and prettyprint:
-#         print("\n\nTop similarities for {}".format(
-#             get_pub_name_title_mashup(doc_dict)))
-#         for doc, score in filtered:
-#             print("{0} : {1:.3f}".format(doc, score))
-#     return filtered
-
 def get_top_associations(doc_item):
     title = doc_item.title
     bias = doc_item.publication_bias()
@@ -366,24 +346,11 @@ def get_top_associations(doc_item):
             title_other, bias_other, similarity_score))
 
 
-def main():
-    """Mapping of JSON fields to db fields (can be called directly on feed_item)
-  base_object = {
-    "publication_name": item.publication_name(),
-    "publication_bias": item.publication_bias(),
-    "feed_category": item.feed_category(),
-    "title": item.title,
-    "summary": item.summary,
-    "description": item.description,
-    "content": item.content,
-    "url": item.url,
-  }
-  rest_of_object = {
-    "author": item.author,
-    "image_url": item.image_url,
-    "publication_date": item.friendly_publication_date(),
-    "tags": list(item.tags()),
-  }
+def main(old_list, new_list=[]):
+    """Given a single list, will populate associations for that list
+relative only to itself. Otherwise, given a new list, assumes old list
+has already been populated and will build associations for the new
+list relative to each other and then to the old list.
 
 I estimate the time will grow polynomially. Usine least squares and
 converting the data to log-log space, we can find that the time in
@@ -393,8 +360,38 @@ t = 0.00468 * n ^ 1.398
 
 So on other hardware, the exponential should remain about the same.
 So for 16k documents, this means 1 hour of computation time.
+
     """
     threshold = 0.4  # threshold for storage of matches
+
+    if not new_list:
+        # intial job to build associations
+        corpus_frequency = {}
+        n = len(old_list)  # total number of docs in corpus, right now
+        update_df_and_cf_with_new_docs(
+            old_list, corpus_frequency, n)
+        # batch_calculate_similarities
+        single_list_self_comparison(old_list,
+                                    corpus_frequency, n,
+                                    False, threshold)
+    elif old_list and new_list:
+        # update corpus
+        corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
+        n = len(old_list) + len(new_list)  # set n to total number of docs
+        update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
+        # now do exhaustive_update for docs with themselves:
+        single_list_self_comparison(new_list, corpus_frequency, n)
+        # now compare these docs with all other docs
+        dissimilar_lists_comparison(new_list,
+                                    old_list,
+                                    corpus_frequency, n)
+
+    else:
+        print("the first list must be populated with documents whose\
+ associations have already been determined")
+        
+    return
+# ------------------------------------------------------------------
     Association.objects.all().delete()
     
     print(FeedItem.objects.count())
@@ -409,15 +406,6 @@ So for 16k documents, this means 1 hour of computation time.
     print(d1.summary)
     print(d1.description)
 
-  
-    # bias_dic = read_json('data.json')
-    # print("number of C's: {}".format(len(bias_dic["C"])))
-    # print("number of L's: {}".format(len(bias_dic["L"])))
-    # print("number of R's: {}".format(len(bias_dic["R"])))
-    # print("keys: {}".format(bias_dic.keys()))
-    # doc_list = list()  # list of all documents
-    # for key in bias_dic.keys():  # returns a list of dictionaries
-    #     doc_list.extend(bias_dic[key])
     print("len original doc_list: {}".format(len(doc_list)))
     
     t = time.time()
@@ -475,3 +463,23 @@ So for 16k documents, this means 1 hour of computation time.
 
 if __name__ == "__main__":
     main()
+
+"""
+Mapping of JSON fields to db fields (can be called directly on feed_item)
+base_object = {
+    "publication_name": item.publication_name(),
+    "publication_bias": item.publication_bias(),
+    "feed_category": item.feed_category(),
+    "title": item.title,
+    "summary": item.summary,
+    "description": item.description,
+    "content": item.content,
+    "url": item.url,
+}
+rest_of_object = {
+    "author": item.author,
+    "image_url": item.image_url,
+    "publication_date": item.friendly_publication_date(),
+    "tags": list(item.tags()),
+}
+"""

@@ -10,7 +10,7 @@ This script will also tokenize the input files to extract words
     the NLTK library to lemmatize words (get rid of stemmings)
 
 IMPORTANT:
-    A REQUIRED library for this script is NLTK, please make sure\
+    A REQUIRED library for this scripit is NLTK, please make sure\
  it's installed along with the wordnet corpus before trying to run this script
 
 Usage:
@@ -30,6 +30,7 @@ from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
 from django.core.management.base import BaseCommand
+nltk.download('punkt')
 # from django.core.management.base import CommandError
 
 

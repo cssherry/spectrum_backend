@@ -31,6 +31,8 @@ from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
 from django.core.management.base import BaseCommand
 nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 # from django.core.management.base import CommandError
 
 

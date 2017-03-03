@@ -17,6 +17,7 @@ class Publication(models.Model):
     base_url = models.CharField(max_length=500, unique=True)
     bias = models.CharField(max_length=2, choices=BIASES)
     html_content_tag = models.CharField(max_length=500, default="")
+    logo_url = models.CharField(max_length=500, default="")
     skip_scraping = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -174,11 +175,25 @@ class FeedItem(models.Model):
 
         return base_object
 
-    def top_associations(self, count=3):
+    def opposing_biases(self):
+        if self.publication_bias() == "L" or self.publication_bias() == "LC":
+            return ["R", "RC", "C"]
+        elif self.publication_bias() == "R" or self.publication_bias() == "RC":
+            return ["L", "LC", "C"]
+        else:
+            return ["L", "LC", "C", "RC", "R"]
+
+
+    def top_associations(self, count=3, check_bias=True):
         associated_articles = []
         for association in self.base_associations.all():
+            associated_feed_item = association.associated_feed_item
+            if check_bias:
+                if not associated_feed_item.publication_bias() in self.opposing_biases():
+                    continue
+
             associated_articles.append(
-                association.associated_feed_item.base_object(
+                associated_feed_item.base_object(
                     association.similarity_score))
 
         return associated_articles[:3]

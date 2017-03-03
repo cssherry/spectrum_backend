@@ -12,7 +12,7 @@ def test_api(request=None):
 
 def get_associated_articles(request):
     current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0]
-    top_associations = current_article.top_associations(count=3)
+    top_associations = current_article.top_associations(count=3, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 

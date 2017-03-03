@@ -366,7 +366,7 @@ So on other hardware, the exponential should remain about the same.
 So for 16k documents, this means 1 hour of computation time.
 
     """
-    threshold = 0.4  # threshold for storage of matches
+    threshold = 0.2  # threshold for storage of matches
     print("somthing")
     if not new_list and old_list:
         print("Running initial job to build associations")

@@ -2,7 +2,8 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
-import nltk
+# import nltk
+
 
 class Publication(models.Model):
     BIASES = (
@@ -39,8 +40,10 @@ class Publication(models.Model):
 
     def feed_items(self, include_ignored=True, include_empty=True):
         feed_items = []
-        [feed_items.extend(feed.feed_items(include_empty)) for feed in Feed.all(include_ignored).filter(publication=self)]
+        [feed_items.extend(feed.feed_items(include_empty))
+         for feed in Feed.all(include_ignored).filter(publication=self)]
         return feed_items
+
 
 class Feed(models.Model):
     publication = models.ForeignKey('Publication')
@@ -57,7 +60,7 @@ class Feed(models.Model):
         else:
             return cls.objects.filter(should_ignore=0)
 
-    def feed_items(self, include_empty = True):
+    def feed_items(self, include_empty=True):
         if include_empty:
             return self.feeditem_set.all()
         else:
@@ -65,34 +68,43 @@ class Feed(models.Model):
 
     def display_empty_content_report(self):
         empty_feed_items = self.feed_items().filter(content='')
-        percentage = empty_feed_items.count() / (self.feed_items().count() or 1)
+        percentage = empty_feed_items.count()/(self.feed_items().count() or 1)
         if percentage > 0.5:
             broken_string = "BROKEN"
         else:
             broken_string = ""
 
-        print("For %s (%s) there are %s empty articles out of %s %s" % (self.publication.name, self.category, empty_feed_items.count(), self.feed_items().count(), broken_string))
+        print("For %s (%s) there are %s empty articles out of %s %s" % (
+            self.publication.name, self.category, empty_feed_items.count(),
+            self.feed_items().count(), broken_string))
 
     def __str__(self):
-        return u'%s - %s (%s)' % (self.publication.name, self.category, self.rss_url)
+        return u'%s - %s (%s)' % (self.publication.name, self.category,
+                                  self.rss_url)
 
     class Meta:
         ordering = ['publication__name']
 
     def tags(self):
         tags = set()
-        [tags.update(feed_item.tags()) for feed_item in self.feeditem_set.all()]
+        [tags.update(feed_item.tags()) for feed_item in
+         self.feeditem_set.all()]
         return tags
+
 
 class FeedItem(models.Model):
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    summary = models.TextField(default="") # 1-2 lines from RSS feed description
-    description = models.TextField(default="") # 8-10 sentences from RSS feed or scraper
-    content = models.TextField(default="") # content of article, pulled either from RSS feed or scraping
-    raw_description = models.TextField(default="") # raw description from RSS feed
-    raw_content = models.TextField(default="") # raw contents of web scrape
+    # 1-2 lines from RSS feed description
+    summary = models.TextField(default="")
+    # 8-10 sentences from RSS feed or scraper
+    description = models.TextField(default="")
+    # content of article, pulled either from RSS feed or scraping
+    content = models.TextField(default="")
+    # raw description from RSS feed
+    raw_description = models.TextField(default="")
+    raw_content = models.TextField(default="")  # raw contents of web scrape
     publication_date = models.DateTimeField()
     url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
@@ -165,15 +177,21 @@ class FeedItem(models.Model):
     def top_associations(self, count=3):
         associated_articles = []
         for association in self.base_associations.all():
-            associated_articles.append(association.associated_feed_item.base_object(association.similarity_score))
+            associated_articles.append(
+                association.associated_feed_item.base_object(
+                    association.similarity_score))
 
         return associated_articles[:3]
 
     def __str__(self):
-        return u'%s (%s - %s) %s (%s) %s' % (self.title, self.publication_name(), self.feed_category(), self.short_description(), self.url, self.friendly_publication_date())
+        return u'%s (%s - %s) %s (%s) %s' % (
+            self.title, self.publication_name(), self.feed_category(),
+            self.short_description(), self.url,
+            self.friendly_publication_date())
 
     class Meta:
         ordering = ['-publication_date']
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=500)
@@ -190,19 +208,40 @@ class Tag(models.Model):
     def publication_name(self):
         return self.feed_item.feed.publication.name
 
+
 class Association(models.Model):
-    base_feed_item = models.ForeignKey('FeedItem', related_name='base_associations')
-    associated_feed_item = models.ForeignKey('FeedItem', related_name='associated_associations')
+    base_feed_item = models.ForeignKey('FeedItem',
+                                       related_name='base_associations')
+    associated_feed_item = models.ForeignKey('FeedItem',
+                                             related_name='associated_associations')
     similarity_score = models.FloatField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return u'*BASE* %s *ASSOCIATION* %s (%s)' % (self.base_feed_item.title, self.associated_feed_item.title, self.similarity_score)
+        return u'*BASE* %s *ASSOCIATION* %s (%s)' % (
+            self.base_feed_item.title,
+            self.associated_feed_item.title,
+            self.similarity_score)
 
     class Meta:
         ordering = ['-similarity_score']
 
+
 class CorpusWordFrequency(models.Model):
     dictionary = JSONField()
+
+    @classmethod
+    def get_corpus_dictionary(cls):
+        return cls._corpus_dictionary().dictionary
+
+    @classmethod
+    def set_corpus_dictionary(cls, dictionary):
+        corpus_dictionary = cls._corpus_dictionary()
+        corpus_dictionary.dictionary = dictionary
+        return corpus_dictionary.save()
+
+    @classmethod
+    def _corpus_dictionary(cls):
+        return cls.objects.first() or cls.objects.create(dictionary={})

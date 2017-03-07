@@ -7,11 +7,11 @@ from django.contrib.postgres.fields import JSONField
 
 class Publication(models.Model):
     BIASES = (
-        ('L', 'Left'),
-        ('LC', 'Left-Center'),
-        ('C', 'Center'),
-        ('RC', 'Right-Center'),
-        ('R', 'Right'),
+        ('L', 'Left-Wing'),
+        ('LC', 'Left-Leaning'),
+        ('C', 'Moderate'),
+        ('RC', 'Right-Leaning'),
+        ('R', 'Right-Wing'),
     )
     name = models.CharField(max_length=500, unique=True)
     base_url = models.CharField(max_length=500, unique=True)
@@ -212,7 +212,14 @@ class FeedItem(models.Model):
                 extra_articles.append(article)
 
         all_articles = unique_publication_articles + extra_articles
-        return all_articles[:3]
+        return all_articles[:count]
+
+
+    def pretty_print_associations(self):
+        print("\t\t%s\t\t%s" % (self.publication_name(), self.title))
+        print("\n***************\n")
+        for association in self.base_associations.all():
+            print("%s\t%s\t%s" % (association.similarity_score, association.associated_feed_item.publication_name(), association.associated_feed_item.title))
 
     def __str__(self):
         return u'%s (%s - %s) %s (%s) %s' % (
@@ -259,7 +266,6 @@ class Association(models.Model):
     class Meta:
         ordering = ['-similarity_score']
         unique_together = ('base_feed_item', 'associated_feed_item')
-
 
 class CorpusWordFrequency(models.Model):
     dictionary = JSONField()

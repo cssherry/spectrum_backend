@@ -134,7 +134,7 @@ def update_similarity_dict(doc_dict, name_of_other_doc, cosine_similarity):
 
 
 def update_associations(doc_item_1, doc_item_2,
-                        cosine_similarity, threshold=0.4):
+                        cosine_similarity, threshold=0.2):
     if cosine_similarity > threshold:
         try:
             Association.objects.update_or_create(
@@ -183,7 +183,7 @@ def get_pub_name_title_mashup(doc_dic):
 def single_list_self_comparison(doc_list,
                                 corpus_frequency,
                                 n, pretty_print=False,
-                                storage_threshold=0.4):
+                                storage_threshold=0.2):
     """For each document, compare to each other doucment, store comparison
 in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
@@ -203,7 +203,7 @@ FIRST. N is number of total documents in corpus.
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
                                 pretty_print=False,
-                                storage_threshold=0.4):
+                                storage_threshold=0.2):
 
     for i in range(len(doc_list_new)):
         doc_item_1 = doc_list_new[i]
@@ -372,7 +372,7 @@ So on other hardware, the exponential should remain about the same.
 So for 16k documents, this means 1 hour of computation time.
 
     """
-    threshold = 0.1  # threshold for storage of matches
+    threshold = 0.2  # threshold for storage of matches
     print("somthing")
     if not new_list and old_list:
         print("Running initial job to build associations")

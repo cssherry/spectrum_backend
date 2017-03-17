@@ -379,9 +379,17 @@ So for 16k documents, this means 1 hour of computation time.
 
     """
     threshold = 0.2  # threshold for storage of matches
-    print("test")
-    print(len(old_list))
-    if not new_list and old_list:
+    try:
+        new_list_exists = new_list.exists?
+    except AttributeError:
+        new_list_exists = False
+
+    try:
+        old_list_exists = old_list.exists?
+    except AttributeError:
+        old_list_exists = False
+
+    if not new_list_exists and old_list_exists:
         print("Running initial job to build associations")
         corpus_frequency = {}
         n = len(old_list)  # total number of docs in corpus, right now
@@ -391,7 +399,7 @@ So for 16k documents, this means 1 hour of computation time.
         single_list_self_comparison(old_list,
                                     corpus_frequency, n,
                                     False, threshold)
-    elif old_list and new_list:
+    elif new_list_exists and old_list_exists:
         print("both lists are populated. Running update")
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
         n = len(old_list) + len(new_list)  # set n to total number of docs

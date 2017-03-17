@@ -33,7 +33,6 @@ from django.core.management.base import BaseCommand
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
-# from django.core.management.base import CommandError
 
 
 class Command(BaseCommand):
@@ -189,6 +188,7 @@ in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
 
     """
+    print("Comparing documents and storing comparison data")
     for i in range(len(doc_list)):
         doc_item_1_list = doc_list[i:i+1]
         doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
@@ -198,6 +198,8 @@ FIRST. N is number of total documents in corpus.
                                     n,
                                     pretty_print,
                                     storage_threshold)
+        if i % 100 == 0:
+            print("%s items processed" % i + 1) 
 
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
@@ -256,13 +258,15 @@ matching.
         doc_item.frequency_dictionary = doc_frequency
         doc_item.save()
         update_corpus_frequency(corpus_frequency, doc_frequency)
-        print(len(corpus_frequency))
+        if i % 1000 == 0:
+            print("Corpus frequency length: %s" % len(corpus_frequency))
     
     CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
     # -> are we smashing words together?
     # print(CorpusWordFrequency.get_corpus_dictionary())
         
     # now that updated, for each document, add in tfidf self score
+    print("Calculating self scores")
     for i in range(len(doc_list)):
         doc_item = doc_list[i]
         doc_frequency = doc_item.frequency_dictionary
@@ -270,6 +274,8 @@ matching.
                                                  corpus_frequency, n)
         doc_item.self_score = tfidf_vec_length
         doc_item.save()
+        if i % 1000 == 0:
+            print("%s document self scores processed" % i + 1)
 
         
 def get_top_associations(doc_item):
@@ -373,7 +379,6 @@ So for 16k documents, this means 1 hour of computation time.
 
     """
     threshold = 0.2  # threshold for storage of matches
-    print("somthing")
     if not new_list and old_list:
         print("Running initial job to build associations")
         corpus_frequency = {}

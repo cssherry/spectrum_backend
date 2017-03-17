@@ -380,12 +380,12 @@ So for 16k documents, this means 1 hour of computation time.
     """
     threshold = 0.2  # threshold for storage of matches
     try:
-        new_list_exists = new_list.exists?
+        new_list_exists = new_list.exists()
     except AttributeError:
         new_list_exists = False
 
     try:
-        old_list_exists = old_list.exists?
+        old_list_exists = old_list.exists()
     except AttributeError:
         old_list_exists = False
 

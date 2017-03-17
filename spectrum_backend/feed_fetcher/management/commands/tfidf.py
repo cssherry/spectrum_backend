@@ -189,7 +189,7 @@ FIRST. N is number of total documents in corpus.
 
     """
     print("Comparing documents and storing comparison data")
-    for i in range(len(doc_list)):
+    for i in range(doc_list.count()):
         doc_item_1_list = doc_list[i:i+1]
         doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
         dissimilar_lists_comparison(doc_item_1_list,
@@ -207,12 +207,12 @@ def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 pretty_print=False,
                                 storage_threshold=0.2):
 
-    for i in range(len(doc_list_new)):
+    for i in range(doc_list_new.count()):
         doc_item_1 = doc_list_new[i]
         bias_1 = doc_item_1.publication_bias()
         frequency_1 = doc_item_1.frequency_dictionary
         self_score_1 = doc_item_1.self_score
-        for j in range(len(doc_list_old)):
+        for j in range(doc_list_old.count()):
             doc_item_2 = doc_list_old[j]
             bias_2 = doc_item_2.publication_bias()
             frequency_2 = doc_item_2.frequency_dictionary
@@ -246,7 +246,7 @@ exclude_no_article, then if there is no body text, exclude from
 matching.
 
     """
-    for i in range(len(doc_list)):
+    for i in range(doc_list.count()):
         doc_item = doc_list[i]
         title = doc_item.title
         summary = doc_item.description
@@ -267,7 +267,7 @@ matching.
         
     # now that updated, for each document, add in tfidf self score
     print("Calculating self scores")
-    for i in range(len(doc_list)):
+    for i in range(doc_list.count()):
         doc_item = doc_list[i]
         doc_frequency = doc_item.frequency_dictionary
         tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
@@ -392,7 +392,7 @@ So for 16k documents, this means 1 hour of computation time.
     if not new_list_exists and old_list_exists:
         print("Running initial job to build associations")
         corpus_frequency = {}
-        n = len(old_list)  # total number of docs in corpus, right now
+        n = old_list.count()  # total number of docs in corpus, right now
         update_df_and_cf_with_new_docs(
             old_list, corpus_frequency, n)
         # batch_calculate_similarities
@@ -402,7 +402,7 @@ So for 16k documents, this means 1 hour of computation time.
     elif new_list_exists and old_list_exists:
         print("both lists are populated. Running update")
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
-        n = len(old_list) + len(new_list)  # set n to total number of docs
+        n = old_list.count() + new_list.count()  # set n to total number of docs
         update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
         # now do exhaustive_update for docs with themselves:
         single_list_self_comparison(new_list, corpus_frequency, n)

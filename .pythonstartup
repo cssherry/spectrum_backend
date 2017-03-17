@@ -1,4 +1,4 @@
-from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed, Association
+from spectrum_backend.feed_fetcher.models import Tag, Publication, FeedItem, Feed, Association, ScrapyLogItem
 import sandbox
 from sandbox import pp, one_of_each
 from sandbox import articles_by_publication as samples

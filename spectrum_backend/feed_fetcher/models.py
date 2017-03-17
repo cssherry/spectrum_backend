@@ -94,6 +94,8 @@ class Feed(models.Model):
 
 
 class FeedItem(models.Model):
+    MAX_SCRAPING_ATTEMPTS = 2
+
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
@@ -137,14 +139,11 @@ class FeedItem(models.Model):
     def publication_logo(self):
         return self.feed.publication.logo_url
 
-    def not_created_recently(self):
-        return self.created_at < timezone.now() - timedelta(days=2)
+    def under_max_scraping_cap(self):
+        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
 
-    def content_missing_from_scrape(self):
-        if self.not_created_recently():
-            return self.content == ""
-        else:
-            return False
+    def should_scrape(self, ignore_scraping_cap = False):
+        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category
@@ -269,6 +268,8 @@ class Association(models.Model):
 
 class CorpusWordFrequency(models.Model):
     dictionary = JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
     def get_corpus_dictionary(cls):
@@ -283,3 +284,14 @@ class CorpusWordFrequency(models.Model):
     @classmethod
     def _corpus_dictionary(cls):
         return cls.objects.first() or cls.objects.create(dictionary={})
+
+
+class ScrapyLogItem(models.Model):
+    feed_item = models.ForeignKey('FeedItem')
+    status_code = models.IntegerField()
+    content_tag_found = models.BooleanField()
+    other_error = models.TextField(default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+

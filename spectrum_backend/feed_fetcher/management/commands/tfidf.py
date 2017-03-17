@@ -379,6 +379,8 @@ So for 16k documents, this means 1 hour of computation time.
 
     """
     threshold = 0.2  # threshold for storage of matches
+    print("test")
+    print(len(old_list))
     if not new_list and old_list:
         print("Running initial job to build associations")
         corpus_frequency = {}

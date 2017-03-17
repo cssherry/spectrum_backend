@@ -268,14 +268,28 @@ matching.
     # now that updated, for each document, add in tfidf self score
     print("Calculating self scores")
     for i in range(doc_list.count()):
-        doc_item = doc_list[i]
-        doc_frequency = doc_item.frequency_dictionary
-        tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
-                                                 corpus_frequency, n)
-        doc_item.self_score = tfidf_vec_length
-        doc_item.save()
-        if i % 1000 == 0:
-            print("%s document self scores processed" % (i + 1))
+        try: 
+            doc_item = doc_list[i]
+            doc_frequency = doc_item.frequency_dictionary
+            tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
+                                                     corpus_frequency, n)
+            doc_item.self_score = tfidf_vec_length
+            doc_item.save()
+            if i % 1000 == 0:
+                print("%s document self scores processed" % (i + 1))
+        except KeyError as e:
+            print(doc_item)
+            print(i)
+            print(e)
+            try: 
+              update_corpus_frequency(corpus_frequency, doc_frequency)
+              tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
+                                                       corpus_frequency, n)
+              doc_item.self_score = tfidf_vec_length
+              doc_item.save()
+            except KeyError:
+              print("failed a second time")
+                    
 
         
 def get_top_associations(doc_item):

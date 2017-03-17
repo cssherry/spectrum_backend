@@ -199,7 +199,7 @@ FIRST. N is number of total documents in corpus.
                                     pretty_print,
                                     storage_threshold)
         if i % 100 == 0:
-            print("%s items processed" % i + 1) 
+            print("%s items processed" % (i + 1)) 
 
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
@@ -275,7 +275,7 @@ matching.
         doc_item.self_score = tfidf_vec_length
         doc_item.save()
         if i % 1000 == 0:
-            print("%s document self scores processed" % i + 1)
+            print("%s document self scores processed" % (i + 1))
 
         
 def get_top_associations(doc_item):

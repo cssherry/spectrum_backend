@@ -30,6 +30,7 @@ from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
 from django.core.management.base import BaseCommand
+from django.core.exceptions import ValidationError
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -189,7 +190,8 @@ FIRST. N is number of total documents in corpus.
 
     """
     print("Comparing documents and storing comparison data")
-    for i in range(doc_list.count()):
+    for i in range(len(doc_list)):
+        print(i)
         doc_item_1_list = doc_list[i:i+1]
         doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
         dissimilar_lists_comparison(doc_item_1_list,
@@ -238,7 +240,7 @@ def dissimilar_lists_comparison(doc_list_new, doc_list_old,
 
 
 def update_df_and_cf_with_new_docs(doc_list, corpus_frequency, n,
-                                   exclude_no_article=True):
+                                   exclude_no_article=True, skip_corpus_freq=False):
     """For each document, calc doc frequency, store it, and update corpus
 frequency.  N is total number of docs in corpus, not just length of
 doc_list.  Need to then update the similarity scores. If
@@ -262,6 +264,24 @@ matching.
             print("Corpus frequency length: %s" % len(corpus_frequency))
     
     CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
+
+    if not skip_corpus_freq:
+        for i in range(doc_list.count()):
+            doc_item = doc_list[i]
+            title = doc_item.title
+            summary = doc_item.description
+            body = doc_item.content
+            if not body and exclude_no_article:
+                continue
+            text = title + summary + body
+            doc_frequency = calc_doc_frequency(text)
+            doc_item.frequency_dictionary = doc_frequency
+            doc_item.save()
+            update_corpus_frequency(corpus_frequency, doc_frequency)
+            if i % 1000 == 0:
+                print("Corpus frequency length: %s" % len(corpus_frequency))
+        
+        CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
     # -> are we smashing words together?
     # print(CorpusWordFrequency.get_corpus_dictionary())
         
@@ -376,7 +396,7 @@ def test(threshold):
     return
     
         
-def main(old_list=[], new_list=[]):
+def main(old_list=[], new_list=[], skip_corpus_freq=False, skip_update_df_and_cf=False):
     """Given a single list, will populate associations for that list
 relative only to itself. Otherwise, given a new list, assumes old list
 has already been populated and will build associations for the new
@@ -405,10 +425,13 @@ So for 16k documents, this means 1 hour of computation time.
 
     if not new_list_exists and old_list_exists:
         print("Running initial job to build associations")
-        corpus_frequency = {}
+        # corpus_frequency = {}
+        corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
         n = old_list.count()  # total number of docs in corpus, right now
-        update_df_and_cf_with_new_docs(
-            old_list, corpus_frequency, n)
+        if not skip_corpus_freq and not skip_update_df_and_cf:
+            update_df_and_cf_with_new_docs(
+                old_list, corpus_frequency, n)
+
         # batch_calculate_similarities
         single_list_self_comparison(old_list,
                                     corpus_frequency, n,

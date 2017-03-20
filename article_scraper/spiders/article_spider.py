@@ -77,5 +77,5 @@ class ArticleSpider(scrapy.Spider):
     return urls
 
   def __clean_url(self, raw_url):
-    url_parts = parse.urlparse(raw_url)
-    return "".join([url_parts.netloc, url_parts.path])
+    url_parameter_delimiter = "?"
+    return raw_url.split(url_parameter_delimiter)[0]

@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from spectrum_backend.feed_fetcher.models import FeedItem
 from .tfidf import main
 
-DAYS_TO_CHECK_FOR = 4
+DAYS_TO_CHECK_FOR = 21
 
 # Adds new associations
 class Command(BaseCommand):

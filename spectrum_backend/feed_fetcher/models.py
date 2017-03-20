@@ -99,8 +99,6 @@ class FeedItem(models.Model):
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    # 1-2 lines from RSS feed description
-    summary = models.TextField(default="")
     # 8-10 sentences from RSS feed or scraper
     description = models.TextField(default="")
     # content of article, pulled either from RSS feed or scraping
@@ -109,16 +107,24 @@ class FeedItem(models.Model):
     raw_description = models.TextField(default="")
     raw_content = models.TextField(default="")  # raw contents of web scrape
     publication_date = models.DateTimeField()
+    redirected_url = models.CharField(max_length=1000, default="")
     url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
     self_score = models.FloatField(default=0)
+    checked_for_associations = models.BooleanField(default=0)
     frequency_dictionary = JSONField(default={})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def items_eligible_for_similarity_score(cls):
-        return cls.objects.exclude(content__exact="")
+    def recent_items_eligible_for_association(cls, days):
+        time_threshold = datetime.now() - timedelta(days=days)
+        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
+
+    @classmethod
+    def unassociated_items_eligible_for_similiarity_score(cls, days):
+        time_threshold = datetime.now() - timedelta(days=days)
+        return cls.objects.exclude(content__exact="").exclude(checked_for_associations=True).filter(created_at__gt=time_threshold)
 
     @classmethod
     def get_fields(cls, list):
@@ -143,7 +149,7 @@ class FeedItem(models.Model):
         return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
 
     def should_scrape(self, ignore_scraping_cap = False):
-        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
+        return self.raw_content == "" and self.url == self.redirected_url and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category

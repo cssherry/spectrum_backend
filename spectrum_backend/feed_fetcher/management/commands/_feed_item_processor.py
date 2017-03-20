@@ -5,10 +5,10 @@ from ._html_parser import HTMLParser
 from ._url_parser import URLParser
 from nltk.tokenize import sent_tokenize
 import nltk
+from urllib import parse
 nltk.download('punkt')
 
 class FeedItemProcessor:
-  SUMMARY_MAX_SENTENCES = 1
   DESCRIPTION_MAX_SENTENCES = 5
 
   def process(self, feed_item):
@@ -33,28 +33,15 @@ class FeedItemProcessor:
   def __process_content_fields(self):
     description_text = HTMLParser().pull_content_from_html(self.feed_item.raw_description)
     description_sentences = sent_tokenize(description_text)
-    self.feed_item.summary = " ".join(description_sentences[0:self.SUMMARY_MAX_SENTENCES])
-
-    if len(description_sentences) > self.SUMMARY_MAX_SENTENCES:
-      self.feed_item.description = " ".join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
-
-    if len(description_sentences) > self.DESCRIPTION_MAX_SENTENCES:
-      self.feed_item.content = " ".join(description_sentences)
-
-    if self.feed_item.raw_content != "":
-      content_text = HTMLParser().pull_content_from_html(self.feed_item.raw_content)
-      self.feed_item.content = content_text
-      content_sentences = sent_tokenize(content_text)
-
-      if self.feed_item.description == "" or len(description_sentences) < self.DESCRIPTION_MAX_SENTENCES:
-        self.feed_item.description = " ".join(content_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
+    self.feed_item.description = " ".join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
 
   def __process_author(self):
     pass
 
   def __process_url(self):
-    query_param_delimiter = "?"
-    return self.feed_item.url.split(query_param_delimiter)[0]
+    url_parts = parse.urlparse(self.feed_item.url)
+    self.feed_item.url = "".join([url_parts.netloc, url_parts.path])
+
 
   def __process_image_url(self):
     pass

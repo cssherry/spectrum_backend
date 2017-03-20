@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy.spidermiddlewares.httperror import HttpError
+from urllib import parse
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"
@@ -39,6 +40,7 @@ class ArticleSpider(scrapy.Spider):
        # this does a join since the content tag might have to be a repeating class (e.g. 'body-content-paragraph') as opposed to a single content div - implementations vary
       parsed_content = BeautifulSoup(feed_item.raw_content, 'html.parser').get_text(separator=u' ')
       feed_item.content = parsed_content.strip().replace(u'\xa0', u' ')
+      feed_item.redirected_url = self.__clean_url(response.url)
       feed_item.save()
       self.content_found += 1
     else:
@@ -73,3 +75,7 @@ class ArticleSpider(scrapy.Spider):
 
     print("Processing %s total items" % (total_items))
     return urls
+
+  def __clean_url(self, raw_url):
+    url_parts = parse.urlparse(raw_url)
+    return "".join([url_parts.netloc, url_parts.path])

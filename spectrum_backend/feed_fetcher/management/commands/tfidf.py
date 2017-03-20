@@ -23,6 +23,7 @@ import math
 import sys
 import time
 import unicodedata
+from datetime import datetime
 
 import nltk
 import numpy as np
@@ -189,9 +190,11 @@ in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
 
     """
+    t1 = datetime.now()
     print("Comparing documents and storing comparison data")
     for i in range(len(doc_list)):
-        print(i)
+        if i == 1:
+            t1 = datetime.now()
         doc_item_1_list = doc_list[i:i+1]
         doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
         dissimilar_lists_comparison(doc_item_1_list,
@@ -200,43 +203,45 @@ FIRST. N is number of total documents in corpus.
                                     n,
                                     pretty_print,
                                     storage_threshold)
-        if i % 100 == 0:
+
+        if i % 1000 == 0:
             print("%s items processed" % (i + 1)) 
 
+    t2 = datetime.now()
+    print("%s items processed" % (len(doc_list)))
+    print("Ellapsed time for associations: %s seconds" % (t2 - t1).seconds)
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
                                 pretty_print=False,
                                 storage_threshold=0.2):
 
-    for i in range(doc_list_new.count()):
+    for i in range(len(doc_list_new)):
         doc_item_1 = doc_list_new[i]
-        bias_1 = doc_item_1.publication_bias()
         frequency_1 = doc_item_1.frequency_dictionary
         self_score_1 = doc_item_1.self_score
-        for j in range(doc_list_old.count()):
+        for j in range(len(doc_list_old)):
             doc_item_2 = doc_list_old[j]
-            bias_2 = doc_item_2.publication_bias()
             frequency_2 = doc_item_2.frequency_dictionary
             self_score_2 = doc_item_2.self_score
-            if bias_2 != bias_1:
-                if pretty_print:
-                    print("\n\nIntersecting : ")
-                    print(doc_item_1.title)
-                    print(doc_item_2.title)
-                    print("doc 1 number of terms: {}".format(
-                        len(list(frequency_1.keys()))))
-                    print("doc 2 number of terms: {}".format(
-                        len(list(frequency_2.keys()))))
-                cosine_similarity = calc_cosine_similarity(
-                    frequency_1, frequency_2, self_score_1, self_score_2,
-                    corpus_frequency, n)
-                if pretty_print:
-                    print("cosine_similary={0:.2f}".format(cosine_similarity))
-                update_associations(doc_item_1, doc_item_2,
-                                    cosine_similarity, storage_threshold)
-            else:
-                continue
+            if pretty_print:
+                print("\n\nIntersecting : ")
+                print(doc_item_1.title)
+                print(doc_item_2.title)
+                print("doc 1 number of terms: {}".format(
+                    len(list(frequency_1.keys()))))
+                print("doc 2 number of terms: {}".format(
+                    len(list(frequency_2.keys()))))
+            cosine_similarity = calc_cosine_similarity(
+                frequency_1, frequency_2, self_score_1, self_score_2,
+                corpus_frequency, n)
+            if pretty_print:
+                print("cosine_similary={0:.2f}".format(cosine_similarity))
+            update_associations(doc_item_1, doc_item_2,
+                                cosine_similarity, storage_threshold)
+
+        doc_item_1.checked_for_associations = True
+        doc_item_1.save()
 
 
 def update_df_and_cf_with_new_docs(doc_list, corpus_frequency, n,
@@ -248,25 +253,8 @@ exclude_no_article, then if there is no body text, exclude from
 matching.
 
     """
-    for i in range(doc_list.count()):
-        doc_item = doc_list[i]
-        title = doc_item.title
-        summary = doc_item.description
-        body = doc_item.content
-        if not body and exclude_no_article:
-            continue
-        text = title + summary + body
-        doc_frequency = calc_doc_frequency(text)
-        doc_item.frequency_dictionary = doc_frequency
-        doc_item.save()
-        update_corpus_frequency(corpus_frequency, doc_frequency)
-        if i % 1000 == 0:
-            print("Corpus frequency length: %s" % len(corpus_frequency))
-    
-    CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
-
     if not skip_corpus_freq:
-        for i in range(doc_list.count()):
+        for i in range(len(doc_list)):
             doc_item = doc_list[i]
             title = doc_item.title
             summary = doc_item.description
@@ -279,15 +267,17 @@ matching.
             doc_item.save()
             update_corpus_frequency(corpus_frequency, doc_frequency)
             if i % 1000 == 0:
-                print("Corpus frequency length: %s" % len(corpus_frequency))
+                print("%s. Corpus frequency length: %s" % (i, len(corpus_frequency)))
         
+        print("Corpus frequency length: %s" % (len(corpus_frequency)))
         CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
+
     # -> are we smashing words together?
     # print(CorpusWordFrequency.get_corpus_dictionary())
         
     # now that updated, for each document, add in tfidf self score
     print("Calculating self scores")
-    for i in range(doc_list.count()):
+    for i in range(len(doc_list)):
         try: 
             doc_item = doc_list[i]
             doc_frequency = doc_item.frequency_dictionary
@@ -298,9 +288,8 @@ matching.
             if i % 1000 == 0:
                 print("%s document self scores processed" % (i + 1))
         except KeyError as e:
-            print(doc_item)
-            print(i)
-            print(e)
+            print("Missing corpus key for item %s: %s (%s)" % (i, doc_item, e))
+
             try: 
               update_corpus_frequency(corpus_frequency, doc_frequency)
               tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
@@ -308,8 +297,9 @@ matching.
               doc_item.self_score = tfidf_vec_length
               doc_item.save()
             except KeyError:
-              print("failed a second time")
-                    
+              print("Failed a second time")
+
+    print("%s document self scores processed" % (len(doc_list)))
 
         
 def get_top_associations(doc_item):
@@ -334,7 +324,7 @@ def get_top_associations(doc_item):
 def test(threshold):
     print(FeedItem.objects.count())
     #  All feed_items with content field available
-    doc_list = FeedItem.items_eligible_for_similarity_score()
+    doc_list = FeedItem.recent_items_eligible_for_association()
     print(len(doc_list))
     # database check
     d1 = doc_list[0]
@@ -413,21 +403,11 @@ So for 16k documents, this means 1 hour of computation time.
 
     """
     threshold = 0.2  # threshold for storage of matches
-    try:
-        new_list_exists = new_list.exists()
-    except AttributeError:
-        new_list_exists = False
 
-    try:
-        old_list_exists = old_list.exists()
-    except AttributeError:
-        old_list_exists = False
-
-    if not new_list_exists and old_list_exists:
-        print("Running initial job to build associations")
-        # corpus_frequency = {}
-        corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
-        n = old_list.count()  # total number of docs in corpus, right now
+    if not new_list and old_list:
+        print("Running initial job to build associations for %s items" % len(old_list))
+        corpus_frequency = {}
+        n = len(old_list)  # total number of docs in corpus, right now
         if not skip_corpus_freq and not skip_update_df_and_cf:
             update_df_and_cf_with_new_docs(
                 old_list, corpus_frequency, n)
@@ -436,10 +416,10 @@ So for 16k documents, this means 1 hour of computation time.
         single_list_self_comparison(old_list,
                                     corpus_frequency, n,
                                     False, threshold)
-    elif new_list_exists and old_list_exists:
-        print("both lists are populated. Running update")
+    elif new_list and old_list:
+        print("Running update for %s docs against %s corpus" % (len(new_list), len(old_list)))
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
-        n = old_list.count() + new_list.count()  # set n to total number of docs
+        n = len(old_list) + len(new_list)  # set n to total number of docs
         update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
         # now do exhaustive_update for docs with themselves:
         single_list_self_comparison(new_list, corpus_frequency, n)

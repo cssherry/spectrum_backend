@@ -7,11 +7,11 @@ from celery.decorators import task
 logger = get_task_logger(__name__)
 
 @periodic_task(
-    run_every=(crontab()),
-    name="task_fetch_rss_feeds",
+    run_every=(crontab(minutes=10)),
+    name="task_add_associations",
     ignore_result=True
 )
 
 def task_fetch_rss_feeds():
-    call_command('rss_fetcher')
+    call_command('add_new_associations')
 

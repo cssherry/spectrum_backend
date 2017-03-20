@@ -70,7 +70,7 @@ def download_bias_json():
     f.write(j)
 
 def seed_associations():
-  items = FeedItem.objects.all()[:10] # what is [::10]?
+  items = FeedItem.objects.all()[:10]
   other_items = FeedItem.objects.all()[11:21]
   for item in items:
     for other_item in other_items:

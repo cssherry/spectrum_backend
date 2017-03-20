@@ -6,14 +6,11 @@ import urllib
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    paginator = Paginator(feed_items, 10000)
+    paginator = Paginator(FeedItem.objects.all(), 10000)
     for page in range(1, paginator.num_pages + 1):
       print("Parsing next 10000 URLs")
       for feed_item in paginator.page(page).object_list:
-        try:
-          url = urllib.request.urlopen(feed_item.url).geturl()
-          url_parts = parse.urlparse(raw_url)
-          feed_item.redirected_url = "".join([url_parts.netloc, url_parts.path])
-          feed_item.save()
-        except:
-          pass
+        url = urllib.request.urlopen(feed_item.url).geturl()
+        url_parameter_delimiter = "?"
+        feed_item.redirected_url = url.split(url_parameter_delimiter)[0]
+        feed_item.save()

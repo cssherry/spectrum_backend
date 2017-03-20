@@ -9,5 +9,5 @@ class Command(BaseCommand):
       feed_item = FeedItemProcessor().process(feed_item)
       try:
         feed_item.save()
-      except IntegrityError:
-        continue
+      except IntegrityError as e:
+        print(e)

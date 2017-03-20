@@ -39,9 +39,8 @@ class FeedItemProcessor:
     pass
 
   def __process_url(self):
-    url_parts = parse.urlparse(self.feed_item.url)
-    self.feed_item.url = "".join([url_parts.netloc, url_parts.path])
-
+    url_parameter_delimiter = "?"
+    self.feed_item.url = self.feed_item.url.split(url_parameter_delimiter)[0]
 
   def __process_image_url(self):
     pass

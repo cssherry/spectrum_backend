@@ -10,4 +10,5 @@ class Command(BaseCommand):
       try:
         feed_item.save()
       except IntegrityError as e:
+        feed_item.delete()
         print(e)

@@ -149,7 +149,7 @@ class FeedItem(models.Model):
         return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
 
     def should_scrape(self, ignore_scraping_cap = False):
-        return self.raw_content == "" and self.url == self.redirected_url and (ignore_scraping_cap or self.under_max_scraping_cap())
+        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category

@@ -170,7 +170,6 @@ class FeedItem(models.Model):
             "publication_logo": self.publication_logo(),
             "feed_category": self.feed_category(),
             "title": self.title,
-            "summary": self.summary,
             "description": self.description,
             "content": self.content,
             "url": self.url,

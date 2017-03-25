@@ -10,17 +10,27 @@ def test_api(request=None):
     return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-    current_article = FeedItem.objects.filter(redirected_url__icontains=clean_url(request.GET.get('url', None)))[0]
-    if not current_article:
-        current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0] # TODO - fix empty redirected_url and just use those
+    request_url = clean_url(request.GET.get('url', None))
+    current_article = FeedItem.objects.filter(redirected_url__icontains=request_url)
 
-    top_associations = current_article.top_associations(count=3, check_bias=True)
+    # TODO - fix empty redirected_url and just use those
+    if not current_article:
+        current_article = FeedItem.objects.filter(url__icontains=request_url)
+
+    # Return "False" if article doesn't exist
+    if len(current_article) == 0:
+        return HttpResponse(json.dumps(False), content_type='application/json')
+
+    # Otherwise, return top associations
+    top_associations = current_article.first().top_associations(count=3, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
     p = urlparse(url_string)
-    return p.hostname + p.path
+
+    # don't include subdomains, code similar to cleanUrl in spectrum_chrome_app
+    return '.'.join(p.hostname.split('.')[-2:]) + p.path
 
 def all_publications(request):
     publications = Publication.objects.all()

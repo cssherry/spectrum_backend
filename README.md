@@ -150,5 +150,6 @@ The following are the commands for the backend Python jobs:
 The following are the Celery commands for running the background jobs:
 
 - `redis-server` (need to have Redis installed globally)
+- Add ENV variable for that SPECTRUM_REDIS_URL='redis://localhost:6379'
 - `celery -A spectrum_backend worker -l info` - run celery worker
 - rss_fetcher job will automatically run the new associations job

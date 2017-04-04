@@ -3,6 +3,7 @@ from spectrum_backend.feed_fetcher.models import Feed
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
 from spectrum_backend.feed_fetcher.models import Association
+from spectrum_backend.feed_fetcher.models import ScrapyLogItem
 from django.core import serializers
 from datetime import datetime, timedelta
 import random
@@ -48,6 +49,45 @@ def empty_content_report():
   for feed in Feed.objects.all():
     feed.display_empty_content_report()
 
+def debug_publication_content_tags(show_failures=False):
+  success = set()
+  content_failure = set()
+  http_failure = set()
+  other_error = set()
+
+  for scrapyLogItem in ScrapyLogItem.objects.all():
+    feed_item = scrapyLogItem.feed_item
+    if scrapyLogItem.status_code != 200:
+      http_failure.add(feed_item)
+    elif not scrapyLogItem.content_tag_found:
+      content_failure.add(feed_item)
+    elif scrapyLogItem.other_error:
+      other_error.add(feed_item)
+    else:
+      success.add(feed_item)
+
+  pub_dict = {}
+  for publication in Publication.objects.all():
+    pub_dict[publication.name] = {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
+
+  for feed_item in content_failure:
+    pub_dict[feed_item.publication_name()]["content_failure"] += 1
+
+  for feed_item in success:
+    pub_dict[feed_item.publication_name()]["success"] += 1
+
+  for feed_item in http_failure:
+    pub_dict[feed_item.publication_name()]["http_failure"] += 1
+
+  for feed_item in other_error:
+    pub_dict[feed_item.publication_name()]["other_error"] += 1
+
+  pprint.PrettyPrinter(indent=2, width=200).pprint(pub_dict)
+
+  if show_failures:
+    for feed_item in content_failure:
+      print("%s %s" % (feed_item.publication_name(), feed_item.url))
+
 def download_bias_json():
   """ Downloads bias JSON by bias """
   bias_hash = {"L": [], "C": [], "R": []}
@@ -70,7 +110,7 @@ def download_bias_json():
     f.write(j)
 
 def seed_associations():
-  items = FeedItem.objects.all()[:10] # what is [::10]?
+  items = FeedItem.objects.all()[:10]
   other_items = FeedItem.objects.all()[11:21]
   for item in items:
     for other_item in other_items:

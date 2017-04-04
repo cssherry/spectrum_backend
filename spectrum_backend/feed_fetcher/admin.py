@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Publication, Feed, FeedItem, Tag
-from spectrum_backend.feed_fetcher.models import Publication, FeedItem
+from spectrum_backend.feed_fetcher.models import Publication, FeedItem, ScrapyLogItem
 
 from import_export import resources
 from import_export.admin import ImportExportMixin
@@ -33,9 +33,17 @@ class TagResource(resources.ModelResource):
 class TagAdmin(ImportExportMixin, admin.ModelAdmin):
   resource_class = TagResource
 
+class ScrapyLogItemResource(resources.ModelResource):
+  class Meta:
+    model = ScrapyLogItem
+
+class ScrapyLogItemAdmin(ImportExportMixin, admin.ModelAdmin):
+  resource_class = ScrapyLogItemResource
+
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Feed, FeedAdmin)
 admin.site.register(FeedItem, FeedItemAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(ScrapyLogItem, ScrapyLogItemAdmin)
 
 # Register your models here.

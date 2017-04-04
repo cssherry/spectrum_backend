@@ -8,6 +8,7 @@ import feedparser
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from spectrum_backend.feed_fetcher.tasks import task_add_new_associations
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
@@ -21,11 +22,14 @@ class Command(BaseCommand):
     process = CrawlerProcess(get_project_settings())
     process.crawl('articles')
     process.start()
-    # tfidf.main()
+    task_add_new_associations.delay()
 
   def __parse_entry(self, feed, entry):
     entry_wrapper = RSSEntryWrapper(feed, entry)
-    feed_item = FeedItem.objects.get_or_create(url=entry_wrapper.url, defaults={'feed': feed, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
+    url_parameter_delimiter = "?"
+    url = entry_wrapper.url.split(url_parameter_delimiter)[0]
+
+    feed_item = FeedItem.objects.get_or_create(url=url, defaults={'feed': feed, 'redirected_url': entry_wrapper.url, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
     feed_item = FeedItemProcessor().process(feed_item)
     feed_item.save()
     for tag in entry_wrapper.tags:

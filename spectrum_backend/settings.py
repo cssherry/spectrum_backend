@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'import_export',
     'el_pagination',
     'spectrum_backend.feed_fetcher',
+    'django_celery_beat'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,6 +137,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+CELERY_BROKER_URL = os.environ['SPECTRUM_REDIS_URL']
+CELERY_RESULT_BACKEND = os.environ['SPECTRUM_REDIS_URL']
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

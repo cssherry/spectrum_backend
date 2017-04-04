@@ -11,8 +11,11 @@ def test_api(request=None):
     return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-    current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0]
-    top_associations = current_article.top_associations(count=3)
+    current_article = FeedItem.objects.filter(redirected_url__icontains=clean_url(request.GET.get('url', None)))[0]
+    if not current_article:
+        current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0] # TODO - fix empty redirected_url and just use those
+
+    top_associations = current_article.top_associations(count=3, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 

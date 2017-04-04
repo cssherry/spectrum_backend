@@ -11,6 +11,7 @@
 import sys
 import os
 import django
+import scrapy_fake_useragent
 
 # sys.path.append('../spectrum_backend')
 # os.environ['DJANGO_SETTINGS_MODULE'] = 'spectrum_backend.settings'
@@ -48,7 +49,7 @@ ROBOTSTXT_OBEY = True
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+# COOKIES_ENABLED = False # ** JG - disabling cookies won't work to improve scraping results, sites like nytimes.com block cookie-less requests. We may set this specifically if useful in the future
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -65,12 +66,17 @@ ROBOTSTXT_OBEY = True
 #    'article_scraper.middlewares.ArticleScraperSpiderMiddleware': 543,
 #}
 
+
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
 #    'article_scraper.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+}
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
 #EXTENSIONS = {

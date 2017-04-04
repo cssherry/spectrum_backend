@@ -7,16 +7,17 @@ from django.contrib.postgres.fields import JSONField
 
 class Publication(models.Model):
     BIASES = (
-        ('L', 'Left'),
-        ('LC', 'Left-Center'),
-        ('C', 'Center'),
-        ('RC', 'Right-Center'),
-        ('R', 'Right'),
+        ('L', 'Left-Wing'),
+        ('LC', 'Left-Leaning'),
+        ('C', 'Moderate'),
+        ('RC', 'Right-Leaning'),
+        ('R', 'Right-Wing'),
     )
     name = models.CharField(max_length=500, unique=True)
     base_url = models.CharField(max_length=500, unique=True)
     bias = models.CharField(max_length=2, choices=BIASES)
     html_content_tag = models.CharField(max_length=500, default="")
+    logo_url = models.CharField(max_length=500, default="")
     skip_scraping = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -93,11 +94,11 @@ class Feed(models.Model):
 
 
 class FeedItem(models.Model):
+    MAX_SCRAPING_ATTEMPTS = 2
+
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    # 1-2 lines from RSS feed description
-    summary = models.TextField(default="")
     # 8-10 sentences from RSS feed or scraper
     description = models.TextField(default="")
     # content of article, pulled either from RSS feed or scraping
@@ -106,16 +107,24 @@ class FeedItem(models.Model):
     raw_description = models.TextField(default="")
     raw_content = models.TextField(default="")  # raw contents of web scrape
     publication_date = models.DateTimeField()
+    redirected_url = models.CharField(max_length=1000, default="")
     url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
     self_score = models.FloatField(default=0)
+    checked_for_associations = models.BooleanField(default=0)
     frequency_dictionary = JSONField(default={})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def items_eligible_for_similarity_score(cls):
-        return cls.objects.exclude(content__exact="")
+    def recent_items_eligible_for_association(cls, days):
+        time_threshold = datetime.now() - timedelta(days=days)
+        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
+
+    @classmethod
+    def unassociated_items_eligible_for_similiarity_score(cls, days):
+        time_threshold = datetime.now() - timedelta(days=days)
+        return cls.objects.exclude(content__exact="").exclude(checked_for_associations=True).filter(created_at__gt=time_threshold)
 
     @classmethod
     def get_fields(cls, list):
@@ -133,14 +142,14 @@ class FeedItem(models.Model):
     def publication_bias(self):
         return self.feed.publication.bias
 
-    def not_created_recently(self):
-        return self.created_at < timezone.now() - timedelta(days=2)
+    def publication_logo(self):
+        return self.feed.publication.logo_url
 
-    def content_missing_from_scrape(self):
-        if self.not_created_recently():
-            return self.content == ""
-        else:
-            return False
+    def under_max_scraping_cap(self):
+        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
+
+    def should_scrape(self, ignore_scraping_cap = False):
+        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category
@@ -158,9 +167,9 @@ class FeedItem(models.Model):
         base_object = {
             "publication_name": self.publication_name(),
             "publication_bias": self.publication_bias(),
+            "publication_logo": self.publication_logo(),
             "feed_category": self.feed_category(),
             "title": self.title,
-            "summary": self.summary,
             "description": self.description,
             "content": self.content,
             "url": self.url,
@@ -174,14 +183,47 @@ class FeedItem(models.Model):
 
         return base_object
 
-    def top_associations(self, count=3):
+    def opposing_biases(self):
+        if self.publication_bias() == "L" or self.publication_bias() == "LC":
+            return ["R", "RC", "C"]
+        elif self.publication_bias() == "R" or self.publication_bias() == "RC":
+            return ["L", "LC", "C"]
+        else:
+            return ["L", "LC", "C", "RC", "R"]
+
+
+    def top_associations(self, count=3, check_bias=True):
         associated_articles = []
         for association in self.base_associations.all():
+            associated_feed_item = association.associated_feed_item
+            if check_bias:
+                if not associated_feed_item.publication_bias() in self.opposing_biases():
+                    continue
+
             associated_articles.append(
-                association.associated_feed_item.base_object(
+                associated_feed_item.base_object(
                     association.similarity_score))
 
-        return associated_articles[:3]
+        unique_publication_articles = []
+        unique_publication_names = []
+        extra_articles = []
+
+        for article in associated_articles:
+            if not article["publication_name"] in unique_publication_names:
+                unique_publication_articles.append(article)
+                unique_publication_names.append(article["publication_name"])
+            else:
+                extra_articles.append(article)
+
+        all_articles = unique_publication_articles + extra_articles
+        return all_articles[:count]
+
+
+    def pretty_print_associations(self):
+        print("\t\t%s\t\t%s" % (self.publication_name(), self.title))
+        print("\n***************\n")
+        for association in self.base_associations.all():
+            print("%s\t%s\t%s" % (association.similarity_score, association.associated_feed_item.publication_name(), association.associated_feed_item.title))
 
     def __str__(self):
         return u'%s (%s - %s) %s (%s) %s' % (
@@ -227,10 +269,12 @@ class Association(models.Model):
 
     class Meta:
         ordering = ['-similarity_score']
-
+        unique_together = ('base_feed_item', 'associated_feed_item')
 
 class CorpusWordFrequency(models.Model):
     dictionary = JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
     def get_corpus_dictionary(cls):
@@ -245,3 +289,14 @@ class CorpusWordFrequency(models.Model):
     @classmethod
     def _corpus_dictionary(cls):
         return cls.objects.first() or cls.objects.create(dictionary={})
+
+
+class ScrapyLogItem(models.Model):
+    feed_item = models.ForeignKey('FeedItem')
+    status_code = models.IntegerField()
+    content_tag_found = models.BooleanField()
+    other_error = models.TextField(default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+

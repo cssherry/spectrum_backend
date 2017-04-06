@@ -22,7 +22,7 @@ def get_associated_articles(request):
         return HttpResponse(json.dumps(False), content_type='application/json')
 
     # Otherwise, return top associations
-    top_associations = current_article.first().top_associations(count=3, check_bias=True)
+    top_associations = current_article.first().top_associations(count=12, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 

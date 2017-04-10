@@ -412,7 +412,7 @@ So for 16k documents, this means 1 hour of computation time.
     if not new_list and old_list:
         print("Running initial job to build associations for %s items" % len(old_list))
         corpus_frequency = {}
-        n = len(old_list)  # total number of docs in corpus, right now
+        n = old_list.count()  # total number of docs in corpus, right now
         if not skip_corpus_freq and not skip_update_df_and_cf:
             update_df_and_cf_with_new_docs(
                 old_list, corpus_frequency, n)
@@ -422,9 +422,9 @@ So for 16k documents, this means 1 hour of computation time.
                                     corpus_frequency, n,
                                     False, threshold)
     elif new_list and old_list:
-        print("Running update for %s docs against %s corpus" % (len(new_list), len(old_list)))
+        print("Running update for %s docs against %s corpus" % (new_list.count(), old_list.count()))
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
-        n = len(old_list) + len(new_list)  # set n to total number of docs
+        n = old_list.count() + new_list.count()  # set n to total number of docs
         update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
         # now do exhaustive_update for docs with themselves:
         single_list_self_comparison(new_list, corpus_frequency, n)

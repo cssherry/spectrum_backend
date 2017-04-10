@@ -3,6 +3,7 @@ import json, re
 from django.http import HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
+from urlparse import urlparse
 
 # Test API
 def test_api(request=None):

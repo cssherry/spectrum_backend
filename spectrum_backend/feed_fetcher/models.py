@@ -2,8 +2,6 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
-# import nltk
-
 
 class Publication(models.Model):
     BIASES = (
@@ -40,10 +38,7 @@ class Publication(models.Model):
             return self.feed_set.filter(should_ignore=0)
 
     def feed_items(self, include_ignored=True, include_empty=True):
-        feed_items = []
-        [feed_items.extend(feed.feed_items(include_empty))
-         for feed in Feed.all(include_ignored).filter(publication=self)]
-        return feed_items
+        return FeedItem.objects.filter(feed__publication=self)
 
 
 class Feed(models.Model):

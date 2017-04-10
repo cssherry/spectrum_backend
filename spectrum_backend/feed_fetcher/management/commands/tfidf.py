@@ -24,6 +24,7 @@ import sys
 import time
 import unicodedata
 from datetime import datetime
+from django.core.paginator import Paginator
 
 import nltk
 import numpy as np
@@ -214,34 +215,38 @@ FIRST. N is number of total documents in corpus.
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
                                 pretty_print=False,
-                                storage_threshold=0.2):
+                                storage_threshold=0.2,
+                                memory_threshold=2000):
 
-    for i in range(len(doc_list_new)):
-        doc_item_1 = doc_list_new[i]
-        frequency_1 = doc_item_1.frequency_dictionary
-        self_score_1 = doc_item_1.self_score
-        for j in range(len(doc_list_old)):
-            doc_item_2 = doc_list_old[j]
-            frequency_2 = doc_item_2.frequency_dictionary
-            self_score_2 = doc_item_2.self_score
-            if pretty_print:
-                print("\n\nIntersecting : ")
-                print(doc_item_1.title)
-                print(doc_item_2.title)
-                print("doc 1 number of terms: {}".format(
-                    len(list(frequency_1.keys()))))
-                print("doc 2 number of terms: {}".format(
-                    len(list(frequency_2.keys()))))
-            cosine_similarity = calc_cosine_similarity(
-                frequency_1, frequency_2, self_score_1, self_score_2,
-                corpus_frequency, n)
-            if pretty_print:
-                print("cosine_similary={0:.2f}".format(cosine_similarity))
-            update_associations(doc_item_1, doc_item_2,
-                                cosine_similarity, storage_threshold)
+    paginator = Paginator(doc_list_old, memory_threshold)
+    for page in range(1, paginator.num_pages + 1):
+        doc_list_old_part = paginator.page(page).object_list
+        for i in range(len(doc_list_new)):
+            doc_item_1 = doc_list_new[i]
+            frequency_1 = doc_item_1.frequency_dictionary
+            self_score_1 = doc_item_1.self_score
+            for j in range(len(doc_list_old_part)):
+                doc_item_2 = doc_list_old_part[j]
+                frequency_2 = doc_item_2.frequency_dictionary
+                self_score_2 = doc_item_2.self_score
+                if pretty_print:
+                    print("\n\nIntersecting : ")
+                    print(doc_item_1.title)
+                    print(doc_item_2.title)
+                    print("doc 1 number of terms: {}".format(
+                        len(list(frequency_1.keys()))))
+                    print("doc 2 number of terms: {}".format(
+                        len(list(frequency_2.keys()))))
+                cosine_similarity = calc_cosine_similarity(
+                    frequency_1, frequency_2, self_score_1, self_score_2,
+                    corpus_frequency, n)
+                if pretty_print:
+                    print("cosine_similary={0:.2f}".format(cosine_similarity))
+                update_associations(doc_item_1, doc_item_2,
+                                    cosine_similarity, storage_threshold)
 
-        doc_item_1.checked_for_associations = True
-        doc_item_1.save()
+            doc_item_1.checked_for_associations = True
+            doc_item_1.save()
 
 
 def update_df_and_cf_with_new_docs(doc_list, corpus_frequency, n,
@@ -386,7 +391,7 @@ def test(threshold):
     return
     
         
-def main(old_list=[], new_list=[], skip_corpus_freq=False, skip_update_df_and_cf=False):
+def main(old_list=[], new_list=[], skip_corpus_freq=False, skip_update_df_and_cf=False, memory_threshold=2000):
     """Given a single list, will populate associations for that list
 relative only to itself. Otherwise, given a new list, assumes old list
 has already been populated and will build associations for the new
@@ -426,7 +431,8 @@ So for 16k documents, this means 1 hour of computation time.
         # now compare these docs with all other docs
         dissimilar_lists_comparison(new_list,
                                     old_list,
-                                    corpus_frequency, n)
+                                    corpus_frequency, n,
+                                    memory_threshold=memory_threshold)
 
     else:
         print("the first list must be populated with documents whose\

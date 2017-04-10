@@ -69,6 +69,7 @@ class ArticleSpider(scrapy.Spider):
         paginator = Paginator(publication.feed_items(), self.memory_threshold)
         for page in range(1, paginator.num_pages + 1):
           publication_feed_items = paginator.page(page).object_list
+          len(publication_feed_items)
           for feed_item in publication_feed_items:
             if feed_item.should_scrape():
               urls.append(feed_item)

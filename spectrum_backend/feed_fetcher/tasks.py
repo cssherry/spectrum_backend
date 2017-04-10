@@ -1,7 +1,7 @@
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
-from management.commands._add_new_associations import add
+from spectrum_backend.feed_fetcher.management.commands._add_new_associations import add
 from celery.task import task
 
 logger = get_task_logger(__name__)

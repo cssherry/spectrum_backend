@@ -6,9 +6,12 @@ from ._rss_entry_wrapper import RSSEntryWrapper
 from ._feed_item_processor import FeedItemProcessor
 import feedparser
 import scrapy
+import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from spectrum_backend.feed_fetcher.tasks import task_add_new_associations
+
+ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
@@ -20,7 +23,7 @@ class Command(BaseCommand):
         self.__parse_entry(feed, entry)
 
     process = CrawlerProcess(get_project_settings())
-    process.crawl('articles')
+    process.crawl('articles', memory_threshold=ASSOCIATION_MEMORY_THRESHOLD)
     process.start()
     task_add_new_associations.delay()
 

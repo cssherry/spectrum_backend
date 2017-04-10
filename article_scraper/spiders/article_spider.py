@@ -8,11 +8,13 @@ from datetime import datetime, timedelta
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy.spidermiddlewares.httperror import HttpError
+from django.core.paginator import Paginator
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"
 
-  def __init__(self):
+  def __init__(self, memory_threshold=2000):
+    self.memory_threshold = memory_threshold
     self.content_found = 0
     self.content_missing = 0
     self.error_code_received = 0
@@ -64,10 +66,13 @@ class ArticleSpider(scrapy.Spider):
       html_content_tag_present = publication.html_content_tag != ""
       if html_content_tag_present and not publication.skip_scraping:
         pub_count = 0
-        for feed_item in publication.feed_items():
-          if feed_item.should_scrape():
-            urls.append(feed_item)
-            pub_count += 1
+        paginator = Paginator(publication.feed_items(), self.memory_threshold)
+        for page in range(1, paginator.num_pages + 1):
+          publication_feed_items = paginator.page(page).object_list
+          for feed_item in publication_feed_items:
+            if feed_item.should_scrape():
+              urls.append(feed_item)
+              pub_count += 1
 
         print("Processing %s, %s items" % (publication.name, pub_count))
         total_items += pub_count

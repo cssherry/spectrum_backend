@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from spectrum_backend.feed_fetcher.models import FeedItem
 from django.core.paginator import Paginator
-from urllib import parse
 from urllib.error import HTTPError
+import urlparse
 import urllib
 
 class Command(BaseCommand):

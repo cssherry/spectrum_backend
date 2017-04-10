@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy.spidermiddlewares.httperror import HttpError
-from urllib import parse
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"

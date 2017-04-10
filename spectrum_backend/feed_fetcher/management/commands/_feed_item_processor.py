@@ -5,7 +5,7 @@ from ._html_parser import HTMLParser
 from ._url_parser import URLParser
 from nltk.tokenize import sent_tokenize
 import nltk
-from urllib import parse
+import urlparse
 nltk.download('punkt')
 
 class FeedItemProcessor:

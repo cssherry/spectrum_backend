@@ -18,7 +18,7 @@ git remote add heroku https://git.heroku.com/spectrum-backend.git
 If you don't have it installed already, install Python 3 and pip.
 
 Set up virtualenv:
-````
+```
 pip install virtualenv
 pip install virtualenvwrapper
 ```

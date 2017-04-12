@@ -5,6 +5,7 @@ spectrum_env
 /static
 .env
 */staticfiles
+spectrum_backend/bin
 
 .project
 .pydevproject
@@ -62,6 +63,8 @@ tags
 *.sqlite3
 db.sqlite3 copy
 *.dump
+dump.rdb
+*.dump.*
 
 # OS generated files #
 ######################

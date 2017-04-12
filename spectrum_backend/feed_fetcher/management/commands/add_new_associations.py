@@ -4,6 +4,7 @@ from .tfidf import main
 import os
 
 DAYS_TO_CHECK_FOR = int(os.environ['DAYS_TO_CHECK_FOR']) or 14
+ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
 
 # Adds new associations
 class Command(BaseCommand):
@@ -13,6 +14,6 @@ class Command(BaseCommand):
     new_feed_items = all_relevant_feed_items.filter(checked_for_associations=False)
 
     if new_feed_items.count() > 0:
-      main(already_checked, new_feed_items)
+      main(already_checked, new_feed_items, memory_threshold=ASSOCIATION_MEMORY_THRESHOLD)
     else:
       print("No new associations")

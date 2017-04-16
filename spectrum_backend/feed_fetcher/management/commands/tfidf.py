@@ -16,6 +16,7 @@ IMPORTANT:
 Usage:
    python tfidf.py input_files.txt
 """
+import resource
 import codecs
 import json
 import math
@@ -41,6 +42,9 @@ nltk.download('wordnet')
 class Command(BaseCommand):
     def handle(self, *args, **options):
         main()
+
+def print_mem_usage():
+    print("Mem usage: %.3f mbs" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1000000.0))
 
 
 def remove_diacritic(tokens):
@@ -191,8 +195,7 @@ in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
 
     """
-    t1 = datetime.now()
-    print("Comparing documents and storing comparison data")
+    print("Comparing documents to themselves and storing comparison data")
     for i in range(len(doc_list)):
         if i == 1:
             t1 = datetime.now()
@@ -206,11 +209,30 @@ FIRST. N is number of total documents in corpus.
                                     storage_threshold)
 
         if i % 1000 == 0:
-            print("%s items processed" % (i + 1)) 
+            print("%s items compared (single list)" % (i + 1)) 
 
-    t2 = datetime.now()
-    print("%s items processed" % (len(doc_list)))
-    print("Ellapsed time for associations: %s seconds" % (t2 - t1).seconds)
+def new_associations_comparison(doc_list_new, doc_list_old,
+                                corpus_frequency, n,
+                                pretty_print=False,
+                                storage_threshold=0.2,
+                                memory_threshold=2000):
+    upper_limit = doc_list_old.count() / memory_threshold + 1
+    for num in range(1, upper_limit):
+        print_mem_usage()
+        low = memory_threshold*num
+        high = memory_threshold*(num+1)
+        doc_list_old_part = doc_list_old[low:high]
+        dissimilar_lists_comparison(doc_list_new,
+                                    doc_list_old_part,
+                                    corpus_frequency,
+                                    n,
+                                    pretty_print,
+                                    storage_threshold,
+                                    memory_threshold)
+
+        print("%s items compared (new list)" % (high))
+
+
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
@@ -218,15 +240,12 @@ def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 storage_threshold=0.2,
                                 memory_threshold=2000):
 
-    paginator = Paginator(doc_list_old, memory_threshold)
-    for page in range(1, paginator.num_pages + 1):
-        doc_list_old_part = paginator.page(page).object_list
         for i in range(len(doc_list_new)):
             doc_item_1 = doc_list_new[i]
             frequency_1 = doc_item_1.frequency_dictionary
             self_score_1 = doc_item_1.self_score
-            for j in range(len(doc_list_old_part)):
-                doc_item_2 = doc_list_old_part[j]
+            for j in range(len(doc_list_old)):
+                doc_item_2 = doc_list_old[j]
                 frequency_2 = doc_item_2.frequency_dictionary
                 self_score_2 = doc_item_2.self_score
                 if pretty_print:
@@ -272,6 +291,7 @@ matching.
             doc_item.save()
             update_corpus_frequency(corpus_frequency, doc_frequency)
             if i % 1000 == 0:
+                print_mem_usage()
                 print("%s. Corpus frequency length: %s" % (i, len(corpus_frequency)))
         
         print("Corpus frequency length: %s" % (len(corpus_frequency)))
@@ -282,6 +302,7 @@ matching.
         
     # now that updated, for each document, add in tfidf self score
     print("Calculating self scores")
+    print_mem_usage()
     for i in range(len(doc_list)):
         try: 
             doc_item = doc_list[i]
@@ -408,6 +429,7 @@ So for 16k documents, this means 1 hour of computation time.
 
     """
     threshold = 0.2  # threshold for storage of matches
+    print_mem_usage()
 
     if not new_list.exists() and old_list.exists():
         print("Running initial job to build associations for %s items" % len(old_list))
@@ -423,17 +445,23 @@ So for 16k documents, this means 1 hour of computation time.
                                     False, threshold)
     elif new_list.exists() and old_list.exists():
         print("Running update for %s docs against %s corpus" % (new_list.count(), old_list.count()))
+        t1 = datetime.now()
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
+        print_mem_usage()
         n = old_list.count() + new_list.count()  # set n to total number of docs
         update_df_and_cf_with_new_docs(new_list, corpus_frequency, n)
+        print_mem_usage()
         # now do exhaustive_update for docs with themselves:
         single_list_self_comparison(new_list, corpus_frequency, n)
+        print_mem_usage()
         # now compare these docs with all other docs
-        dissimilar_lists_comparison(new_list,
+        new_associations_comparison(new_list,
                                     old_list,
                                     corpus_frequency, n,
                                     memory_threshold=memory_threshold)
-
+        t2 = datetime.now()
+        print("Ellapsed time for job: %s seconds" % (t2 - t1).seconds)
+        print_mem_usage()
     else:
         print("the first list must be populated with documents whose\
  associations have already been determined")

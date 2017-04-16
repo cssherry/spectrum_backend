@@ -1,6 +1,11 @@
 import re
 
 class URLParser:
+  def clean_url(self, raw_url):
+    url_parameter_delimiter = "?"
+    path = raw_url.split(url_parameter_delimiter)[0]
+    return 
+
   def pull_description_from_url(self, url):
     regex_to_find = (
     '^.+\/([a-zA-Z0-9\-]+).html$', # Fox News

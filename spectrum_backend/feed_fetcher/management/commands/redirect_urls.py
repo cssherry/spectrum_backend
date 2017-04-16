@@ -11,7 +11,7 @@ class Command(BaseCommand):
       print("Parsing next 10000 URLs")
       for feed_item in paginator.page(page).object_list:
         try:
-          url = urllib.request.urlopen(feed_item.url).geturl()
+          url = urllib.urlopen(feed_item.url).geturl()
           url_parameter_delimiter = "?"
           feed_item.redirected_url = url.split(url_parameter_delimiter)[0]
           feed_item.save()

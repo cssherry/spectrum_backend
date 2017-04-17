@@ -1,17 +1,19 @@
-from django.core.management.base import BaseCommand, CommandError
 from spectrum_backend.feed_fetcher.models import Feed
 from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
 from ._rss_entry_wrapper import RSSEntryWrapper
 from ._feed_item_processor import FeedItemProcessor
+from ._add_new_associations import add
 import feedparser
 import scrapy
 import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from spectrum_backend.feed_fetcher.tasks import task_add_new_associations
 
-ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
+try:
+  ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
+except KeyError:
+  ASSOCIATION_MEMORY_THRESHOLD = 2000
 
 class RSSFetcher:
   def fetch(self, stdout, style):
@@ -25,7 +27,7 @@ class RSSFetcher:
     process = CrawlerProcess(get_project_settings())
     process.crawl('articles', memory_threshold=ASSOCIATION_MEMORY_THRESHOLD)
     process.start()
-    task_add_new_associations.delay()
+    add()
 
   def __parse_entry(self, feed, entry):
     entry_wrapper = RSSEntryWrapper(feed, entry)

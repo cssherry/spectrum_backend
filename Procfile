@@ -1,3 +1,3 @@
 web: gunicorn spectrum_backend.wsgi
-worker: celery worker --beat --loglevel=info --app=spectrum_backend
+celery -A spectrum_backend worker -B
 flower: flower -A spectrum_backend

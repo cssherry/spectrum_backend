@@ -18,6 +18,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.broker_url = os.environ['SPECTRUM_REDIS_URL']
 app.conf.celery_result_backend = os.environ['SPECTRUM_REDIS_URL']
+app.conf.worker_max_memory_per_child = 512000
 app.conf.update(
     result_expires=3600,
 )

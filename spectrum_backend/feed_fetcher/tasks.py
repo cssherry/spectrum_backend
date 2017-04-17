@@ -15,6 +15,12 @@ app = Celery ()
 #   def setup_periodic_tasks(sender, **kwargs):
 #     sender.add_periodic_task(60*MINUTES_BETWEEN_FETCHES, task_fetch_rss)
 
+# MINUTES_BETWEEN_FETCHES = int(os.environ['MINUTES_BETWEEN_FETCHES']) or 1
+
+# @on_after_configure.connect()
+#   def setup_periodic_tasks(sender, **kwargs):
+#     sender.add_periodic_task(60*MINUTES_BETWEEN_FETCHES, task_fetch_rss)
+
 @task()
 def task_add_new_associations():
     add()

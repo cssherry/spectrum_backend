@@ -11,7 +11,10 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from spectrum_backend.feed_fetcher.tasks import task_add_new_associations
 
-ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
+try:
+  ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
+except KeyError:
+  ASSOCIATION_MEMORY_THRESHOLD = 2000
 
 class Command(BaseCommand):
   def handle(self, *args, **options):

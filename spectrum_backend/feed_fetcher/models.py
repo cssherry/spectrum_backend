@@ -232,7 +232,7 @@ class FeedItem(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.TextField(default="")
     feed_item = models.ForeignKey('FeedItem')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

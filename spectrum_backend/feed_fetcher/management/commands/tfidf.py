@@ -197,8 +197,6 @@ FIRST. N is number of total documents in corpus.
     """
     print("Comparing documents to themselves and storing comparison data")
     for i in range(len(doc_list)):
-        if i == 1:
-            t1 = datetime.now()
         doc_item_1_list = doc_list[i:i+1]
         doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
         dissimilar_lists_comparison(doc_item_1_list,
@@ -209,7 +207,7 @@ FIRST. N is number of total documents in corpus.
                                     storage_threshold)
 
         if i % 1000 == 0:
-            print("%s items compared (single list)" % (i + 1)) 
+            print("%s items compared (single list)" % (i + 1))
 
 def new_associations_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
@@ -232,7 +230,7 @@ def new_associations_comparison(doc_list_new, doc_list_old,
 
         print("%s items compared (new list)" % (high))
 
-
+    mark_feed_items_as_processed(doc_list_new)
 
 def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
@@ -263,9 +261,6 @@ def dissimilar_lists_comparison(doc_list_new, doc_list_old,
                     print("cosine_similary={0:.2f}".format(cosine_similarity))
                 update_associations(doc_item_1, doc_item_2,
                                     cosine_similarity, storage_threshold)
-
-            doc_item_1.checked_for_associations = True
-            doc_item_1.save()
 
 
 def update_df_and_cf_with_new_docs(doc_list, corpus_frequency, n,
@@ -327,6 +322,11 @@ matching.
 
     print("%s document self scores processed" % (len(doc_list)))
 
+def mark_feed_items_as_processed(doc_list):
+    for i in range(len(doc_list)):
+        doc_item = doc_list[i]
+        doc_item.checked_for_associations = True
+        doc_item.save()
         
 def get_top_associations(doc_item):
     title = doc_item.title
@@ -443,6 +443,9 @@ So for 16k documents, this means 1 hour of computation time.
         single_list_self_comparison(old_list,
                                     corpus_frequency, n,
                                     False, threshold)
+        
+        mark_feed_items_as_processed(old_list)
+
     elif new_list.exists() and old_list.exists():
         print("Running update for %s docs against %s corpus" % (new_list.count(), old_list.count()))
         t1 = datetime.now()

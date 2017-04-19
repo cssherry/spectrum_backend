@@ -1,6 +1,7 @@
 import re
 import dateutil.parser
 from django.utils import timezone
+from raven.contrib.django.raven_compat.models import client
 
 class RSSEntryWrapper:
   def __init__(self, feed, entry):
@@ -48,10 +49,13 @@ class RSSEntryWrapper:
       return ""
 
   def __parsed_publication_date(self):
-    if self.__matches_element_format('published'):
-      return dateutil.parser.parse(self.entry.published)
-    else:
-      return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
+    try:
+      if self.__matches_element_format('published'):
+        return dateutil.parser.parse(self.entry.published)
+      else:
+        return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
+      except ValueError:
+        client.captureException()
 
   def __parsed_tags(self):
     tags = []

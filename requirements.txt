@@ -43,6 +43,7 @@ jmespath==0.9.1
 kombu==4.0.2
 lxml==3.7.3
 matplotlib==1.5.3
+newrelic==2.82.1.63
 newspaper==0.0.9.8
 nltk==3.2.1
 numpy==1.11.2

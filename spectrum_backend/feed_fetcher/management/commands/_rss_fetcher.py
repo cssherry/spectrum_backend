@@ -34,7 +34,7 @@ class RSSFetcher:
     url_parameter_delimiter = "?"
     url = entry_wrapper.url.split(url_parameter_delimiter)[0]
 
-    feed_item = FeedItem.objects.get_or_create(url=url, defaults={'feed': feed, 'redirected_url': url, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
+    feed_item = FeedItem.objects.get_or_create(url=url, defaults={'feed': feed, 'redirected_url': url, 'lookup_url': url, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
     feed_item = FeedItemProcessor().process(feed_item)
     feed_item.save()
     for tag in entry_wrapper.tags:

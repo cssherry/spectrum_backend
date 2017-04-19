@@ -8,7 +8,9 @@ from datetime import datetime, timedelta
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy.spidermiddlewares.httperror import HttpError
+from django.db.utils import IntegrityError
 from django.core.paginator import Paginator
+from raven.contrib.django.raven_compat.models import client
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"
@@ -41,11 +43,19 @@ class ArticleSpider(scrapy.Spider):
        # this does a join since the content tag might have to be a repeating class (e.g. 'body-content-paragraph') as opposed to a single content div - implementations vary
       parsed_content = BeautifulSoup(feed_item.raw_content, 'html.parser').get_text(separator=u' ')
       feed_item.content = parsed_content.strip().replace(u'\xa0', u' ')
-      feed_item.redirected_url = self.__clean_url(response.url)
-      feed_item.save()
-      self.content_found += 1
+      try:
+        feed_item.redirected_url = self.__clean_url(response.url)
+        feed_item.save()
+        self.content_found += 1
+      except IntegrityError as e:
+        client.captureException()
+        feed_item.delete()
     else:
       self.content_missing += 1
+      client.context.merge({'feed_item': feed_item, 'status': 200})
+      client.captureMessage('Scrapy - Content Not Found')
+      client.context.clear()
+
 
     ScrapyLogItem.objects.create(feed_item=feed_item, status_code=response.status, content_tag_found=len(found_content) > 0)
     yield None
@@ -53,11 +63,17 @@ class ArticleSpider(scrapy.Spider):
   def error(self, failure):
     if failure.check(HttpError):
       response = failure.value.response
+      client.context.merge({'feed_item': response.meta['feed_item'], 'status': response.status})
       ScrapyLogItem.objects.create(feed_item=response.meta['feed_item'], status_code=response.status, content_tag_found=False)
+      client.captureMessage('Scrapy - HTTP Error')
       self.error_code_received += 1
     else:
+      client.context.merge({'feed_item': failure.request.meta['feed_item'], 'status': 0, 'message': repr(failure)})
       ScrapyLogItem.objects.create(feed_item=failure.request.meta['feed_item'], status_code=0, content_tag_found=False, other_error=repr(failure))
+      client.captureMessage('Scrapy - Other Error')
       self.other_error += 1
+
+    client.context.clear()
 
   def __feed_items(self):
     urls = []

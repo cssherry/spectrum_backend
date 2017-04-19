@@ -159,14 +159,16 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
-
-# Sentry config
-RAVEN_CONFIG = {
-    'dsn': os.environ['SPECTRUM_SENTRY_KEY'],
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    # 'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
-}
-client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
-handler = SentryHandler(client)
-setup_logging(handler)
+try:
+    # Sentry config
+    RAVEN_CONFIG = {
+        'dsn': os.environ['SPECTRUM_SENTRY_KEY'],
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        # 'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    }
+    client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
+    handler = SentryHandler(client)
+    setup_logging(handler)
+except KeyError:
+    pass

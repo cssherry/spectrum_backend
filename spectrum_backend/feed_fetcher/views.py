@@ -3,7 +3,7 @@ import json, re
 from django.http import HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
-from urlparse import urlparse
+from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
 # Test API
 def test_api(request=None):
@@ -11,17 +11,26 @@ def test_api(request=None):
     return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-    current_article = FeedItem.objects.filter(redirected_url__icontains=clean_url(request.GET.get('url', None)))[0]
+    url = clean_url(request.GET.get('url', None))
+    lookup_url = shorten_url(url)
+    current_article = FeedItem.objects.get(lookup_url=lookup_url) #error handling
     if not current_article:
-        current_article = FeedItem.objects.filter(url__icontains=clean_url(request.GET.get('url', None)))[0] # TODO - fix empty redirected_url and just use those
+        current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
+    if not current_article and !is_base_url:
+        current_article = FeedItem.objects.filter(url__icontains=url)[0] # TODO - fix empty redirected_url and just use those
 
     top_associations = current_article.top_associations(count=3, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
-    p = urlparse(url_string)
-    return p.hostname + p.path
+    return URLParser.clean_url(url_string)
+
+def shorten_url(url_string):
+    return URLParser.shorten_url(url_string)
+
+def is_base_url(url_string):
+    return URLParser.is_base_url(url_string)
 
 def all_publications(request):
     publications = Publication.objects.all()

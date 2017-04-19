@@ -1,4 +1,5 @@
 import re
+from urlparse import urlparse
 
 class URLParser:
   def clean_url(self, raw_url):
@@ -17,3 +18,11 @@ class URLParser:
         return matches.group(1).replace("-", " ")
       else:
         return ""
+
+  def shorten_url(self, raw_url):
+    p = urlparse(url_string)
+    return p.hostname + p.path
+
+  def is_base_url(self, raw_url):
+    p = urlparse(raw_url)
+    return p.path == "" or p.path == "/"

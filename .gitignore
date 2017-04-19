@@ -75,3 +75,7 @@ dump.rdb
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Celery files #
+######################
+celerybeat-schedule

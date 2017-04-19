@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,7 +44,8 @@ INSTALLED_APPS = [
     'import_export',
     'el_pagination',
     'spectrum_backend.feed_fetcher',
-    'django_celery_beat'
+    'django_celery_beat',
+    'raven.contrib.django.raven_compat'
 ]
 
 
@@ -154,3 +156,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+# Sentry config
+RAVEN_CONFIG = {
+    'dsn': os.environ['SPECTRUM_SENTRY_KEY'],
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}

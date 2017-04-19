@@ -14,6 +14,7 @@ import os
 import raven
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
+from raven import Client
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

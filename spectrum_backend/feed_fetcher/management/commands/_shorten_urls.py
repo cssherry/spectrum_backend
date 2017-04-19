@@ -10,7 +10,7 @@ except KeyError:
 class URLShortener:
   def shorten(self):
     feed_items = FeedItem.objects.all()
-    upper_limit = feed_items / ASSOCIATION_MEMORY_THRESHOLD + 1
+    upper_limit = feed_items.count() / ASSOCIATION_MEMORY_THRESHOLD + 1
     for num in range(1, upper_limit):
       low = ASSOCIATION_MEMORY_THRESHOLD*num
       high = ASSOCIATION_MEMORY_THRESHOLD*(num+1)
@@ -18,3 +18,4 @@ class URLShortener:
       for feed_item in feed_item_part:
         feed_item.lookup_url = URLParser().shorten_url(feed_item.redirected_url)
         feed_item.save()
+      print "%s items processed" % high

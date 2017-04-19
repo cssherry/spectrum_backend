@@ -7,15 +7,18 @@ from raven import Client
 from raven.contrib.celery import register_signal, register_logger_signal
 
 # Sentry
-client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
+try:
+  client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
 
-# The register_logger_signal function can also take an optional argument
-# `loglevel` which is the level used for the handler created.
-# Defaults to `logging.ERROR`
-register_logger_signal(client)
+  # The register_logger_signal function can also take an optional argument
+  # `loglevel` which is the level used for the handler created.
+  # Defaults to `logging.ERROR`
+  register_logger_signal(client)
 
-# hook into the Celery error handler
-register_signal(client)
+  # hook into the Celery error handler
+  register_signal(client)
+except KeyError:
+  pass
 
 try:
   MINUTES_BETWEEN_FETCHES = int(os.environ['MINUTES_BETWEEN_FETCHES']) or 20

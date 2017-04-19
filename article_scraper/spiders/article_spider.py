@@ -53,6 +53,7 @@ class ArticleSpider(scrapy.Spider):
       except IntegrityError as e:
         client.captureException()
         feed_item.delete()
+        return
     else:
       self.content_missing += 1
       client.context.merge({'feed_item': feed_item, 'status': 200})

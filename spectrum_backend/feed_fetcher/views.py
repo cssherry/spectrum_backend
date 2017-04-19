@@ -25,13 +25,13 @@ def get_associated_articles(request):
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
-    return URLParser.clean_url(url_string)
+    return URLParser().clean_url(url_string)
 
 def shorten_url(url_string):
-    return URLParser.shorten_url(url_string)
+    return URLParser().shorten_url(url_string)
 
 def is_base_url(url_string):
-    return URLParser.is_base_url(url_string)
+    return URLParser().is_base_url(url_string)
 
 def all_publications(request):
     publications = Publication.objects.all()

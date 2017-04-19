@@ -16,5 +16,5 @@ class URLShortener:
       high = ASSOCIATION_MEMORY_THRESHOLD*(num+1)
       feed_item_part = feed_items[low:high]
       for feed_item in feed_item_part:
-        feed_item.lookup_url = URLParser.shorten_url(feed_item.redirected_url)
+        feed_item.lookup_url = URLParser().shorten_url(feed_item.redirected_url)
         feed_item.save()

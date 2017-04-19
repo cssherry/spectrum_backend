@@ -27,6 +27,8 @@ app.conf.worker_max_memory_per_child = 512000
 app.conf.update(
     result_expires=3600,
 )
+app.conf.celery_redis_max_connections = 10
+app.conf.broker_pool_limit = 0
 app.conf.beat_schedule = {
     'fetch-every-x-minutes': {
         'task': 'spectrum_backend.feed_fetcher.tasks.task_fetch_rss',

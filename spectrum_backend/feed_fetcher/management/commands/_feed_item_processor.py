@@ -38,6 +38,7 @@ class FeedItemProcessor:
     pass
 
   def __process_url(self):
+    # redirected_url and lookup_url are processed during scraping. TODO come up with alternative manual method for the same
     url_parameter_delimiter = "?"
     self.feed_item.url = self.feed_item.url.split(url_parameter_delimiter)[0]
 

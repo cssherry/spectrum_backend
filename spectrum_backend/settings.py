@@ -191,20 +191,20 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django.db.backends': {
-            'level': 'ERROR',
+        'django': {
+            'level': 'INFO',
             'handlers': ['console'],
-            'propagate': False,
+            'propagate': True,
         },
         'raven': {
             'level': 'DEBUG',
             'handlers': ['console'],
-            'propagate': False,
+            'propagate': True,
         },
         'sentry.errors': {
             'level': 'DEBUG',
             'handlers': ['console'],
-            'propagate': False,
+            'propagate': True,
         },
     },
 }

@@ -1,5 +1,6 @@
 import re
 from urlparse import urlparse
+from raven.contrib.django.raven_compat.models import client
 
 class URLParser:
   def clean_url(self, raw_url):
@@ -21,7 +22,10 @@ class URLParser:
 
   def shorten_url(self, raw_url):
     p = urlparse(raw_url)
-    return p.hostname + p.path
+    try:
+      return p.hostname + p.path
+    except TypeError:
+      client.captureException()
 
   def is_base_url(self, raw_url):
     p = urlparse(raw_url)

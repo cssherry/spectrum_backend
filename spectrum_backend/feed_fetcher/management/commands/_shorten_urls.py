@@ -9,7 +9,6 @@ except KeyError:
 
 class URLShortener:
   def shorten(self):
-    d
     feed_items = FeedItem.objects.all()
     upper_limit = feed_items / ASSOCIATION_MEMORY_THRESHOLD + 1
     for num in range(1, upper_limit):

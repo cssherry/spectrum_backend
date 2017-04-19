@@ -1,5 +1,6 @@
 from spectrum_backend.feed_fetcher.models import FeedItem
 from ._url_parser import URLParser
+import os
 
 try:
   ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 1000

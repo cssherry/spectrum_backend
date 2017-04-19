@@ -10,7 +10,6 @@ import scrapy
 import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from ._rss_fetcher import RSSFetcher
 
 try:
   ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 2000
@@ -19,7 +18,6 @@ except KeyError:
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    s
     debug = options["debug"]
     if debug:
       feeds = Feed.objects.all()[:3]

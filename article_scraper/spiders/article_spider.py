@@ -105,7 +105,7 @@ class ArticleSpider(scrapy.Spider):
     return urls
 
   def __clean_url(self, raw_url):
-    return URLParser.clean_url(raw_url)
+    return URLParser().clean_url(raw_url)
 
   def __shorten_url(self, raw_url):
-    return URLParser.shorten_url(raw_url)
+    return URLParser().shorten_url(raw_url)

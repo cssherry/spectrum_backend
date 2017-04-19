@@ -19,6 +19,7 @@ except KeyError:
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
+    s
     debug = options["debug"]
     if debug:
       feeds = Feed.objects.all()[:3]

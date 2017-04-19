@@ -2,6 +2,27 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from django.conf import settings
+from raven import Client
+from raven.contrib.celery import register_signal, register_logger_signal
+
+# Sentry
+client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
+
+# register a custom filter to filter out duplicate logs
+register_logger_signal(client)
+
+# The register_logger_signal function can also take an optional argument
+# `loglevel` which is the level used for the handler created.
+# Defaults to `logging.ERROR`
+register_logger_signal(client, loglevel=logging.WARNING)
+
+# hook into the Celery error handler
+register_signal(client)
+
+# The register_signal function can also take an optional argument
+# `ignore_expected` which causes exception classes specified in Task.throws
+# to be ignored
+register_signal(client)# , ignore_expected=True)
 
 try:
   MINUTES_BETWEEN_FETCHES = int(os.environ['MINUTES_BETWEEN_FETCHES']) or 20

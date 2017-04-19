@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
+from django.db.models import Count
 
 class Publication(models.Model):
     BIASES = (
@@ -104,7 +105,7 @@ class FeedItem(models.Model):
     publication_date = models.DateTimeField()
     redirected_url = models.CharField(max_length=1000, default="")
     url = models.CharField(max_length=1000, unique=True)
-    # lookup_url = models.CharField(max_length=1000, unique=True)
+    lookup_url = models.CharField(max_length=1000, default="")
     image_url = models.CharField(max_length=1000, default="")
     self_score = models.FloatField(default=0)
     checked_for_associations = models.BooleanField(default=0)

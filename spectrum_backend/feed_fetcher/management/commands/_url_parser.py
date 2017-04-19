@@ -20,7 +20,7 @@ class URLParser:
         return ""
 
   def shorten_url(self, raw_url):
-    p = urlparse(url_string)
+    p = urlparse(raw_url)
     return p.hostname + p.path
 
   def is_base_url(self, raw_url):

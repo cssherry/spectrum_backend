@@ -54,8 +54,8 @@ class RSSEntryWrapper:
         return dateutil.parser.parse(self.entry.published)
       else:
         return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit
-      except ValueError:
-        client.captureException()
+    except ValueError:
+      client.captureException()
 
   def __parsed_tags(self):
     tags = []

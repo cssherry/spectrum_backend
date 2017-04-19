@@ -2,7 +2,7 @@ import json, re
 from django.http import HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
-from urlparse import urlparse
+from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
 # Test API
 def test_api(request=None):
@@ -10,16 +10,13 @@ def test_api(request=None):
     return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-    request_url = clean_url(request.GET.get('url', None))
-    current_article = FeedItem.objects.filter(redirected_url__icontains=request_url)
-
-    # TODO - fix empty redirected_url and just use those
+    url = clean_url(request.GET.get('url', None))
+    lookup_url = shorten_url(url)
+    current_article = FeedItem.objects.get(lookup_url=lookup_url) #error handling
     if not current_article:
-        current_article = FeedItem.objects.filter(url__icontains=request_url)
-
-    # Return "False" if article doesn't exist
-    if len(current_article) == 0:
-        return HttpResponse(json.dumps(False), content_type='application/json')
+        current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
+    if not current_article and !is_base_url:
+        current_article = FeedItem.objects.filter(url__icontains=url)[0] # TODO - fix empty redirected_url and just use those
 
     # Otherwise, return top associations
     top_associations = current_article.first().top_associations(count=12, check_bias=True)
@@ -27,10 +24,13 @@ def get_associated_articles(request):
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
 def clean_url(url_string):
-    p = urlparse(url_string)
+    return URLParser.clean_url(url_string)
 
-    # don't include subdomains, code similar to cleanUrl in spectrum_chrome_app
-    return '.'.join(p.hostname.split('.')[-2:]) + p.path
+def shorten_url(url_string):
+    return URLParser.shorten_url(url_string)
+
+def is_base_url(url_string):
+    return URLParser.is_base_url(url_string)
 
 def all_publications(request):
     publications = Publication.objects.all()

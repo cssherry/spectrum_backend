@@ -3,13 +3,12 @@ from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 from django.core.management import call_command
 from spectrum_backend.feed_fetcher.management.commands._rss_fetcher import RSSFetcher
+from spectrum_backend.feed_fetcher.management.commands._shorten_urls import URLShortener
 from celery.task import task
 from celery import Celery
 from spectrum_backend.celery import app
 from celery.task.control import inspect
 import time
-
-# app = Celery('spectrum_backend')
 
 logger = get_task_logger(__name__)
 
@@ -22,3 +21,7 @@ def task_fetch_rss():
       call_command('rss_fetcher')
     else:
       print "fetcher job already active, suppressing new job"
+
+@app.task
+def task_shorten_urls():
+  URLShortener().shorten()

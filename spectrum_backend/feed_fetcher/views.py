@@ -12,7 +12,6 @@ def test_api(request=None):
 def get_associated_articles(request):
     url = clean_url(request.GET.get('url', None))
     current_article = None
-    ewew
     # lookup_url = shorten_url(url)
     # current_article = FeedItem.objects.filter(lookup_url=lookup_url)[0] #error handling
     if not current_article:

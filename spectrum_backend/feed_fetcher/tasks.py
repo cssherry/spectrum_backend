@@ -13,12 +13,12 @@ import time
 logger = get_task_logger(__name__)
 
 @app.task
-def task_fetch_rss():
+def task_fetch_rss(debug=False):
   i = inspect()
   for host_name, workers in i.active().iteritems():
     if len(workers) < 2:
       print "starting rss_fetcher job"
-      call_command('rss_fetcher')
+      call_command('rss_fetcher', debug=debug)
     else:
       print "fetcher job already active, suppressing new job"
 

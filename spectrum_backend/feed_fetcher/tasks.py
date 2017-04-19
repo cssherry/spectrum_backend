@@ -9,16 +9,28 @@ from spectrum_backend.celery import app
 from celery.task.control import inspect
 import time
 
-app = Celery('spectrum_backend')
+# app = Celery('spectrum_backend')
 
 logger = get_task_logger(__name__)
 
+# @app.task
+# def task_fetch_rss():
+#   i = inspect()
+#   for host_name, workers in i.active().iteritems():
+#     if len(workers) < 2:
+#       print "starting rss_fetcher job"
+#       call_command('rss_fetcher')
+#       return
+#     else:
+#       print "fetcher job already active, suppressing new job"
+#       app.control.revoke(task_id)
+#       return
+
 @app.task
-def task_fetch_rss():
+def test_shit():
+  print("hey")
   i = inspect()
   for host_name, workers in i.active().iteritems():
-    if len(workers) < 2:
-      print "starting rss_fetcher job"
-      call_command('rss_fetcher')
-    else:
-      print "fetcher job already active, suppressing new job"
+    print len(workers)
+
+  return

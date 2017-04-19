@@ -2,7 +2,6 @@ from celery.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 from django.core.management import call_command
-from spectrum_backend.feed_fetcher.management.commands._rss_fetcher import RSSFetcher
 from spectrum_backend.feed_fetcher.management.commands._shorten_urls import URLShortener
 from celery.task import task
 from celery import Celery

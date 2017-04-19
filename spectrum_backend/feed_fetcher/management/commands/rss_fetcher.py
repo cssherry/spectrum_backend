@@ -19,7 +19,13 @@ except KeyError:
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    for feed in Feed.objects.all():
+    debug = options["debug"]
+    if debug:
+      feeds = Feed.objects.all()[:3]
+    else:
+      feeds = Feed.objects.all()
+
+    for feed in feeds:
       feed_result = feedparser.parse(feed.rss_url)
       self.stdout.write(self.style.SUCCESS(self.__parse_message(feed)))
 
@@ -27,9 +33,9 @@ class Command(BaseCommand):
         self.__parse_entry(feed, entry)
 
     process = CrawlerProcess(get_project_settings())
-    process.crawl('articles', memory_threshold=ASSOCIATION_MEMORY_THRESHOLD)
+    process.crawl('articles', memory_threshold=ASSOCIATION_MEMORY_THRESHOLD, debug=debug)
     process.start()
-    add()
+    add(debug=debug)
 
   def __parse_entry(self, feed, entry):
     entry_wrapper = RSSEntryWrapper(feed, entry)

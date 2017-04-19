@@ -15,7 +15,8 @@ from raven.contrib.django.raven_compat.models import client
 class ArticleSpider(scrapy.Spider):
   name = "articles"
 
-  def __init__(self, memory_threshold=2000):
+  def __init__(self, memory_threshold=2000, debug=False):
+    self.debug = debug
     self.memory_threshold = memory_threshold
     self.content_found = 0
     self.content_missing = 0
@@ -76,9 +77,14 @@ class ArticleSpider(scrapy.Spider):
     client.context.clear()
 
   def __feed_items(self):
+    if self.debug:
+      publications = Publication.objects.all()[:3]
+    else:
+      publications = Publication.objects.all()
+
     urls = []
     total_items = 0
-    for publication in Publication.objects.all():
+    for publication in publications:
       html_content_tag_present = publication.html_content_tag != ""
       if html_content_tag_present and not publication.skip_scraping:
         pub_count = 0

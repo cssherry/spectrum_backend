@@ -11,6 +11,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 from django.db.utils import IntegrityError
 from django.core.paginator import Paginator
 from raven.contrib.django.raven_compat.models import client
+from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
 class ArticleSpider(scrapy.Spider):
   name = "articles"
@@ -46,6 +47,7 @@ class ArticleSpider(scrapy.Spider):
       feed_item.content = parsed_content.strip().replace(u'\xa0', u' ')
       try:
         feed_item.redirected_url = self.__clean_url(response.url)
+        feed_item.lookup_url = self.__shorten_url(response.url)
         feed_item.save()
         self.content_found += 1
       except IntegrityError as e:
@@ -103,5 +105,7 @@ class ArticleSpider(scrapy.Spider):
     return urls
 
   def __clean_url(self, raw_url):
-    url_parameter_delimiter = "?"
-    return raw_url.split(url_parameter_delimiter)[0]
+    return URLParser.clean_url(raw_url)
+
+  def __shorten_url(self, raw_url):
+    return URLParser.shorten_url(raw_url)

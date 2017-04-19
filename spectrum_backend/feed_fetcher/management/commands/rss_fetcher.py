@@ -19,6 +19,7 @@ except KeyError:
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
+    sd
     for feed in Feed.objects.all():
       feed_result = feedparser.parse(feed.rss_url)
       self.stdout.write(self.style.SUCCESS(self.__parse_message(feed)))

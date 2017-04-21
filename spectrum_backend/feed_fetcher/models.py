@@ -27,11 +27,6 @@ class Publication(models.Model):
     class Meta:
         ordering = ['name']
 
-    def tags(self):
-        tags = set()
-        [tags.update(feed.tags()) for feed in self.feed_set.all()]
-        return tags
-
     def feeds(self, include_ignored=True):
         if include_ignored:
             return self.feed_set.all()
@@ -49,6 +44,13 @@ class Feed(models.Model):
     should_ignore = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return u'%s - %s (%s)' % (self.publication.name, self.category,
+                                  self.rss_url)
+
+    class Meta:
+        ordering = ['publication__name']
 
     @classmethod
     def all(cls, include_ignored=True):
@@ -75,19 +77,6 @@ class Feed(models.Model):
             self.publication.name, self.category, empty_feed_items.count(),
             self.feed_items().count(), broken_string))
 
-    def __str__(self):
-        return u'%s - %s (%s)' % (self.publication.name, self.category,
-                                  self.rss_url)
-
-    class Meta:
-        ordering = ['publication__name']
-
-    def tags(self):
-        tags = set()
-        [tags.update(feed_item.tags()) for feed_item in
-         self.feeditem_set.all()]
-        return tags
-
 
 class FeedItem(models.Model):
     MAX_SCRAPING_ATTEMPTS = 2
@@ -95,13 +84,10 @@ class FeedItem(models.Model):
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    # 8-10 sentences from RSS feed or scraper
     description = models.TextField(default="")
-    # content of article, pulled either from RSS feed or scraping
     content = models.TextField(default="")
-    # raw description from RSS feed
     raw_description = models.TextField(default="")
-    raw_content = models.TextField(default="")  # raw contents of web scrape
+    raw_content = models.TextField(default="")
     publication_date = models.DateTimeField()
     redirected_url = models.CharField(max_length=1000, default="")
     url = models.CharField(max_length=1000, unique=True)
@@ -114,14 +100,9 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def recent_items_eligible_for_association(cls, days):
-        time_threshold = datetime.now() - timedelta(days=days)
+    def recent_items_eligible_for_association(cls, days=7):
+        time_threshold = timezone.now() - timedelta(days=days)
         return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
-
-    @classmethod
-    def unassociated_items_eligible_for_similiarity_score(cls, days):
-        time_threshold = datetime.now() - timedelta(days=days)
-        return cls.objects.exclude(content__exact="").exclude(checked_for_associations=True).filter(created_at__gt=time_threshold)
 
     @classmethod
     def get_fields(cls, list):
@@ -135,17 +116,14 @@ class FeedItem(models.Model):
         return cls.objects.values(field_name).annotate(count=Count('id')).values(field_name).order_by().filter(count__gt=1)
 
     @classmethod
-    def delete_duplicate_redirect_urls(cls):
+    def delete_duplicate_redirect_urls(cls): # TODO: Remove after redirect urls are properly made unique
         for redirected_url in cls.objects.values_list('redirected_url', flat=True).distinct():
             cls.objects.filter(pk__in=cls.objects.filter(redirected_url=redirected_url).values_list('id', flat=True)[1:]).delete()
 
     @classmethod
-    def delete_duplicate_lookup_urls(cls):
+    def delete_duplicate_lookup_urls(cls): # TODO: Remove after redirect urls are properly made unique
         for lookup_url in cls.objects.values_list('lookup_url', flat=True).distinct():
             cls.objects.filter(pk__in=cls.objects.filter(lookup_url=lookup_url).values_list('id', flat=True)[1:]).delete()
-
-    def tags(self):
-        return set([tag.name for tag in self.tag_set.all()])
 
     def publication_name(self):
         return self.feed.publication.name
@@ -155,12 +133,6 @@ class FeedItem(models.Model):
 
     def publication_logo(self):
         return self.feed.publication.logo_url
-
-    def under_max_scraping_cap(self):
-        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
-
-    def should_scrape(self, ignore_scraping_cap = False):
-        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category
@@ -174,6 +146,12 @@ class FeedItem(models.Model):
     def friendly_publication_date(self):
         return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
+    def under_max_scraping_cap(self):
+        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
+
+    def should_scrape(self, ignore_scraping_cap = False):
+        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
+
     def base_object(self, similarity_score=None):
         base_object = {
             "publication_name": self.publication_name(),
@@ -186,8 +164,7 @@ class FeedItem(models.Model):
             "url": self.url,
             "author": self.author,
             "image_url": self.image_url,
-            "publication_date": self.friendly_publication_date(),
-            "tags": list(self.tags()),
+            "publication_date": self.friendly_publication_date()
         }
         if similarity_score:
             base_object["similarity_score"] = similarity_score
@@ -258,9 +235,6 @@ class Tag(models.Model):
     class Meta:
         unique_together = ('name', 'feed_item')
 
-    def publication_name(self):
-        return self.feed_item.feed.publication.name
-
 
 class Association(models.Model):
     base_feed_item = models.ForeignKey('FeedItem',
@@ -300,7 +274,6 @@ class CorpusWordFrequency(models.Model):
     @classmethod
     def _corpus_dictionary(cls):
         return cls.objects.first() or cls.objects.create(dictionary={})
-
 
 class ScrapyLogItem(models.Model):
     feed_item = models.ForeignKey('FeedItem')

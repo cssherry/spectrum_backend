@@ -9,7 +9,7 @@ from django.core.management import call_command
 from django.db.utils import IntegrityError
 from . import factories
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
-from spectrum_backend.feed_fetcher.management.commands import _url_parser, _batch_query_set, _rss_fetcher, _clean_entries, _feed_item_processor, _html_parser, _add_new_associations, _rss_entry_wrapper
+from spectrum_backend.feed_fetcher.management.commands import _url_parser, _batch_query_set, _rss_fetcher, _clean_entries, _feed_item_processor, _html_parser, _add_new_associations, seed_base_associations, _rss_entry_wrapper
 
 WORKING_NYTIMES_RSS_URL = 'http://www.nytimes.com/services/xml/rss/nyt/Politics.xml'
 
@@ -90,6 +90,9 @@ class HTMLParserTestCase(TestCase):
         self.assertEquals(self.html_parser.pull_text_from_html(self.tagged_content), self.base_content)
 
 class FeedItemProcessorTestCase(TestCase):
+    def setUp(self):
+        self.html_parser = _html_parser.HTMLParser()
+
     def test_fields_properly_processed(self):
         shortened_description = "This is sentence 1. This is sentence 2. This is sentence 3 which is about Donald J. Trump. This is sentence 4. This is sentence 5."
         raw_description = "%s This is sentence 6. This is sentence 7." % shortened_description
@@ -197,7 +200,41 @@ class CleanEntriesTestCase(TestCase):
 
 class AssociationsJobsTestCase(TestCase):
     def setUp(self):
-        
+        factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=True)
+        _add_new_associations.main = Mock()
+        seed_base_associations.main = Mock()
+        self.add_new_associations = _add_new_associations.AddNewAssociations()
+
+    def test_proper_length_of_inputs(self):
+        association_runner = _add_new_associations.AddNewAssociations()
+        self.assertEquals(association_runner.old_feed_items.count(), 20)
+        self.assertEquals(association_runner.new_feed_items.count(), 0)
+        factories.GenericFeedItemFactory.create_batch(10, checked_for_associations=False)
+        association_runner = _add_new_associations.AddNewAssociations()
+        self.assertEquals(association_runner.new_feed_items.count(), 10)
+
+    def test_tfidf_called_when_new_associations(self):
+        with suppress_printed_output():
+            self.add_new_associations.add()
+            _add_new_associations.main.assert_not_called()
+            already_checked = FeedItem.recent_items_eligible_for_association(settings.DAYS_TO_CHECK_FOR).filter(checked_for_associations=True)
+            factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=False)
+            self.add_new_associations.add()
+            _add_new_associations.main.assert_called_once()
+
+    def test_add_associations_call_command(self):
+        with suppress_printed_output():
+            call_command('add_new_associations')
+
+    def test_seed_base_associations_call_command(self):
+        with suppress_printed_output():
+            call_command('seed_base_associations')
+
+class TFIDFTestCase(TestCase):
+    # TODO
+    def setUp(self):
+        pass
+
 
 
 

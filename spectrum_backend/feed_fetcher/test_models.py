@@ -171,6 +171,25 @@ class FeedItemTestCase(GlobalTestCase):
         self.assertEquals(1, len(FeedItem.recent_items_eligible_for_association(days=4)))
         self.assertEquals(0, len(FeedItem.recent_items_eligible_for_association(days=1)))
 
+    def test_feed_item_urls_to_scrape_should_return_all_relevant_urls(self):
+        factories.GenericFeedItemFactory.create_batch(3, raw_content="")
+        self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 3)
+
+    def test_feed_item_urls_to_scrape_should_not_return_articles_with_content_already(self):
+        factories.GenericFeedItemFactory.create_batch(2, raw_content="")
+        factories.GenericFeedItemFactory.create_batch(3, raw_content="abc")
+        self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 2)
+
+    def test_feed_item_urls_to_scrape_should_not_return_skipped_publications(self):
+        factories.GenericFeedItemFactory.create_batch(2, raw_content="", feed__publication__skip_scraping=True)
+        factories.GenericFeedItemFactory.create_batch(4, raw_content="")
+        self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 4)
+
+    def test_feed_item_urls_to_scrape_should_not_publications_without_html_tags(self):
+        factories.GenericFeedItemFactory.create_batch(6, raw_content="", feed__publication__html_content_tag="")
+        factories.GenericFeedItemFactory.create_batch(5, raw_content="")
+        self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 5)
+
 class CorpusWordFrequencyTestCase(GlobalTestCase):
     def test_get_and_set_corpus_word_dictionary(self):
         corpus_word_frequency = factories.CorpusWordFrequencyFactory(dictionary={"a": 3})

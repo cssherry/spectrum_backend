@@ -282,7 +282,7 @@ class ScrapyTestCase(TestCase):
 
         self.assertEquals(ScrapyLogItem.objects.count(), 0)
 
-    def test_article_spider_content_not_found(self):
+    def test_article_spider_content_not_found_but_still_saves_url(self):
         self.html_content_blocks = []
         css_mock = Mock()
         css_mock.extract = Mock(return_value=self.html_content_blocks)
@@ -290,6 +290,8 @@ class ScrapyTestCase(TestCase):
         self.spider.save_content(self.response_mock)
         article_spider.client.captureMessage.assert_called_once()
         self.assertEquals(self.spider.content_missing, 1)
+        self.assertEqual(self.feed_item.redirected_url, _url_parser.URLParser().clean_url(self.response_mock.url))
+        self.assertEqual(self.feed_item.lookup_url, _url_parser.URLParser().shorten_url(self.response_mock.url))
 
         created_log_item = ScrapyLogItem.objects.last()
         self.assertEquals(ScrapyLogItem.objects.count(), 1)

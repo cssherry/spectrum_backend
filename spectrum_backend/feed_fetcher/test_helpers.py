@@ -10,6 +10,11 @@ from django.db.utils import IntegrityError
 from . import factories
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
 from spectrum_backend.feed_fetcher.management.commands import _url_parser, _batch_query_set, _rss_fetcher, _clean_entries, _feed_item_processor, _html_parser, _add_new_associations, seed_base_associations, _rss_entry_wrapper
+from article_scraper.spiders import article_spider
+import article_scraper.settings
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+import logging
 
 WORKING_NYTIMES_RSS_URL = 'http://www.nytimes.com/services/xml/rss/nyt/Politics.xml'
 
@@ -235,10 +240,104 @@ class TFIDFTestCase(TestCase):
     def setUp(self):
         pass
 
+class ScrapyTestCase(TestCase):
+    def setUp(self):
+        self.html_content_blocks = ["<p>1234</p>", "<p>4567</p><script>7789</script>"]
+        self.feed_item = factories.PreScrapeFeedItemFactory()
+        response_mock = Mock()
+        response_mock.meta = {'feed_item': self.feed_item}
+        response_mock.url = "https://www.nytimes.com/test.html?rss=t"
+        css_mock = Mock()
+        css_mock.extract = Mock(return_value=self.html_content_blocks)
+        response_mock.css = Mock(return_value=css_mock)
+        self.spider = article_spider.ArticleSpider()
+        article_spider.client.captureException = Mock()
+        article_spider.client.captureMessage = Mock()
+        response_mock.status = 200
 
+        self.response_mock = response_mock
 
+    def test_article_spider_content_parse(self):
+        self.spider.save_content(self.response_mock)
+        feed_item = FeedItem.objects.get(id=self.feed_item.id)
+        self.assertEquals(feed_item.raw_content, " ".join(self.html_content_blocks))
+        self.assertEquals(feed_item.content, "1234   4567")
+        self.assertEqual(self.feed_item.redirected_url, _url_parser.URLParser().clean_url(self.response_mock.url))
+        self.assertEqual(self.feed_item.lookup_url, _url_parser.URLParser().shorten_url(self.response_mock.url))
 
+        self.assertEquals(self.spider.content_found, 1)
 
+        created_log_item = ScrapyLogItem.objects.last()
+        self.assertEquals(ScrapyLogItem.objects.count(), 1)
+        self.assertEquals(created_log_item.feed_item, feed_item)
+        self.assertTrue(created_log_item.content_tag_found)
+        self.assertEquals(created_log_item.status_code, 200)
+
+    def test_article_deleted_if_duplicate_url(self):
+        self.feed_item.save = Mock(side_effect=IntegrityError)
+        self.feed_item.delete = Mock()
+        self.spider.save_content(self.response_mock)
+        self.feed_item.delete.assert_called_once()
+        article_spider.client.captureException.assert_called_once()
+
+        self.assertEquals(ScrapyLogItem.objects.count(), 0)
+
+    def test_article_spider_content_not_found(self):
+        self.html_content_blocks = []
+        css_mock = Mock()
+        css_mock.extract = Mock(return_value=self.html_content_blocks)
+        self.response_mock.css = Mock(return_value=css_mock)
+        self.spider.save_content(self.response_mock)
+        article_spider.client.captureMessage.assert_called_once()
+        self.assertEquals(self.spider.content_missing, 1)
+
+        created_log_item = ScrapyLogItem.objects.last()
+        self.assertEquals(ScrapyLogItem.objects.count(), 1)
+        self.assertEquals(created_log_item.feed_item, self.feed_item)
+        self.assertFalse(created_log_item.content_tag_found)
+        self.assertEquals(created_log_item.status_code, 200)
+
+    def test_article_spider_http_error(self):
+        self.response_mock.status = 422
+        failure_mock = Mock()
+        failure_mock.check = Mock(return_value=True)
+        failure_mock.value.response = self.response_mock
+
+        self.spider.error(failure_mock)
+        article_spider.client.captureMessage.assert_called_once()
+        self.assertEquals(self.spider.error_code_received, 1)
+
+        created_log_item = ScrapyLogItem.objects.last()
+        self.assertEquals(ScrapyLogItem.objects.count(), 1)
+        self.assertEquals(created_log_item.feed_item, self.feed_item)
+        self.assertFalse(created_log_item.content_tag_found)
+        self.assertEquals(created_log_item.status_code, 422)
+
+    def test_article_spider_other_error(self):
+        failure_mock = Mock()
+        failure_mock.check = Mock(return_value=False)
+        failure_mock.request = self.response_mock
+
+        self.spider.error(failure_mock)
+        article_spider.client.captureMessage.assert_called_once()
+        self.assertEquals(self.spider.other_error, 1)
+
+        created_log_item = ScrapyLogItem.objects.last()
+        self.assertEquals(ScrapyLogItem.objects.count(), 1)
+        self.assertEquals(created_log_item.feed_item, self.feed_item)
+        self.assertFalse(created_log_item.content_tag_found)
+        self.assertEquals(created_log_item.status_code, 0)
+        self.assertTrue(created_log_item.other_error, repr(failure_mock))
+
+    def test_end_to_end(self):
+        FeedItem.objects.all().delete()
+        factories.PreScrapeFeedItemFactory(url="http://www.getthespectrum.com")
+        with suppress_printed_output():
+            article_scraper.settings.LOG_ENABLED=False 
+            process = CrawlerProcess(get_project_settings())
+            process.crawl('articles')
+            process.start()
+            self.assertEquals(ScrapyLogItem.objects.count(), 1)
 
 
 

@@ -10,9 +10,9 @@ def test_api(request=None):
     return HttpResponse(json.dumps(first_articles), content_type='application/json')
 
 def get_associated_articles(request):
-    url = clean_url(request.GET.get('url', None))
+    url = __clean_url(request.GET.get('url', None))
     current_article = None
-    # lookup_url = shorten_url(url)
+    # lookup_url = __shorten_url(url)
     # current_article = FeedItem.objects.filter(lookup_url=lookup_url)[0] #error handling
     if not current_article:
         current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
@@ -24,13 +24,13 @@ def get_associated_articles(request):
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 
-def clean_url(url_string):
+def __clean_url(url_string):
     return URLParser().clean_url(url_string)
 
-def shorten_url(url_string):
+def __shorten_url(url_string):
     return URLParser().shorten_url(url_string)
 
-def is_base_url(url_string):
+def __is_base_url(url_string):
     return URLParser().is_base_url(url_string)
 
 def all_publications(request):

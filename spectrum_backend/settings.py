@@ -180,6 +180,11 @@ except KeyError:
   ASSOCIATION_MEMORY_THRESHOLD = 1000
 
 try:
+  DAYS_TO_CHECK_FOR = int(os.environ['DAYS_TO_CHECK_FOR']) or 14
+except KeyError:
+  DAYS_TO_CHECK_FOR = 14
+
+try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     nltk.download('punkt')

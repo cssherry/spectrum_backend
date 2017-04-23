@@ -58,13 +58,16 @@ class GenericFeedItemFactory(factory.django.DjangoModelFactory):
     created_at = factory.LazyFunction(timezone.now)
     updated_at = factory.LazyFunction(timezone.now)
 
+class FeedItemWithRawLookupUrlsFactory(GenericFeedItemFactory):
+    lookup_url = factory.Sequence(lambda n: 'https://www.planetnews.com/article%s' % n)
+
 class GenericAssociationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Association
 
     base_feed_item = factory.SubFactory(GenericFeedItemFactory)
     associated_feed_item = factory.SubFactory(GenericFeedItemFactory)
-    similarity_score = random.random() * 10
+    similarity_score = factory.Sequence(lambda n: '%s' % n)
     created_at = factory.LazyFunction(timezone.now)
     updated_at = factory.LazyFunction(timezone.now)
 

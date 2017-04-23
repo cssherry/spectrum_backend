@@ -34,10 +34,6 @@ from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import CorpusWordFrequency
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ValidationError
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-
 
 class Command(BaseCommand):
     def handle(self, *args, **options):

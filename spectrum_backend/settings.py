@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import raven
+import nltk
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
 from raven import Client
@@ -172,3 +173,23 @@ try:
     setup_logging(handler)
 except KeyError:
     pass
+
+try:
+  ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 1000
+except KeyError:
+  ASSOCIATION_MEMORY_THRESHOLD = 1000
+
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    nltk.download('wordnet')

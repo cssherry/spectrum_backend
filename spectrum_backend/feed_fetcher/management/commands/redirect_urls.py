@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from urllib.error import HTTPError
 import urllib
 
+# TODO - delete after migration
 class Command(BaseCommand):
   def handle(self, *args, **options):
     paginator = Paginator(FeedItem.objects.all(), 10000)

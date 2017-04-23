@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from ._shorten_urls import URLShortener
+from ._url_parser import URLParser
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    URLShortener().shorten()
+    URLParser().batch_shorten_urls()

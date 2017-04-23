@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 from django.db.models import Count
+from management.commands._batch_query_set import batch_query_set
 
 class Publication(models.Model):
     BIASES = (
@@ -123,6 +124,33 @@ class FeedItem(models.Model):
     def delete_duplicate_lookup_urls(cls): # TODO: Remove after redirect urls are properly made unique
         for lookup_url in cls.objects.values_list('lookup_url', flat=True).distinct():
             cls.objects.filter(pk__in=cls.objects.filter(lookup_url=lookup_url).values_list('id', flat=True)[1:]).delete()
+
+    @classmethod
+    def feed_items_urls_to_scrape(cls, verbose=False, debug=False):
+        if debug:
+            publications = Publication.objects.all()[:3]
+        else:
+            publications = Publication.objects.all()
+
+        urls = []
+        total_items = 0
+        for publication in publications:
+            html_content_tag_present = publication.html_content_tag != ""
+            if html_content_tag_present and not publication.skip_scraping:
+                pub_count = 0
+                for start, end, total, publication_feed_items in batch_query_set(publication.feed_items()):
+                    for feed_item in publication_feed_items:
+                        if feed_item.should_scrape():
+                            urls.append(feed_item)
+                            pub_count += 1
+        
+                if verbose:
+                    print("Processing %s, %s items" % (publication.name, pub_count))
+                total_items += pub_count
+
+        if verbose:
+            print("Processing %s total items" % (total_items))
+        return urls
 
     def publication_name(self):
         return self.feed.publication.name

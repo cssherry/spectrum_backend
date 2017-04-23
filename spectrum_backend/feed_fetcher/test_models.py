@@ -5,6 +5,10 @@ from django.utils import timezone
 from django.test import TestCase
 from . import factories
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
+from StringIO import StringIO
+
+def suppress_printed_output():
+    return patch('sys.stdout', new=StringIO())
 
 class GlobalTestCase(TestCase):
     def setUp(self):
@@ -34,9 +38,8 @@ class FeedTestCase(GlobalTestCase):
 
     def test_empty_content_report(self):
         factories.GenericFeedItemFactory.create_batch(2, feed=self.feed)
-        sys.stdout = open(os.devnull, 'w')
-        self.feed.display_empty_content_report()
-        sys.stdout = sys.__stdout__
+        with suppress_printed_output():
+            self.feed.display_empty_content_report()
 
 class FeedItemTestCase(GlobalTestCase):
     def test_publication_convenience_methods(self):
@@ -120,16 +123,24 @@ class FeedItemTestCase(GlobalTestCase):
     def test_top_associations_should_order_by_similarity_score(self):
         feed_item = self.feed_item
         factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item)
-        top_associations = feed_item.top_associations()
+        top_associations = feed_item.top_associations(5)
         max_similarity = max(top_associations, key=lambda assoc:assoc["similarity_score"])
         min_similarity = min(top_associations, key=lambda assoc:assoc["similarity_score"])
-        self.assertEquals(max_similarity["url"], top_associations[0]["url"])
-        self.assertEquals(min_similarity["url"], top_associations[-1]["url"]) # WTF?
+        first_association = top_associations[0]
+        last_association = top_associations[-1]
+        self.assertEquals(max_similarity["url"], first_association["url"])
+        self.assertEquals(min_similarity["url"], last_association["url"])
 
-    # def test_top_associations_should_use_new_publications_first(self):
-    #     feed_item = self.feed_item
-    #     factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item)
-    #     first_five_associations
+    def test_top_associations_should_use_new_publications_first(self):
+        feed_item = self.feed_item
+        same_publications_with_high_score = factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item, associated_feed_item__feed=self.feed, similarity_score=9.0)
+        different_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=5.0).associated_feed_item.base_object(5.0)
+        another_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=4.0).associated_feed_item.base_object(4.0)
+        another_association_with_score_below_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=1.5).associated_feed_item.base_object(1.5)
+        first_five_associations = feed_item.top_associations(5)
+        self.assertIn(different_association_with_low_score, first_five_associations)
+        self.assertIn(another_association_with_low_score, first_five_associations)
+        self.assertNotIn(another_association_with_score_below_threshold, first_five_associations)
 
     def test_get_fields_class_method_returns_serialized_version_of_object(self):
         feed_items = []

@@ -2,7 +2,7 @@ from celery.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 from django.core.management import call_command
-from spectrum_backend.feed_fetcher.management.commands._shorten_urls import URLShortener
+from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 from celery.task import task
 from celery import Celery
 from spectrum_backend.celery import app
@@ -23,4 +23,4 @@ def task_fetch_rss(debug=False):
 
 @app.task
 def task_shorten_urls():
-  URLShortener().shorten()
+  URLParser().batch_shorten_urls()

@@ -77,7 +77,6 @@ class Feed(models.Model):
             self.publication.name, self.category, empty_feed_items.count(),
             self.feed_items().count(), broken_string))
 
-
 class FeedItem(models.Model):
     MAX_SCRAPING_ATTEMPTS = 2
 
@@ -180,17 +179,17 @@ class FeedItem(models.Model):
             return ["L", "LC", "C", "RC", "R"]
 
 
-    def top_associations(self, count=3, check_bias=True):
+    def top_associations(self, count, check_bias=True, similarity_floor=2.0):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item
             if check_bias:
                 if not associated_feed_item.publication_bias() in self.opposing_biases():
                     continue
-
-            associated_articles.append(
-                associated_feed_item.base_object(
-                    association.similarity_score))
+            if association.similarity_score >= similarity_floor:
+                associated_articles.append(
+                    associated_feed_item.base_object(
+                        association.similarity_score))
 
         unique_publication_articles = []
         unique_publication_names = []

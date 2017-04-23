@@ -39,7 +39,7 @@ class RSSFetcher:
 
     def __crawl_articles(self):
         process = CrawlerProcess(get_project_settings())
-        process.crawl('articles', memory_threshold=settings.ASSOCIATION_MEMORY_THRESHOLD, debug=self.debug)
+        process.crawl('articles', debug=self.debug)
         process.start()
 
     def __add_new_associations(self):

@@ -36,12 +36,15 @@ class ArticleSpider(scrapy.Spider):
       yield request
 
   def parse(self, response):
-    feed_item = response.meta['feed_item']
-    found_content = response.css(feed_item.feed.publication.html_content_tag).extract()
+    self.save_content(response)
+    yield None
 
-    if len(found_content):
-      feed_item.raw_content = " ".join(found_content)
-      feed_item.content = __clean_html(feed_item.raw_content)
+  def save_content(self, response):
+    feed_item = response.meta['feed_item']
+    found_content_blocks = response.css(feed_item.feed.publication.html_content_tag).extract()
+    if len(found_content_blocks):
+      feed_item.raw_content = " ".join(found_content_blocks)
+      feed_item.content = self.__clean_html(feed_item.raw_content)
       try:
         feed_item.redirected_url = self.__clean_url(response.url)
         feed_item.lookup_url = self.__shorten_url(response.url)
@@ -53,30 +56,28 @@ class ArticleSpider(scrapy.Spider):
         return
     else:
       self.content_missing += 1
-      client.context.merge({'feed_item': feed_item, 'status': 200})
       client.captureMessage('Scrapy - Content Not Found')
-      client.context.clear()
 
-    ScrapyLogItem.objects.create(feed_item=feed_item, status_code=response.status, content_tag_found=len(found_content) > 0)
-    yield None
+    ScrapyLogItem.objects.create(feed_item=feed_item, status_code=response.status, content_tag_found=len(found_content_blocks) > 0)
+
 
   def error(self, failure):
     if failure.check(HttpError):
       response = failure.value.response
-      client.context.merge({'feed_item': response.meta['feed_item'], 'status': response.status})
+      # client.context.merge({'feed_item': response.meta['feed_item'], 'status': response.status})
       ScrapyLogItem.objects.create(feed_item=response.meta['feed_item'], status_code=response.status, content_tag_found=False)
       client.captureMessage('Scrapy - HTTP Error')
       self.error_code_received += 1
     else:
-      client.context.merge({'feed_item': failure.request.meta['feed_item'], 'status': 0, 'message': repr(failure)})
+      # client.context.merge({'feed_item': failure.request.meta['feed_item'], 'status': 0, 'message': repr(failure)})
       ScrapyLogItem.objects.create(feed_item=failure.request.meta['feed_item'], status_code=0, content_tag_found=False, other_error=repr(failure))
       client.captureMessage('Scrapy - Other Error')
       self.other_error += 1
 
-    client.context.clear()
+    # client.context.clear()
 
   def __clean_html(self, raw_html):
-    return HTMLParser.pull_text_from_html(raw_html)
+    return HTMLParser().pull_text_from_html(raw_html)
 
   def __clean_url(self, raw_url):
     return URLParser().clean_url(raw_url)

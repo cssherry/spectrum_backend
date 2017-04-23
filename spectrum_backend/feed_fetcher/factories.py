@@ -58,6 +58,15 @@ class GenericFeedItemFactory(factory.django.DjangoModelFactory):
     created_at = factory.LazyFunction(timezone.now)
     updated_at = factory.LazyFunction(timezone.now)
 
+class PreScrapeFeedItemFactory(GenericFeedItemFactory):
+    class Meta:
+        model = models.FeedItem
+
+    raw_content = u''
+    content = u''
+    redirected_url = GenericFeedItemFactory.url
+    lookup_url = GenericFeedItemFactory.url
+
 class FeedItemWithRawLookupUrlsFactory(GenericFeedItemFactory):
     lookup_url = factory.Sequence(lambda n: 'https://www.planetnews.com/article%s' % n)
 

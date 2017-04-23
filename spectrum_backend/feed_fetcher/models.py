@@ -89,7 +89,7 @@ class FeedItem(models.Model):
     raw_description = models.TextField(default="")
     raw_content = models.TextField(default="")
     publication_date = models.DateTimeField()
-    redirected_url = models.CharField(max_length=1000, default="")
+    redirected_url = models.CharField(max_length=1000, unique=True)
     url = models.CharField(max_length=1000, unique=True)
     lookup_url = models.CharField(max_length=1000, default="")
     image_url = models.CharField(max_length=1000, default="")

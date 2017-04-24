@@ -12,15 +12,14 @@ def test_api(request=None):
 def get_associated_articles(request):
     url = __clean_url(request.GET.get('url', None))
     current_article = None
-    # lookup_url = __shorten_url(url)
+    lookup_url = __shorten_url(url)
     # current_article = FeedItem.objects.filter(lookup_url=lookup_url)[0] #error handling
     if not current_article:
         current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
     if not current_article:
         current_article = FeedItem.objects.filter(url__icontains=url)[0] # TODO - fix empty redirected_url and just use those
 
-    # Otherwise, return top associations
-    top_associations = current_article.first().top_associations(count=12, check_bias=True)
+    top_associations = current_article.top_associations(count=12, check_bias=True)
 
     return HttpResponse(json.dumps(top_associations), content_type='application/json')
 

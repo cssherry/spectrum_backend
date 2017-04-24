@@ -4,33 +4,38 @@ from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
-# Test API
-def test_api(request=None):
-    first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
-    return HttpResponse(json.dumps(first_articles), content_type='application/json')
-
 def get_associated_articles(request):
     url = __clean_url(request.GET.get('url', None))
-    current_article = None
-    lookup_url = __shorten_url(url)
-    # current_article = FeedItem.objects.filter(lookup_url=lookup_url)[0] #error handling
-    if not current_article:
-        current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
-    if not current_article:
-        current_article = FeedItem.objects.filter(url__icontains=url)[0] # TODO - fix empty redirected_url and just use those
+    if __is_not_base_url(url):
+        lookup_url = __shorten_url(url)
 
-    top_associations = current_article.top_associations(count=12, check_bias=True)
+        current_article = None
 
-    return HttpResponse(json.dumps(top_associations), content_type='application/json')
+        try:
+            current_article = FeedItem.objects.get(lookup_url=lookup_url)
+        except FeedItem.DoesNotExist:
+            pass
 
-def __clean_url(url_string):
-    return URLParser().clean_url(url_string)
+        if not current_article:
+            try:
+                current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
+            except IndexError:
+                pass
 
-def __shorten_url(url_string):
-    return URLParser().shorten_url(url_string)
+        if not current_article:
+            try:
+                current_article = FeedItem.objects.filter(url__icontains=url)[0]
+            except IndexError:
+                pass
 
-def __is_base_url(url_string):
-    return URLParser().is_base_url(url_string)
+        if current_article:
+            top_associations = current_article.top_associations(count=12, check_bias=True)
+
+            return HttpResponse(json.dumps(top_associations), content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({"message": "URL not found"}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({"message": "Base URL, Spectrum modal skipped"}), content_type='application/json')
 
 def all_publications(request):
     publications = Publication.objects.all()
@@ -40,6 +45,19 @@ def all_publications(request):
         'media_bias': dict((k, v) for k, v in Publication.BIASES),
     }
     return HttpResponse(json.dumps(results), content_type='application/json')
+
+def test_api(request=None):
+    first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
+    return HttpResponse(json.dumps(first_articles), content_type='application/json')
+
+def __clean_url(url_string):
+    return URLParser().clean_url(url_string)
+
+def __shorten_url(url_string):
+    return URLParser().shorten_url(url_string)
+
+def __is_not_base_url(url_string):
+    return not URLParser().is_base_url(url_string)
 
 # # return first 100 articles
 # def return_recent_articles(request):

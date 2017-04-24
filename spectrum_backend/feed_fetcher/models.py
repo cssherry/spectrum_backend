@@ -116,16 +116,6 @@ class FeedItem(models.Model):
         return cls.objects.values(field_name).annotate(count=Count('id')).values(field_name).order_by().filter(count__gt=1)
 
     @classmethod
-    def delete_duplicate_redirect_urls(cls): # TODO: Remove after redirect urls are properly made unique
-        for redirected_url in cls.objects.values_list('redirected_url', flat=True).distinct():
-            cls.objects.filter(pk__in=cls.objects.filter(redirected_url=redirected_url).values_list('id', flat=True)[1:]).delete()
-
-    @classmethod
-    def delete_duplicate_lookup_urls(cls): # TODO: Remove after redirect urls are properly made unique
-        for lookup_url in cls.objects.values_list('lookup_url', flat=True).distinct():
-            cls.objects.filter(pk__in=cls.objects.filter(lookup_url=lookup_url).values_list('id', flat=True)[1:]).delete()
-
-    @classmethod
     def feed_items_urls_to_scrape(cls, verbose=False, debug=False):
         if debug:
             publications = Publication.objects.all()[:3]

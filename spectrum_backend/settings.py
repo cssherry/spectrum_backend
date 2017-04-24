@@ -184,17 +184,22 @@ try:
 except KeyError:
   DAYS_TO_CHECK_FOR = 14
 
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
+if os.environ.get('SPECTRUM_ENV') != 'production': # TODO - figure out why production breaks with this method
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
+
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
+
+    try:
+        nltk.data.find('corpora/wordnet')
+    except LookupError:
+        nltk.download('wordnet')
+else:
     nltk.download('punkt')
-
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
     nltk.download('stopwords')
-
-try:
-    nltk.data.find('corpora/wordnet')
-except LookupError:
     nltk.download('wordnet')

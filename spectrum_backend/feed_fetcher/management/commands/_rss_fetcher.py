@@ -10,6 +10,7 @@ import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from django.conf import settings
+from django.db.utils import IntegrityError
 
 class RSSFetcher:
     def __init__(self, stdout=None, style=None, debug=False):
@@ -49,11 +50,14 @@ class RSSFetcher:
         entry_wrapper = RSSEntryWrapper(feed, entry)
         url = URLParser().clean_url(entry_wrapper.url)
     
-        feed_item = FeedItem.objects.get_or_create(url=url, defaults={'feed': feed, 'redirected_url': url, 'lookup_url': url, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
-        feed_item = FeedItemProcessor().process(feed_item)
-        feed_item.save()
-        for tag in entry_wrapper.tags:
-            Tag.objects.get_or_create(name=tag, feed_item=feed_item)
+        try:
+            feed_item = FeedItem.objects.get_or_create(url=url, defaults={'feed': feed, 'redirected_url': url, 'lookup_url': url, 'title': entry_wrapper.title, 'raw_description': entry_wrapper.raw_description, 'author': entry_wrapper.author, 'image_url': entry_wrapper.image_url, 'publication_date': entry_wrapper.publication_date})[0]
+            feed_item = FeedItemProcessor().process(feed_item)
+            feed_item.save()
+            for tag in entry_wrapper.tags:
+                Tag.objects.get_or_create(name=tag, feed_item=feed_item)
+        except IntegrityError:
+            pass
 
     def __parse_message(self, feed):
          return 'Parsing items from %s (%s) - %s' % (feed.publication.name, feed.category, feed.rss_url)

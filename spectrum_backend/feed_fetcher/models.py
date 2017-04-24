@@ -91,7 +91,7 @@ class FeedItem(models.Model):
     publication_date = models.DateTimeField()
     redirected_url = models.CharField(max_length=1000, unique=True)
     url = models.CharField(max_length=1000, unique=True)
-    lookup_url = models.CharField(max_length=1000, default="")
+    lookup_url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
     self_score = models.FloatField(default=0)
     checked_for_associations = models.BooleanField(default=0)

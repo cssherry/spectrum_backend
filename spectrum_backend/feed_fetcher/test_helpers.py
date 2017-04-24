@@ -170,6 +170,17 @@ class RSSFetcherTestCase(TestCase):
                 tag = Tag.objects.get(name=tag_name, feed_item=feed_item)
                 self.assertIsInstance(tag, Tag)
 
+    def test_works_if_duplicate_redirect_url(self):
+        self.rss_fetcher.fetch()
+        for entry in self.rss_feed.entries:
+            wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
+        feed_item = FeedItem.objects.last()
+        url = feed_item.url
+        feed_item.redirected_url = feed_item.url
+        feed_item.url = "http://fake.com"
+        self.rss_fetcher.fetch()
+        self.assertEquals(feed_item.redirected_url, url)
+
     def test_call_command(self):
         with suppress_printed_output():
             call_command('rss_fetcher')

@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c#u+9)uv2ekd&4i0fdk70ibyqa10f*b!jmhy5t=a%%r+%vt_mq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('SPECTRUM_ENV') != 'production':
+if os.environ.get('SPECTRUM_ENV') != 'production': #TODO - need to flag this for dev
     DEBUG = True
 else:
     DEBUG = False

@@ -11,6 +11,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from django.conf import settings
 from django.db.utils import IntegrityError
+from raven.contrib.django.raven_compat.models import client
 
 class RSSFetcher:
     def __init__(self, stdout=None, style=None, debug=False):
@@ -57,7 +58,7 @@ class RSSFetcher:
             for tag in entry_wrapper.tags:
                 Tag.objects.get_or_create(name=tag, feed_item=feed_item)
         except IntegrityError:
-            pass
+            client.captureException()
 
     def __parse_message(self, feed):
          return 'Parsing items from %s (%s) - %s' % (feed.publication.name, feed.category, feed.rss_url)

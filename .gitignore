@@ -79,3 +79,4 @@ Thumbs.db
 # Celery files #
 ######################
 celerybeat-schedule
+celerybeat-schedule.db

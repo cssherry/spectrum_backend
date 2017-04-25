@@ -25,6 +25,7 @@ import sys
 import time
 import unicodedata
 from datetime import datetime
+from raven.contrib.django.raven_compat.models import client
 
 import nltk
 import numpy as np
@@ -116,6 +117,7 @@ If the term is not in the doc_frequency dictionary, return 0"""
             tfidf = doc_frequency[term] * np.log(float(n) / corpus_frequency[term])
         except KeyError as e:
             tfidf = 0
+            client.captureException()
     else:
         return 0
     return tfidf
@@ -207,6 +209,7 @@ FIRST. N is number of total documents in corpus.
                                         storage_threshold)
 
         print "%s items compared (single list)" % end
+        print_mem_usage()
 
 def new_associations_comparison(doc_list_new, doc_list_old,
                                 corpus_frequency, n,
@@ -266,7 +269,7 @@ matching.
     for start, end, total, doc_list_part in batch_query_set(doc_list):
         for i in range(len(doc_list_part)):
             doc_item = doc_list_part[i]
-            if not redo_processed_docs and not doc_item.frequency_dictionary:
+            if redo_processed_docs or not doc_item.frequency_dictionary:
                 title = doc_item.title
                 summary = doc_item.description
                 body = doc_item.content
@@ -277,8 +280,11 @@ matching.
                 doc_item.frequency_dictionary = doc_frequency
                 doc_item.save()
                 update_corpus_frequency(corpus_frequency, doc_frequency)
+
+        print "%s items processed, corpus frequency length: %s" % (end, len(corpus_frequency))
         
-    print "Corpus frequency length: %s" % (len(corpus_frequency))
+    print "Corpus processing finished, frequency length: %s" % len(corpus_frequency)
+    print_mem_usage()
     CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
 
     # -> are we smashing words together?
@@ -289,12 +295,14 @@ matching.
     for start, end, total, doc_list_part in batch_query_set(doc_list):
         for i in range(len(doc_list_part)):
                 doc_item = doc_list_part[i]
-                if not redo_processed_docs and not doc_item.self_score:
+                if redo_processed_docs or not doc_item.self_score:
                     doc_frequency = doc_item.frequency_dictionary
                     tfidf_vec_length = calc_tfidf_vec_length(doc_frequency,
                                                              corpus_frequency, n)
                     doc_item.self_score = tfidf_vec_length
                     doc_item.save()
+                    if tfidf_vec_length == 0 or tfidf_vec_length == float("inf"):
+                        client.captureMessage("Invalid self_score %s" % tfidf_vec_length)
 
         print "%s document self scores processed" % end
 
@@ -391,7 +399,7 @@ def test(threshold):
     return
     
         
-def main(old_list=[], new_list=[], redo_processed_docs=False):
+def main(old_list=FeedItem.objects.none(), new_list=FeedItem.objects.none(), redo_processed_docs=False):
     """Given a single list, will populate associations for that list
 relative only to itself. Otherwise, given a new list, assumes old list
 has already been populated and will build associations for the new

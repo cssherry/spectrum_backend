@@ -15,6 +15,6 @@ class AddNewAssociations:
 
     def add(self, debug=False):
         if self.new_feed_items.count() > 0:
-            main(old_list=self.old_feed_items, new_list=self.new_feed_items, memory_threshold=settings.ASSOCIATION_MEMORY_THRESHOLD) #TODO - replace with _batch_query_set
+            main(old_list=self.old_feed_items, new_list=self.new_feed_items) #TODO: WHY DIDN'T TEST FAIL HERE with old memory threshold
         else:
             print("No new associations")

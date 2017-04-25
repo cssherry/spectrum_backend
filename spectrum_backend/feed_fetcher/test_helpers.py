@@ -249,7 +249,7 @@ class AssociationsJobsTestCase(TestCase):
 
     def test_add_associations_call_command(self):
         with suppress_printed_output():
-            call_command('add_new_associations')
+            call_command('add_new_associations') # broken
 
     def test_seed_base_associations_call_command(self):
         with suppress_printed_output():

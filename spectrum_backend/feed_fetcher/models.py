@@ -100,6 +100,11 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
+    def pluck(cls, field_name):
+        ids = FeedItem.objects.values_list(field_name, flat=True)
+        my_models = FeedItem.objects.filter(pk__in=set(ids))
+
+    @classmethod
     def recent_items_eligible_for_association(cls, days=7):
         time_threshold = timezone.now() - timedelta(days=days)
         return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
@@ -197,7 +202,7 @@ class FeedItem(models.Model):
             return ["L", "LC", "C", "RC", "R"]
 
 
-    def top_associations(self, count, check_bias=True, similarity_floor=2.0):
+    def top_associations(self, count, check_bias=True, similarity_floor=0.2):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item

@@ -153,3 +153,6 @@ The following are the Celery commands for running the background jobs:
 - Add ENV variable for that SPECTRUM_REDIS_URL='redis://localhost:6379'
 - `celery -A spectrum_backend worker -l info` - run celery worker
 - rss_fetcher job will automatically run the new associations job
+
+KNOWN BUGS:
+`RuntimeError(u'Acquire on closed pool)` is a Celery bug and can be fixed by restarting the worker with `heroku ps:scale worker=0`

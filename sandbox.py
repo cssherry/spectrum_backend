@@ -13,6 +13,10 @@ import os
 import codecs
 import sys
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
+from spectrum_backend.feed_fetcher.management.commands import tfidf
+
+def single_article_association(url):
+  tfidf.main(FeedItem.recent_items_eligible_for_association(), FeedItem.objects.filter(redirected_url=url))
 
 def articles_by_publication(limit = 5, include_extra_metadata = True, include_debug = False, include_ignored = False, include_empty = False):
   """ Returns articles grouped by publication. See __return_item for specific fields

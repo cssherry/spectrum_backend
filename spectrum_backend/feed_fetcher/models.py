@@ -202,14 +202,14 @@ class FeedItem(models.Model):
             return ["L", "LC", "C", "RC", "R"]
 
 
-    def top_associations(self, count, check_bias=True, similarity_floor=0.2):
+    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item
             if check_bias:
                 if not associated_feed_item.publication_bias() in self.opposing_biases():
                     continue
-            if association.similarity_score >= similarity_floor:
+            if association.similarity_score >= similarity_floor and association.similarity_score <= similarity_ceiling:
                 associated_articles.append(
                     associated_feed_item.base_object(
                         association.similarity_score))

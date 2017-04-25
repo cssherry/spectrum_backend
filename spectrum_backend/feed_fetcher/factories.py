@@ -76,7 +76,7 @@ class GenericAssociationFactory(factory.django.DjangoModelFactory):
 
     base_feed_item = factory.SubFactory(GenericFeedItemFactory)
     associated_feed_item = factory.SubFactory(GenericFeedItemFactory)
-    similarity_score = factory.Sequence(lambda n: '%s' % n)
+    similarity_score = factory.Sequence(lambda n: '%s' % (n * 0.1))
     created_at = factory.LazyFunction(timezone.now)
     updated_at = factory.LazyFunction(timezone.now)
 

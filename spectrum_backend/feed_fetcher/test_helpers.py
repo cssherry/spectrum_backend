@@ -133,6 +133,9 @@ class RSSEntryWrapperTestCase(TestCase):
             if hasattr(entry, 'tags'):
                 self.assertEquals(wrapper.tags, [tag.term for tag in entry.tags])
 
+    def tests_key_error_in_job(TestCase):
+        pass #TODO - test for media_content key error
+
 class RSSFetcherTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory(rss_url=WORKING_NYTIMES_RSS_URL)
@@ -305,7 +308,6 @@ class ScrapyTestCase(TestCase):
         css_mock.extract = Mock(return_value=self.html_content_blocks)
         self.response_mock.css = Mock(return_value=css_mock)
         self.spider.save_content(self.response_mock)
-        article_spider.client.captureMessage.assert_called_once()
         self.assertEquals(self.spider.content_missing, 1)
         self.assertEqual(self.feed_item.redirected_url, _url_parser.URLParser().clean_url(self.response_mock.url))
         self.assertEqual(self.feed_item.lookup_url, _url_parser.URLParser().shorten_url(self.response_mock.url))
@@ -323,7 +325,6 @@ class ScrapyTestCase(TestCase):
         failure_mock.value.response = self.response_mock
 
         self.spider.error(failure_mock)
-        article_spider.client.captureMessage.assert_called_once()
         self.assertEquals(self.spider.error_code_received, 1)
 
         created_log_item = ScrapyLogItem.objects.last()

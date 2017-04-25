@@ -44,7 +44,10 @@ class RSSEntryWrapper:
 
     def __parsed_image_url(self):
         if self.__matches_element_format('media_content') and self.entry.media_content[0]:
-            return self.entry.media_content[0]["url"]
+            try:
+                return self.entry.media_content[0]["url"]
+            except KeyError:
+                client.captureException()
         else:
             return ""
 

@@ -112,7 +112,7 @@ def calc_tfidf(term, doc_frequency, corpus_frequency, n):
     """Calculate the term frequency inverse document frequency score for a term.
 If the term is not in the doc_frequency dictionary, return 0"""
     if term in doc_frequency:
-        tfidf = doc_frequency[term] * np.log(n / corpus_frequency[term])
+        tfidf = doc_frequency[term] * np.log(float(n) / corpus_frequency[term])
     else:
         return 0
     return tfidf

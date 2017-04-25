@@ -130,16 +130,18 @@ class FeedItemTestCase(GlobalTestCase):
         self.assertEquals(max_similarity["url"], first_association["url"])
         self.assertEquals(min_similarity["url"], last_association["url"])
 
-    def test_top_associations_should_use_new_publications_first(self):
+    def test_top_associations_should_use_new_publications_first_but_exclude_capped_scores(self):
         feed_item = self.feed_item
         same_publications_with_high_score = factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item, associated_feed_item__feed=self.feed, similarity_score=0.9)
         different_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5).associated_feed_item.base_object(0.5)
         another_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5).associated_feed_item.base_object(0.5)
         another_association_with_score_below_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.15).associated_feed_item.base_object(0.15)
+        another_association_with_score_above_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.95).associated_feed_item.base_object(0.95)
         first_five_associations = feed_item.top_associations(5)
         self.assertIn(different_association_with_low_score, first_five_associations)
         self.assertIn(another_association_with_low_score, first_five_associations)
         self.assertNotIn(another_association_with_score_below_threshold, first_five_associations)
+        self.assertNotIn(another_association_with_score_above_threshold, first_five_associations)
 
     def test_get_fields_class_method_returns_serialized_version_of_object(self):
         feed_items = []

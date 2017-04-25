@@ -31,4 +31,4 @@ def task_rate_limiter(name, function):
       print "starting %s job" % name
       function()
     else:
-      print "fetcher job already active, suppressing new job"
+      print "another job already active, suppressing new job"

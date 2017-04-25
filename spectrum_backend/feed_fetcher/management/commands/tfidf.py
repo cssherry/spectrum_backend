@@ -194,7 +194,7 @@ FIRST. N is number of total documents in corpus.
     print("Comparing documents to themselves and storing comparison data")
     for i in range(len(doc_list)):
         doc_item_1_list = doc_list[i:i+1]
-        doc_list_to_compare_to = doc_list[i:]  # throw out self comp with bias
+        doc_list_to_compare_to = doc_list[i+1:]
         dissimilar_lists_comparison(doc_item_1_list,
                                     doc_list_to_compare_to,
                                     corpus_frequency,

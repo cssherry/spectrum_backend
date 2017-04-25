@@ -117,15 +117,21 @@ class RSSEntryWrapperTestCase(TestCase):
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
 
     def test_pulls_correct_feeds(self):
-        for entry in self.rss_feed.entries:
+        for entry in self.rss_feed.entries: # TODO: get a mock here
             wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
             self.assertEquals(wrapper.feed, self.feed)
-            self.assertEquals(wrapper.raw_description, entry.description)
-            self.assertEquals(wrapper.author, entry.author)
-            self.assertEquals(wrapper.url, entry.link)
-            self.assertEquals(wrapper.image_url, entry.media_content[0]["url"])
-            self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry.published))
-            self.assertEquals(wrapper.tags, [tag.term for tag in entry.tags])
+            if hasattr(entry, 'description'):
+                self.assertEquals(wrapper.raw_description, entry.description)
+            if hasattr(entry, 'author'):
+                self.assertEquals(wrapper.author, entry.author)
+            if hasattr(entry, 'link'):
+                self.assertEquals(wrapper.url, entry.link)
+            if hasattr(entry, 'media_content'):
+                self.assertEquals(wrapper.image_url, entry.media_content[0]["url"])
+            if hasattr(entry, 'published'):
+                self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry.published))
+            if hasattr(entry, 'tags'):
+                self.assertEquals(wrapper.tags, [tag.term for tag in entry.tags])
 
 class RSSFetcherTestCase(TestCase):
     def setUp(self):

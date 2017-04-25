@@ -269,7 +269,7 @@ matching.
     for start, end, total, doc_list_part in batch_query_set(doc_list):
         for i in range(len(doc_list_part)):
             doc_item = doc_list_part[i]
-            if redo_processed_docs or not doc_item.frequency_dictionary:
+            if redo_processed_docs or not doc_item.frequency_dictionary: # TODO - may want to make this check on a separate model to save after this runs in case the job is interrupted
                 title = doc_item.title
                 summary = doc_item.description
                 body = doc_item.content

@@ -48,7 +48,6 @@ class ArticleSpider(scrapy.Spider):
         else:
             self.content_missing += 1
             client.captureMessage('Scrapy - Content Not Found')
-        
         try:
             feed_item.redirected_url = self.__clean_url(response.url)
             feed_item.lookup_url = self.__shorten_url(response.url)

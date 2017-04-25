@@ -47,7 +47,6 @@ class ArticleSpider(scrapy.Spider):
             feed_item.content = self.__clean_html(feed_item.raw_content)
         else:
             self.content_missing += 1
-            client.captureMessage('Scrapy - Content Not Found')
         try:
             feed_item.redirected_url = self.__clean_url(response.url)
             feed_item.lookup_url = self.__shorten_url(response.url)
@@ -66,7 +65,6 @@ class ArticleSpider(scrapy.Spider):
             response = failure.value.response
             # client.context.merge({'feed_item': response.meta['feed_item'], 'status': response.status})
             ScrapyLogItem.objects.create(feed_item=response.meta['feed_item'], status_code=response.status, content_tag_found=False)
-            client.captureMessage('Scrapy - HTTP Error')
             self.error_code_received += 1
         else:
             # client.context.merge({'feed_item': failure.request.meta['feed_item'], 'status': 0, 'message': repr(failure)})

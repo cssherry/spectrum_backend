@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
+from django.db.models import Count
+from management.commands._batch_query_set import batch_query_set
 
 class Publication(models.Model):
     BIASES = (
@@ -26,11 +28,6 @@ class Publication(models.Model):
     class Meta:
         ordering = ['name']
 
-    def tags(self):
-        tags = set()
-        [tags.update(feed.tags()) for feed in self.feed_set.all()]
-        return tags
-
     def feeds(self, include_ignored=True):
         if include_ignored:
             return self.feed_set.all()
@@ -48,6 +45,13 @@ class Feed(models.Model):
     should_ignore = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return u'%s - %s (%s)' % (self.publication.name, self.category,
+                                  self.rss_url)
+
+    class Meta:
+        ordering = ['publication__name']
 
     @classmethod
     def all(cls, include_ignored=True):
@@ -74,36 +78,20 @@ class Feed(models.Model):
             self.publication.name, self.category, empty_feed_items.count(),
             self.feed_items().count(), broken_string))
 
-    def __str__(self):
-        return u'%s - %s (%s)' % (self.publication.name, self.category,
-                                  self.rss_url)
-
-    class Meta:
-        ordering = ['publication__name']
-
-    def tags(self):
-        tags = set()
-        [tags.update(feed_item.tags()) for feed_item in
-         self.feeditem_set.all()]
-        return tags
-
-
 class FeedItem(models.Model):
     MAX_SCRAPING_ATTEMPTS = 2
 
     feed = models.ForeignKey('Feed')
     title = models.CharField(max_length=1000)
     author = models.CharField(max_length=1000, default="")
-    # 8-10 sentences from RSS feed or scraper
     description = models.TextField(default="")
-    # content of article, pulled either from RSS feed or scraping
     content = models.TextField(default="")
-    # raw description from RSS feed
     raw_description = models.TextField(default="")
-    raw_content = models.TextField(default="")  # raw contents of web scrape
+    raw_content = models.TextField(default="")
     publication_date = models.DateTimeField()
-    redirected_url = models.CharField(max_length=1000, default="")
+    redirected_url = models.CharField(max_length=1000, unique=True)
     url = models.CharField(max_length=1000, unique=True)
+    lookup_url = models.CharField(max_length=1000, unique=True)
     image_url = models.CharField(max_length=1000, default="")
     self_score = models.FloatField(default=0)
     checked_for_associations = models.BooleanField(default=0)
@@ -112,14 +100,14 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def recent_items_eligible_for_association(cls, days):
-        time_threshold = datetime.now() - timedelta(days=days)
-        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
+    def pluck(cls, field_name):
+        ids = FeedItem.objects.values_list(field_name, flat=True)
+        my_models = FeedItem.objects.filter(pk__in=set(ids))
 
     @classmethod
-    def unassociated_items_eligible_for_similiarity_score(cls, days):
-        time_threshold = datetime.now() - timedelta(days=days)
-        return cls.objects.exclude(content__exact="").exclude(checked_for_associations=True).filter(created_at__gt=time_threshold)
+    def recent_items_eligible_for_association(cls, days=7):
+        time_threshold = timezone.now() - timedelta(days=days)
+        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
 
     @classmethod
     def get_fields(cls, list):
@@ -128,8 +116,36 @@ class FeedItem(models.Model):
             items.append(item.base_object())
         return items
 
-    def tags(self):
-        return set([tag.name for tag in self.tag_set.all()])
+    @classmethod
+    def duplicate_items(cls, field_name):
+        return cls.objects.values(field_name).annotate(count=Count('id')).values(field_name).order_by().filter(count__gt=1)
+
+    @classmethod
+    def feed_items_urls_to_scrape(cls, verbose=False, debug=False):
+        if debug:
+            publications = Publication.objects.all()[:3]
+        else:
+            publications = Publication.objects.all()
+
+        urls = []
+        total_items = 0
+        for publication in publications:
+            html_content_tag_present = publication.html_content_tag != ""
+            if html_content_tag_present and not publication.skip_scraping:
+                pub_count = 0
+                for start, end, total, publication_feed_items in batch_query_set(publication.feed_items()):
+                    for feed_item in publication_feed_items:
+                        if feed_item.should_scrape():
+                            urls.append(feed_item)
+                            pub_count += 1
+        
+                if verbose:
+                    print("Processing %s, %s items" % (publication.name, pub_count))
+                total_items += pub_count
+
+        if verbose:
+            print("Processing %s total items" % (total_items))
+        return urls
 
     def publication_name(self):
         return self.feed.publication.name
@@ -139,12 +155,6 @@ class FeedItem(models.Model):
 
     def publication_logo(self):
         return self.feed.publication.logo_url
-
-    def under_max_scraping_cap(self):
-        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
-
-    def should_scrape(self, ignore_scraping_cap = False):
-        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
     def feed_category(self):
         return self.feed.category
@@ -158,6 +168,12 @@ class FeedItem(models.Model):
     def friendly_publication_date(self):
         return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
+    def under_max_scraping_cap(self):
+        return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
+
+    def should_scrape(self, ignore_scraping_cap = False):
+        return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
+
     def base_object(self, similarity_score=None):
         base_object = {
             "publication_name": self.publication_name(),
@@ -170,8 +186,7 @@ class FeedItem(models.Model):
             "url": self.url,
             "author": self.author,
             "image_url": self.image_url,
-            "publication_date": self.friendly_publication_date(),
-            "tags": list(self.tags()),
+            "publication_date": self.friendly_publication_date()
         }
         if similarity_score:
             base_object["similarity_score"] = similarity_score
@@ -187,17 +202,17 @@ class FeedItem(models.Model):
             return ["L", "LC", "C", "RC", "R"]
 
 
-    def top_associations(self, count=3, check_bias=True):
+    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item
             if check_bias:
                 if not associated_feed_item.publication_bias() in self.opposing_biases():
                     continue
-
-            associated_articles.append(
-                associated_feed_item.base_object(
-                    association.similarity_score))
+            if association.similarity_score >= similarity_floor and association.similarity_score <= similarity_ceiling:
+                associated_articles.append(
+                    associated_feed_item.base_object(
+                        association.similarity_score))
 
         unique_publication_articles = []
         unique_publication_names = []
@@ -231,7 +246,7 @@ class FeedItem(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.TextField(default="")
     feed_item = models.ForeignKey('FeedItem')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -241,9 +256,6 @@ class Tag(models.Model):
 
     class Meta:
         unique_together = ('name', 'feed_item')
-
-    def publication_name(self):
-        return self.feed_item.feed.publication.name
 
 
 class Association(models.Model):
@@ -284,7 +296,6 @@ class CorpusWordFrequency(models.Model):
     @classmethod
     def _corpus_dictionary(cls):
         return cls.objects.first() or cls.objects.create(dictionary={})
-
 
 class ScrapyLogItem(models.Model):
     feed_item = models.ForeignKey('FeedItem')

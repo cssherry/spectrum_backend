@@ -5,8 +5,6 @@ from ._html_parser import HTMLParser
 from ._url_parser import URLParser
 from nltk.tokenize import sent_tokenize
 import nltk
-import urlparse
-nltk.download('punkt')
 
 class FeedItemProcessor:
   DESCRIPTION_MAX_SENTENCES = 5
@@ -27,11 +25,10 @@ class FeedItemProcessor:
     self.feed_item.title = HTMLParser().pull_text_from_html(self.feed_item.title)
 
   def __process_raw_description(self):
-    if self.feed_item.raw_description == "":
-      self.feed_item.raw_description = URLParser().pull_description_from_url(self.feed_item.url)
+    pass
 
   def __process_content_fields(self):
-    description_text = HTMLParser().pull_content_from_html(self.feed_item.raw_description)
+    description_text = HTMLParser().pull_text_from_html(self.feed_item.raw_description)
     description_sentences = sent_tokenize(description_text)
     self.feed_item.description = " ".join(description_sentences[0:self.DESCRIPTION_MAX_SENTENCES])
 
@@ -39,8 +36,8 @@ class FeedItemProcessor:
     pass
 
   def __process_url(self):
-    url_parameter_delimiter = "?"
-    self.feed_item.url = self.feed_item.url.split(url_parameter_delimiter)[0]
+    # redirected_url and lookup_url are processed during scraping. TODO come up with alternative manual method for the same
+    pass
 
   def __process_image_url(self):
     pass

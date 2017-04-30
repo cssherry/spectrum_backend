@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import raven
+import nltk
+from raven.handlers.logging import SentryHandler
+from raven.conf import setup_logging
+from raven import Client
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c#u+9)uv2ekd&4i0fdk70ibyqa10f*b!jmhy5t=a%%r+%vt_mq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('SPECTRUM_ENV') != 'production':
+if os.environ.get('SPECTRUM_ENV') != 'production': #TODO - need to flag this for dev
     DEBUG = True
 else:
     DEBUG = False
@@ -43,7 +48,8 @@ INSTALLED_APPS = [
     'import_export',
     'el_pagination',
     'spectrum_backend.feed_fetcher',
-    'django_celery_beat'
+    'django_celery_beat',
+    'raven.contrib.django.raven_compat'
 ]
 
 
@@ -154,3 +160,46 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+try:
+    # Sentry config
+    RAVEN_CONFIG = {
+        'dsn': os.environ['SPECTRUM_SENTRY_KEY'],
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        # 'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    }
+    client = Client(os.environ['SPECTRUM_SENTRY_KEY'])
+    handler = SentryHandler(client)
+    setup_logging(handler)
+except KeyError:
+    pass
+
+try:
+  ASSOCIATION_MEMORY_THRESHOLD = int(os.environ['ASSOCIATION_MEMORY_THRESHOLD']) or 1000
+except KeyError:
+  ASSOCIATION_MEMORY_THRESHOLD = 1000
+
+try:
+  DAYS_TO_CHECK_FOR = int(os.environ['DAYS_TO_CHECK_FOR']) or 14
+except KeyError:
+  DAYS_TO_CHECK_FOR = 14
+
+if os.environ.get('SPECTRUM_ENV') != 'production': # TODO - figure out why production breaks with this method
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
+
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
+
+    try:
+        nltk.data.find('corpora/wordnet')
+    except LookupError:
+        nltk.download('wordnet')
+else:
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    nltk.download('wordnet')

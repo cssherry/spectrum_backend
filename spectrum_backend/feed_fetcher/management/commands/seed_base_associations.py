@@ -1,13 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from spectrum_backend.feed_fetcher.models import FeedItem
-from .tfidf import main
-import os
-
-DAYS_TO_CHECK_FOR = int(os.environ['DAYS_TO_CHECK_FOR']) or 14
+from spectrum_backend.feed_fetcher.tasks import task_seed_base_associations
 
 # Initial seed for all associations
 class Command(BaseCommand):
-  def handle(self, *args, **options):
-    feed_items = FeedItem.recent_items_eligible_for_association(DAYS_TO_CHECK_FOR)
-    main(feed_items)
-    # TODO - delete associations with itself
+    def handle(self, *args, **options):
+        task_seed_base_associations.delay()

@@ -1,7 +1,7 @@
 import sys, os, mock, dateutil, feedparser
 from mock import patch, Mock
 from datetime import datetime, timedelta
-from StringIO import StringIO
+from io import StringIO
 from django.utils import timezone
 from django.test import TestCase
 from django.conf import settings
@@ -15,7 +15,6 @@ import article_scraper.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import logging
-from __future__ import division
 
 WORKING_NYTIMES_RSS_URL = 'http://www.nytimes.com/services/xml/rss/nyt/Politics.xml'
 
@@ -227,8 +226,7 @@ class CleanEntriesTestCase(TestCase):
 class AssociationsJobsTestCase(TestCase):
     def setUp(self):
         factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=True)
-        _add_new_associations.main = Mock()
-        seed_base_associations.main = Mock()
+        _add_new_associations.tfidf.main = Mock()
         self.add_new_associations = _add_new_associations.AddNewAssociations()
 
     def test_proper_length_of_inputs(self):
@@ -242,17 +240,18 @@ class AssociationsJobsTestCase(TestCase):
     def test_tfidf_called_when_new_associations(self):
         with suppress_printed_output():
             self.add_new_associations.add()
-            _add_new_associations.main.assert_not_called()
+            _add_new_associations.tfidf.main.assert_not_called()
             already_checked = FeedItem.recent_items_eligible_for_association(settings.DAYS_TO_CHECK_FOR).filter(checked_for_associations=True)
             factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=False)
             self.add_new_associations.add()
-            _add_new_associations.main.assert_called_once()
+            _add_new_associations.tfidf.main.assert_called_once()
 
     def test_add_associations_call_command(self):
         with suppress_printed_output():
-            call_command('add_new_associations') # broken
+            call_command('add_new_associations')
 
     def test_seed_base_associations_call_command(self):
+        seed_base_associations.task_seed_base_associations = Mock()
         with suppress_printed_output():
             call_command('seed_base_associations')
 

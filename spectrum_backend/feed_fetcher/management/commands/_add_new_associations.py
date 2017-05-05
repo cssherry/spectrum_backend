@@ -1,6 +1,6 @@
 from spectrum_backend.feed_fetcher.models import FeedItem
 from django.conf import settings
-from .tfidf import main
+from . import tfidf
 import os
 
 class AddNewAssociations:
@@ -15,6 +15,6 @@ class AddNewAssociations:
 
     def add(self, debug=False):
         if self.new_feed_items.count() > 0:
-            main(old_list=self.old_feed_items, new_list=self.new_feed_items) #TODO: WHY DIDN'T TEST FAIL HERE with old memory threshold
+            tfidf.main(old_list=self.old_feed_items, new_list=self.new_feed_items)
         else:
             print("No new associations")

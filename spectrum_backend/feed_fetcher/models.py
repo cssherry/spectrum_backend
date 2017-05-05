@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 from django.db.models import Count
-from management.commands._batch_query_set import batch_query_set
+from .management.commands._batch_query_set import batch_query_set
 
 class Publication(models.Model):
     BIASES = (

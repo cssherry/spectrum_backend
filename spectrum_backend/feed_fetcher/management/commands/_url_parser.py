@@ -1,5 +1,5 @@
 import re
-from urlparse import urlparse
+from urllib.parse import urlparse
 from raven.contrib.django.raven_compat.models import client
 from spectrum_backend.feed_fetcher.models import FeedItem
 from django.db.utils import IntegrityError
@@ -18,9 +18,9 @@ class URLParser:
                     feed_item.delete()
                     count += 1
 
-            print "%s items processed out of %s" % (end, total)
+            print("%s items processed out of %s" % (end, total))
 
-        print "%s items deleted" % count
+        print("%s items deleted" % count)
 
     def clean_url(self, raw_url):
         url_parameter_delimiter = "?"

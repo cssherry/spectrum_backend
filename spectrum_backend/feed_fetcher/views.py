@@ -5,9 +5,9 @@ from spectrum_backend.feed_fetcher.models import FeedItem, Publication
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
 def get_associated_articles(request):
-    url = __clean_url(request.GET.get('url', None))
-    if __is_not_base_url(url):
-        lookup_url = __shorten_url(url)
+    url = _clean_url(request.GET.get('url', None))
+    if _is_not_base_url(url):
+        lookup_url = _shorten_url(url)
 
         current_article = None
 
@@ -31,7 +31,7 @@ def get_associated_articles(request):
         if current_article:
             top_associations = current_article.top_associations(count=12, check_bias=True)
 
-            return HttpResponse(json.dumps(top_associations), content_type='application/json')
+            return HttpResponse(json.dumps(top_associations), content_type='application/json') # TODO: JsonResponse({'foo':'bar'})
         else:
             return HttpResponse(json.dumps({"message": "URL not found"}), content_type='application/json')
     else:
@@ -47,16 +47,19 @@ def all_publications(request):
     return HttpResponse(json.dumps(results), content_type='application/json')
 
 def test_api(request=None):
-    first_articles = FeedItem.get_fields(FeedItem.objects.all()[:3])
-    return HttpResponse(json.dumps(first_articles), content_type='application/json')
+    recent_articles = []
+    for feed_item in FeedItem.objects.all()[:3]:
+        recent_articles.append(feed_item.base_object())
 
-def __clean_url(url_string):
+    return HttpResponse(json.dumps(recent_articles), content_type='application/json')
+
+def _clean_url(url_string):
     return URLParser().clean_url(url_string)
 
-def __shorten_url(url_string):
+def _shorten_url(url_string):
     return URLParser().shorten_url(url_string)
 
-def __is_not_base_url(url_string):
+def _is_not_base_url(url_string):
     return not URLParser().is_base_url(url_string)
 
 # # return first 100 articles

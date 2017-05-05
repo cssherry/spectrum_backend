@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.test import TestCase
 from . import factories
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
-from StringIO import StringIO
+from io import StringIO
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())

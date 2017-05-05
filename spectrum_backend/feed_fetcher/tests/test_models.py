@@ -88,9 +88,12 @@ class FeedItemTestCase(GlobalTestCase):
         self.assertEqual(feed_item.image_url, base_object["image_url"])
         self.assertEqual(feed_item.friendly_publication_date(), base_object["publication_date"])
 
-    def test_base_object_can_have_association_similarity_score_passed(self):
+    def test_base_object_can_have_association_similarity_score_and_id_passed(self):
         feed_item = self.feed_item
-        base_object = feed_item.base_object(similarity_score=0.3)
+        base_object = feed_item.base_object(similarity_score=0.3, association_id=12)
+        self.assertEqual(base_object["similiarity_score"], 0.3)
+        self.assertEqual(base_object["association_id"], 12)
+
 
     def test_should_scrape_if_under_max_scraping_cap_and_no_raw_content(self):
         feed_item = factories.GenericFeedItemFactory(raw_content="")

@@ -178,7 +178,7 @@ class FeedItem(models.Model):
     def should_scrape(self, ignore_scraping_cap = False):
         return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
-    def base_object(self, similarity_score=None):
+    def base_object(self, similarity_score=None, association_id=None):
         base_object = {
             "publication_name": self.publication_name(),
             "publication_bias": self.publication_bias(),
@@ -194,6 +194,9 @@ class FeedItem(models.Model):
         }
         if similarity_score:
             base_object["similarity_score"] = similarity_score
+
+        if association_id:
+            base_object["association_id"] = association_id
 
         return base_object
 
@@ -219,7 +222,7 @@ class FeedItem(models.Model):
             if association.similarity_score >= similarity_floor and association.similarity_score <= similarity_ceiling:
                 associated_articles.append(
                     associated_feed_item.base_object(
-                        association.similarity_score))
+                        similarity_score=association.similarity_score, association_id=association.id))
 
         unique_publication_articles = []
         unique_publication_names = []
@@ -251,6 +254,27 @@ class FeedItem(models.Model):
     class Meta:
         ordering = ['-publication_date']
 
+class URLLookUpRecord(models.Model):
+    CODES = (
+        ('1', 'Found with lookup URL'),
+        ('2', 'Found with redirect URL'),
+        ('3', 'Found with normal URL'),
+        ('N/A', 'Not found'),
+        ('Base', 'Base URL'),
+    )
+    url = models.CharField(max_length=1000)
+    code = models.CharField(max_length=10, choices=CODES)
+    feed_item = models.ForeignKey('FeedItem')
+    associations_found = models.IntegerField(default=0)
+    internal_user = models.BooleanField()
+
+class UserFeedback(models.Model):
+    association = models.ForeignKey('Association')
+    is_negative = models.BooleanField()
+    feedback_version = models.IntegerField()
+    feedback_dict = JSONField()
+    other_feedback = models.TextField(default="")
+    free_text_feedback = models.TextField(default="")
 
 class Tag(models.Model):
     name = models.TextField(default="")

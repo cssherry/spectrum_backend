@@ -23,7 +23,7 @@ def task_shorten_urls():
 
 def _task_rate_limiter(name, function):
   i = inspect()
-  for host_name, workers in i.active().iteritems():
+  for host_name, workers in i.active().items():
     if len(workers) < 2:
       print("starting %s job" % name)
       function()

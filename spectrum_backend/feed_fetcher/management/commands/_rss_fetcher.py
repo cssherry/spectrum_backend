@@ -24,30 +24,32 @@ class RSSFetcher:
             self.feeds = Feed.objects.all()
 
     def fetch(self):    
+        self._fetch_from_feeds()
+        self._crawl_articles()
+        self._add_new_associations()
+
+    def _fetch_from_feeds(self):
         for feed in self.feeds:
-            self.__fetch_rss_and_parse(feed)
+            self._fetch_rss_and_parse(feed)
     
             if self.stdout and self.style:
-                self.stdout.write(self.style.SUCCESS(self.__parse_message(feed)))
-    
-        self.__crawl_articles()
-        self.__add_new_associations()
+                self.stdout.write(self.style.SUCCESS(self._parse_message(feed)))
 
-    def __fetch_rss_and_parse(self, feed):
+    def _fetch_rss_and_parse(self, feed):
         feed_result = feedparser.parse(feed.rss_url)
     
         for entry in feed_result.entries:
-            self.__parse_entry(feed, entry)
+            self._parse_entry(feed, entry)
 
-    def __crawl_articles(self):
+    def _crawl_articles(self):
         process = CrawlerProcess(get_project_settings())
         process.crawl('articles', debug=self.debug)
         process.start()
 
-    def __add_new_associations(self):
+    def _add_new_associations(self):
         AddNewAssociations().add(debug=self.debug)
 
-    def __parse_entry(self, feed, entry):
+    def _parse_entry(self, feed, entry):
         entry_wrapper = RSSEntryWrapper(feed, entry)
         url = URLParser().clean_url(entry_wrapper.url)
     
@@ -60,5 +62,5 @@ class RSSFetcher:
         except IntegrityError:
             client.captureException()
 
-    def __parse_message(self, feed):
+    def _parse_message(self, feed):
          return 'Parsing items from %s (%s) - %s' % (feed.publication.name, feed.category, feed.rss_url)

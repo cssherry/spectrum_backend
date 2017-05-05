@@ -105,13 +105,20 @@ def download_bias_json():
     else:
       bias_hash["R"].append(item)
 
+  download_json('data.json', bias_hash)
+
+def download_json(file_name, input_dict):
   fileSystemEncoding = sys.getfilesystemencoding()
-  OUTPUT_FILE = os.path.expanduser(u'./' + 'data.json')
-  with codecs.open(OUTPUT_FILE,
+  output_file = os.path.expanduser(u'./' + file_name)
+  with codecs.open(output_file,
                    encoding=fileSystemEncoding,
                    mode="w") as f:
-    j = json.dumps(bias_hash, indent=1, sort_keys=True, separators=(',', ': '))
+    j = json.dumps(input_dict, indent=1, sort_keys=True, separators=(',', ': '))
     f.write(j)
+
+def serialize_for_fixture(file_name, query_set):
+  data = json.loads(serializers.serialize("json", query_set))
+  download_json(file_name, data)
 
 def seed_associations():
   items = FeedItem.objects.all()[:10]
@@ -119,7 +126,6 @@ def seed_associations():
   for item in items:
     for other_item in other_items:
       Association.objects.create(base_feed_item=item, associated_feed_item=other_item, similarity_score=random.uniform(0, 1))
-
 
 def to_json(cls):
   """ Returns all fields for all objects of a class

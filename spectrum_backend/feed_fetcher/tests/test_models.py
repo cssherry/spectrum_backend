@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.test import TestCase
 from . import factories
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
-from StringIO import StringIO
+from io import StringIO
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())
@@ -28,6 +28,14 @@ class PublicationTestCase(GlobalTestCase):
         feed_item2 = factories.GenericFeedItemFactory(feed=self.feed)
         self.assertIn(self.feed_item, feed_items)
         self.assertIn(feed_item2, feed_items)
+
+    def test_bias_dict(self):
+        self.assertEquals(Publication.bias_dict(), 
+            {'L': 'Left-Wing',
+             'LC': 'Left-Leaning',
+             'C': 'Moderate',
+             'RC': 'Right-Leaning',
+             'R': 'Right-Wing'})
 
 class FeedTestCase(GlobalTestCase):
     def test_feed_items_convenience_method(self):

@@ -1,0 +1,2273 @@
+{
+ "bozo": 0,
+ "encoding": "us-ascii",
+ "entries": [
+  {
+   "author": "THOMAS KAPLAN and ROBERT PEAR",
+   "author_detail": {
+    "name": "THOMAS KAPLAN and ROBERT PEAR"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/health-care-bill-vote.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/health-care-bill-vote.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/health-care-bill-vote.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/health-care-bill-vote.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "published": "Fri, 05 May 2017 01:06:34 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    1,
+    6,
+    34,
+    4,
+    125,
+    0
+   ],
+   "summary": "After weeks of struggle, House Republicans narrowly passed hard-fought legislation to repeal and replace large parts of the Affordable Care Act.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "After weeks of struggle, House Republicans narrowly passed hard-fought legislation to repeal and replace large parts of the Affordable Care Act."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Ryan, Paul D Jr"
+    }
+   ],
+   "title": "House Passes Measure to Repeal and Replace the Affordable Care Act",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "House Passes Measure to Repeal and Replace the Affordable Care Act"
+   }
+  },
+  {
+   "author": "LINDA QIU",
+   "author_detail": {
+    "name": "LINDA QIU"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/fact-check-congress-exemption-republican-health-bill.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/fact-check-congress-exemption-republican-health-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/fact-check-congress-exemption-republican-health-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/fact-check-congress-exemption-republican-health-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "published": "Fri, 05 May 2017 02:11:39 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    2,
+    11,
+    39,
+    4,
+    125,
+    0
+   ],
+   "summary": "While an early version of the measure to replace the Affordable Care Act did not apply to lawmakers, that was later nullified by additional legislation.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "While an early version of the measure to replace the Affordable Care Act did not apply to lawmakers, that was later nullified by additional legislation."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Republican Party"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    }
+   ],
+   "title": "Fact Check: Is Congress Exempt From the G.O.P. Health Bill?",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Fact Check: Is Congress Exempt From the G.O.P. Health Bill?"
+   }
+  },
+  {
+   "author": "EMMARIE HUETTEMAN",
+   "author_detail": {
+    "name": "EMMARIE HUETTEMAN"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/house-russia-investigation-comey-rogers.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/house-russia-investigation-comey-rogers.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/house-russia-investigation-comey-rogers.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/house-russia-investigation-comey-rogers.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05INTEL-01b/05INTEL-01b-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "James B. Comey, the F.B.I. director, testified before the Senate Oversight Committee on Wednesday, one day before he met with members of the House Intelligence Committee to discuss Russian meddling.",
+   "published": "Fri, 05 May 2017 01:13:16 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    1,
+    13,
+    16,
+    4,
+    125,
+    0
+   ],
+   "summary": "Lawmakers heard from the director of the F.B.I. and the head of the National Security Agency, and the investigation\u2019s leaders said they were inviting more witnesses and requesting documents.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Lawmakers heard from the director of the F.B.I. and the head of the National Security Agency, and the investigation\u2019s leaders said they were inviting more witnesses and requesting documents."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Federal Bureau of Investigation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Comey, James B"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Rogers, Michael S"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Schiff, Adam B"
+    }
+   ],
+   "title": "Private Hearing With Intelligence Chiefs Revives House Inquiry on Russia",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Private Hearing With Intelligence Chiefs Revives House Inquiry on Russia"
+   }
+  },
+  {
+   "author": "MATTHEW HAAG",
+   "author_detail": {
+    "name": "MATTHEW HAAG"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/democrats-sing-na-na-hey-hey-good-bye-health-care-bill-vote.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/democrats-sing-na-na-hey-hey-good-bye-health-care-bill-vote.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/democrats-sing-na-na-hey-hey-good-bye-health-care-bill-vote.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/democrats-sing-na-na-hey-hey-good-bye-health-care-bill-vote.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05xp-congress_web1/05xp-congress_web1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "House Minority Leader Nancy Pelosi spoke against the Republican health care plan during a news conference at the Capitol on Thursday.",
+   "published": "Thu, 04 May 2017 23:45:58 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    23,
+    45,
+    58,
+    3,
+    124,
+    0
+   ],
+   "summary": "A late-1960s song by the group Steam again entered the political realm, as a warning to G.O.P. representatives that they will suffer politically.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "A late-1960s song by the group Steam again entered the political realm, as a warning to G.O.P. representatives that they will suffer politically."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_ttl",
+     "term": "Na Na Hey Hey (Kiss Him Goodbye) (Song)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Democratic Party"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Republican Party"
+    }
+   ],
+   "title": "Democrats Taunt Republicans With \u2018Hey, Hey, Hey, Goodbye\u2019 During Health Vote",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Democrats Taunt Republicans With \u2018Hey, Hey, Hey, Goodbye\u2019 During Health Vote"
+   }
+  },
+  {
+   "author": "MATT FLEGENHEIMER",
+   "author_detail": {
+    "name": "MATT FLEGENHEIMER"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/senate-health-care-bill.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/senate-health-care-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/senate-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/senate-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05senate/05senate-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "Senator Lindsey Graham, Republican of South Carolina, noted that the House vote came without an assessment from the Congressional Budget Office on the latest version\u2019s price and impact.",
+   "published": "Thu, 04 May 2017 18:28:51 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    18,
+    28,
+    51,
+    3,
+    124,
+    0
+   ],
+   "summary": "After a hard-fought victory in the House, the Republican bill to repeal the Affordable Care Act faces big changes in a skeptical Senate.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "After a hard-fought victory in the House, the Republican bill to repeal the Affordable Care Act faces big changes in a skeptical Senate."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Senate"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    }
+   ],
+   "title": "The Next Step for the Republican Health Care Bill: A Skeptical Senate",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "The Next Step for the Republican Health Care Bill: A Skeptical Senate"
+   }
+  },
+  {
+   "author": "JENNIFER STEINHAUER",
+   "author_detail": {
+    "name": "JENNIFER STEINHAUER"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/house-republican-health-bill.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/house-republican-health-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/house-republican-health-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/house-republican-health-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05assess_web2/05assess_web2-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "Paul D. Ryan, speaker of the House, before the vote on Thursday.",
+   "published": "Thu, 04 May 2017 18:21:32 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    18,
+    21,
+    32,
+    3,
+    124,
+    0
+   ],
+   "summary": "The legislative victory may weaken G.O.P. lawmakers facing re-election in moderate districts. \u201cWill it cause headaches for people? Absolutely,\u201d one said.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The legislative victory may weaken G.O.P. lawmakers facing re-election in moderate districts. \u201cWill it cause headaches for people? Absolutely,\u201d one said."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Ryan, Paul D Jr"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House Freedom Caucus"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    }
+   ],
+   "title": "Congressional Memo: Republicans Get Their Health Bill. But It May Cost Them.",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Congressional Memo: Republicans Get Their Health Bill. But It May Cost Them."
+   }
+  },
+  {
+   "author": "LAURIE GOODSTEIN and MICHAEL D. SHEAR",
+   "author_detail": {
+    "name": "LAURIE GOODSTEIN and MICHAEL D. SHEAR"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/religious-organizations-executive-order-trump.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/religious-organizations-executive-order-trump.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/religious-organizations-executive-order-trump.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/religious-organizations-executive-order-trump.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05religion/05religion-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Stephen Crowley/The New York Times",
+   "media_description": "President Trump signed a pair of executive orders on religious liberty and free speech at a National Day of Prayer event in the White House Rose Garden on Thursday.",
+   "published": "Fri, 05 May 2017 00:29:05 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    0,
+    29,
+    5,
+    4,
+    125,
+    0
+   ],
+   "summary": "Religious leaders suggested that the president\u2019s action promised freedoms many did not want while failing to offer legal protections they had been led to expect.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Religious leaders suggested that the president\u2019s action promised freedoms many did not want while failing to offer legal protections they had been led to expect."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Freedom of Religion"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Executive Orders and Memorandums"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    }
+   ],
+   "title": "Trump\u2019s Order on Religious Liberty Pleases a Few, but Lets Down Many Conservatives",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Trump\u2019s Order on Religious Liberty Pleases a Few, but Lets Down Many Conservatives"
+   }
+  },
+  {
+   "author": "ROBERT PEAR",
+   "author_detail": {
+    "name": "ROBERT PEAR"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/major-provisions-republican-health-care-bill.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/major-provisions-republican-health-care-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/major-provisions-republican-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/major-provisions-republican-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05provisions/05provisions-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Brendan Smialowski/Agence France-Presse \u2014 Getty Images",
+   "media_description": "Don Humbertson, a 64-year-old lung cancer survivor, at a health center in Blacksville, W. Va. The House bill would allow insurers to charge older Americans up to five times as much as younger Americans.",
+   "published": "Thu, 04 May 2017 14:11:04 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    14,
+    11,
+    4,
+    3,
+    124,
+    0
+   ],
+   "summary": "Here are some of the terms of the bill to repeal and replace large portions of the Affordable Care Act, which is up for a House vote.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Here are some of the terms of the bill to repeal and replace large portions of the Affordable Care Act, which is up for a House vote."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    }
+   ],
+   "title": "What\u2019s in the AHCA: The Major Provisions of the Republican Health Bill",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "What\u2019s in the AHCA: The Major Provisions of the Republican Health Bill"
+   }
+  },
+  {
+   "author": "THOMAS KAPLAN and JULIE HIRSCHFELD DAVIS",
+   "author_detail": {
+    "name": "THOMAS KAPLAN and JULIE HIRSCHFELD DAVIS"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/politics/what-to-watch-for-nail-biter-on-repealing-health-law.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/politics/what-to-watch-for-nail-biter-on-repealing-health-law.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/what-to-watch-for-nail-biter-on-repealing-health-law.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/politics/what-to-watch-for-nail-biter-on-repealing-health-law.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05healthbriefing-sub2/05healthbriefing-sub2-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "Nancy Pelosi, the House minority leader, spoke at a rally outside the Capitol on Thursday.",
+   "published": "Thu, 04 May 2017 19:39:36 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    19,
+    39,
+    36,
+    3,
+    124,
+    0
+   ],
+   "summary": "Suspense remains as to whether Republicans have the votes to pass a bill to repeal the Affordable Care Act, but whatever the result, more fits and starts are likely.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Suspense remains as to whether Republicans have the votes to pass a bill to repeal the Affordable Care Act, but whatever the result, more fits and starts are likely."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Republican Party"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    }
+   ],
+   "title": "Health Care Briefing: House Passes G.O.P. Bill to Repeal Obamacare",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Health Care Briefing: House Passes G.O.P. Bill to Repeal Obamacare"
+   }
+  },
+  {
+   "author": "DAMIEN CAVE",
+   "author_detail": {
+    "name": "DAMIEN CAVE"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/world/australia/trump-turnbull-meeting.html",
+   "link": "https://www.nytimes.com/2017/05/04/world/australia/trump-turnbull-meeting.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/world/australia/trump-turnbull-meeting.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/world/australia/trump-turnbull-meeting.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/world/05australiaqa_web1/05australiaqa_web1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Al Drago/The New York Times",
+   "media_description": "President Trump met with Australian Prime Minister Malcolm Turnbull on board the Intrepid Sea, Air and Space Museum in New York on Thursday.",
+   "published": "Fri, 05 May 2017 02:08:11 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    2,
+    8,
+    11,
+    4,
+    125,
+    0
+   ],
+   "summary": "Damien Cave, our Australia bureau chief, chatted with Maggie Haberman, White House correspondent, about how Mr. Trump is managing relations with Australia.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Damien Cave, our Australia bureau chief, chatted with Maggie Haberman, White House correspondent, about how Mr. Trump is managing relations with Australia."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Turnbull, Malcolm (1954- )"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States International Relations"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_geo",
+     "term": "Australia"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_geo",
+     "term": "China"
+    }
+   ],
+   "title": "Did Trump Snub Turnbull? Our White House Reporter Explains",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Did Trump Snub Turnbull? Our White House Reporter Explains"
+   }
+  },
+  {
+   "author": "MICHAEL CORKERY and MARY WILLIAMS WALSH",
+   "author_detail": {
+    "name": "MICHAEL CORKERY and MARY WILLIAMS WALSH"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/business/dealbook/puerto-rico-creditors-hedge-funds.html",
+   "link": "https://www.nytimes.com/2017/05/04/business/dealbook/puerto-rico-creditors-hedge-funds.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/dealbook/puerto-rico-creditors-hedge-funds.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/dealbook/puerto-rico-creditors-hedge-funds.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/business/05db-rico/05db-rico-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Dennis M. Rivera Pichardo for The New York Times",
+   "media_description": "Apartment and office buildings, many of them abandoned, in San Juan, P.R., in 2015. Congress enacted a law last year to help United States territories reduce debt.",
+   "published": "Fri, 05 May 2017 01:20:34 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    1,
+    20,
+    34,
+    4,
+    125,
+    0
+   ],
+   "summary": "Hedge funds bought up the island\u2019s high-interest bonds at a discount, confident because the territory couldn\u2019t declare bankruptcy. This week, it essentially did.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Hedge funds bought up the island\u2019s high-interest bonds at a discount, confident because the territory couldn\u2019t declare bankruptcy. This week, it essentially did."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_geo",
+     "term": "Puerto Rico"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Government Bonds"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Hedge Funds"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Bankruptcies"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Pensions and Retirement Plans"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Aurelius Capital Management"
+    }
+   ],
+   "title": "Message of Puerto Rico Debt Crisis: Easy Bets Sometimes Lose",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Message of Puerto Rico Debt Crisis: Easy Bets Sometimes Lose"
+   }
+  },
+  {
+   "author": "REED ABELSON and KATIE THOMAS",
+   "author_detail": {
+    "name": "REED ABELSON and KATIE THOMAS"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/health/health-care-bill-criticisms.html",
+   "link": "https://www.nytimes.com/2017/05/04/health/health-care-bill-criticisms.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/health/health-care-bill-criticisms.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/health/health-care-bill-criticisms.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05INSURE/05INSURE-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Stephen Crowley/The New York Times",
+   "media_description": "Seema Verma, the administrator of the Centers for Medicare and Medicaid Services, with the health and human services secretary, Tom Price, on Thursday.",
+   "published": "Fri, 05 May 2017 01:17:16 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    1,
+    17,
+    16,
+    4,
+    125,
+    0
+   ],
+   "summary": "The House\u2019s passage of the bill led to an outcry from the health care industry and consumer groups, which found an uncommon ally in some insurers.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The House\u2019s passage of the bill led to an outcry from the health care industry and consumer groups, which found an uncommon ally in some insurers."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "America's Health Insurance Plans"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    }
+   ],
+   "title": "In Rare Unity, Hospitals, Doctors and Insurers Criticize Health Bill",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "In Rare Unity, Hospitals, Doctors and Insurers Criticize Health Bill"
+   }
+  },
+  {
+   "author": "REBECCA R. RUIZ and MATT APUZZO",
+   "author_detail": {
+    "name": "REBECCA R. RUIZ and MATT APUZZO"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/us/jeff-sessions-police-shooting-civil-rights.html",
+   "link": "https://www.nytimes.com/2017/05/04/us/jeff-sessions-police-shooting-civil-rights.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/jeff-sessions-police-shooting-civil-rights.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/us/jeff-sessions-police-shooting-civil-rights.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05SESSIONS/05SESSIONS-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Chang W. Lee/The New York Times",
+   "media_description": "Attorney General Jeff Sessions and the Department of Justice decided not to file charges related to the fatal shooting of Alton Sterling by police officers in Baton Rouge, La., last year.",
+   "published": "Fri, 05 May 2017 00:59:17 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    5,
+    0,
+    59,
+    17,
+    4,
+    125,
+    0
+   ],
+   "summary": "The decision not to prosecute an officer in a black man\u2019s death in Louisiana indicated a high bar in such cases, not a new approach.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The decision not to prosecute an officer in a black man\u2019s death in Louisiana indicated a high bar in such cases, not a new approach."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Police Brutality, Misconduct and Shootings"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Blacks"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Civil Rights and Liberties"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Justice Department"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Sessions, Jefferson B III"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Sterling, Alton B (1979-2016)"
+    }
+   ],
+   "title": "Sessions Closed Sterling Case. Odds Are, His Predecessor Would Have, Too.",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Sessions Closed Sterling Case. Odds Are, His Predecessor Would Have, Too."
+   }
+  },
+  {
+   "author": "SYDNEY EMBER",
+   "author_detail": {
+    "name": "SYDNEY EMBER"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/business/media/shattered-hillary-clinton-campaign-book-tv-series.html",
+   "link": "https://www.nytimes.com/2017/05/04/business/media/shattered-hillary-clinton-campaign-book-tv-series.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/media/shattered-hillary-clinton-campaign-book-tv-series.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/media/shattered-hillary-clinton-campaign-book-tv-series.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/business/05shattered1/05shattered1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Ruth Fremson/The New York Times",
+   "media_description": "Former staff members of Hillary Clinton\u2019s presidential campaign have tried to rebut characterizations of the candidate in a new book, \u201cShattered.\u201d",
+   "published": "Thu, 04 May 2017 22:37:53 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    22,
+    37,
+    53,
+    3,
+    124,
+    0
+   ],
+   "summary": "The book, which describes dysfunction during the campaign, has been optioned by a Sony production company for a limited series.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The book, which describes dysfunction during the campaign, has been optioned by a Sony production company for a limited series."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Presidential Election of 2016"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Sony Pictures Television"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Davis Entertainment"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Clinton, Hillary Rodham"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_ttl",
+     "term": "\"Shattered\" (Book)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Allen, Jonathan"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Parnes, Amie"
+    }
+   ],
+   "title": "\u2018Shattered,\u2019 Book About Clinton Campaign, May Become TV Series",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "\u2018Shattered,\u2019 Book About Clinton Campaign, May Become TV Series"
+   }
+  },
+  {
+   "author": "DANIEL VICTOR",
+   "author_detail": {
+    "name": "DANIEL VICTOR"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/business/media/morning-joe-engaged.html",
+   "link": "https://www.nytimes.com/2017/05/04/business/media/morning-joe-engaged.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/media/morning-joe-engaged.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/business/media/morning-joe-engaged.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/multimedia/05joemika_xp/05joemika_xp-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Charles Sykes/NBC",
+   "media_description": "Joe Scarborough and Mika Brzezinski in 2013. The co-hosts are now engaged.",
+   "published": "Thu, 04 May 2017 16:18:39 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    16,
+    18,
+    39,
+    3,
+    124,
+    0
+   ],
+   "summary": "The couple had never publicly discussed their romantic relationship, though many people had speculated about it.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The couple had never publicly discussed their romantic relationship, though many people had speculated about it."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Dating and Relationships"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "MSNBC"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Brzezinski, Mika"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Scarborough, Joe"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_ttl",
+     "term": "Morning Joe (TV Program)"
+    }
+   ],
+   "title": "Joe Scarborough and Mika Brzezinski of \u2018Morning Joe\u2019 Are Engaged",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Joe Scarborough and Mika Brzezinski of \u2018Morning Joe\u2019 Are Engaged"
+   }
+  },
+  {
+   "author": "MARGOT SANGER-KATZ",
+   "author_detail": {
+    "name": "MARGOT SANGER-KATZ"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/04/upshot/who-wins-and-who-loses-in-the-latest-gop-health-care-bill.html",
+   "link": "https://www.nytimes.com/2017/05/04/upshot/who-wins-and-who-loses-in-the-latest-gop-health-care-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/04/upshot/who-wins-and-who-loses-in-the-latest-gop-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/04/upshot/who-wins-and-who-loses-in-the-latest-gop-health-care-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/05/us/05up-winlose/up-winlose-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Don Campbell/The Herald-Palladium, via Associated Press",
+   "media_description": "A group protesting outside the St. Joseph, Mich., office of Representative Fred Upton on Wednesday. Mr. Upton emerged as a crucial supporter of the effort to revive the G.O.P.\u2019s health care bill.",
+   "published": "Thu, 04 May 2017 15:44:57 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    15,
+    44,
+    57,
+    3,
+    124,
+    0
+   ],
+   "summary": "The rich and healthy benefit, but poor and disabled people who use Medicaid could lose out.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The rich and healthy benefit, but poor and disabled people who use Medicaid could lose out."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Republican Party"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Medicaid"
+    }
+   ],
+   "title": "Public Health: Who Wins and Who Loses in the Latest G.O.P. Health Care Bill",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Public Health: Who Wins and Who Loses in the Latest G.O.P. Health Care Bill"
+   }
+  },
+  {
+   "author": "LINDA QIU",
+   "author_detail": {
+    "name": "LINDA QIU"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/health-care-fact-check-preexisting-conditions.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/health-care-fact-check-preexisting-conditions.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/health-care-fact-check-preexisting-conditions.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/health-care-fact-check-preexisting-conditions.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04factcheck1/04factcheck1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Doug Mills/The New York Times",
+   "media_description": "Speaker Paul D. Ryan, front left, with Representative Steve Scalise of Louisiana on Capitol Hill last month.",
+   "published": "Thu, 04 May 2017 00:00:53 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    0,
+    0,
+    53,
+    3,
+    124,
+    0
+   ],
+   "summary": "Republicans are overstating the protections included in a bill to replace the Affordable Care Act, and Democrats are exaggerating how many people would be affected.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Republicans are overstating the protections included in a bill to replace the Affordable Care Act, and Democrats are exaggerating how many people would be affected."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Insurance"
+    }
+   ],
+   "title": "Fact Check: Pre-Existing Conditions: Evaluating Competing Claims",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Fact Check: Pre-Existing Conditions: Evaluating Competing Claims"
+   }
+  },
+  {
+   "author": "ERICA L. GREEN",
+   "author_detail": {
+    "name": "ERICA L. GREEN"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/health-bill-medicaid-special-education-affordable-care-act.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/health-bill-medicaid-special-education-affordable-care-act.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/health-bill-medicaid-special-education-affordable-care-act.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/health-bill-medicaid-special-education-affordable-care-act.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04medicaid/04medicaid-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "",
+   "media_description": "Students at Merriman Park Elementary School in Dallas in 2014. The Richardson ISD Council of PTAs hosted a program called \u201cUnderstanding Differences\u201d to show students and teachers what it is like to have learning disabilities.",
+   "published": "Wed, 03 May 2017 23:43:34 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    23,
+    43,
+    34,
+    2,
+    123,
+    0
+   ],
+   "summary": "A provision of the Republican plan to replace the Affordable Care Act would sharply cut Medicaid funds for special education programs across the country.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "A provision of the Republican plan to replace the Affordable Care Act would sharply cut Medicaid funds for special education programs across the country."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Special Education"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Medicaid"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    }
+   ],
+   "title": "A Little-Noticed Target in the House Health Bill: Special Education",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "A Little-Noticed Target in the House Health Bill: Special Education"
+   }
+  },
+  {
+   "author": "MICHAEL S. SCHMIDT",
+   "author_detail": {
+    "name": "MICHAEL S. SCHMIDT"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/james-comey-hearing-takeaways.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/james-comey-hearing-takeaways.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/james-comey-hearing-takeaways.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/james-comey-hearing-takeaways.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04comeytakeaways/04comeytakeaways-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Gabriella Demczuk for The New York Times",
+   "media_description": "James B. Comey, the F.B.I. director, testified before the Senate Judiciary Committee on Wednesday.",
+   "published": "Wed, 03 May 2017 23:35:48 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    23,
+    35,
+    48,
+    2,
+    123,
+    0
+   ],
+   "summary": "The F.B.I. director said that if he had to revisit his decision to tell Congress in October about newly discovered emails related to Hillary Clinton, he would do it again.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The F.B.I. director said that if he had to revisit his decision to tell Congress in October about newly discovered emails related to Hillary Clinton, he would do it again."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Comey, James B"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Senate Committee on the Judiciary"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Clinton, Hillary Rodham"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Presidential Election of 2016"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    }
+   ],
+   "title": "5 Takeaways From James Comey\u2019s Hearing",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "5 Takeaways From James Comey\u2019s Hearing"
+   }
+  },
+  {
+   "author": "MICHAEL D. SHEAR, LAURIE GOODSTEIN and MAGGIE HABERMAN",
+   "author_detail": {
+    "name": "MICHAEL D. SHEAR, LAURIE GOODSTEIN and MAGGIE HABERMAN"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/trump-religion-executive-order-gay-rights.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/trump-religion-executive-order-gay-rights.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-religion-executive-order-gay-rights.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-religion-executive-order-gay-rights.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04religion-sub/04religion-sub-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Stephen Crowley/The New York Times",
+   "media_description": "President Trump speaking at the National Prayer Breakfast in Washington in February.",
+   "published": "Thu, 04 May 2017 04:00:18 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    4,
+    4,
+    0,
+    18,
+    3,
+    124,
+    0
+   ],
+   "summary": "Several administration officials said the president would mark the National Day of Prayer on Thursday by issuing an executive order easing the risk of religious groups losing their tax-exempt status.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Several administration officials said the president would mark the National Day of Prayer on Thursday by issuing an executive order easing the risk of religious groups losing their tax-exempt status."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Executive Orders and Memorandums"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Freedom of Religion"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Freedom of Speech and Expression"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Americans United for Separation of Church and State"
+    }
+   ],
+   "title": "Trump Is Expected to Relax Tax Rules on Churches Endorsing Political Candidates",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Trump Is Expected to Relax Tax Rules on Churches Endorsing Political Candidates"
+   }
+  },
+  {
+   "author": "RON NIXON",
+   "author_detail": {
+    "name": "RON NIXON"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/trump-immigration-spending-bill.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/trump-immigration-spending-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-immigration-spending-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-immigration-spending-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04border1/04border1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Larry W. Smith/European Pressphoto Agency",
+   "media_description": "Border Patrol agents detained a man suspected of crossing the Rio Grande to enter the United States illegally near McAllen, Tex., in February.",
+   "published": "Wed, 03 May 2017 20:38:30 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    20,
+    38,
+    30,
+    2,
+    123,
+    0
+   ],
+   "summary": "Lawmakers from both parties rejected key elements of the president\u2019s proposals to enforce the nation\u2019s immigration laws more aggressively.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "Lawmakers from both parties rejected key elements of the president\u2019s proposals to enforce the nation\u2019s immigration laws more aggressively."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    }
+   ],
+   "title": "Trump\u2019s Immigration Proposals \u2018Conspicuously Absent\u2019 From Spending Bill",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Trump\u2019s Immigration Proposals \u2018Conspicuously Absent\u2019 From Spending Bill"
+   }
+  },
+  {
+   "author": "MATT FLEGENHEIMER and EMMARIE HUETTEMAN",
+   "author_detail": {
+    "name": "MATT FLEGENHEIMER and EMMARIE HUETTEMAN"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/budget-spending-government-shutdown.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/budget-spending-government-shutdown.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/budget-spending-government-shutdown.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/budget-spending-government-shutdown.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "published": "Wed, 03 May 2017 22:13:41 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    22,
+    13,
+    41,
+    2,
+    123,
+    0
+   ],
+   "summary": "The bipartisan agreement is expected to earn final passage with a Senate vote later this week.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The bipartisan agreement is expected to earn final passage with a Senate vote later this week."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Federal Budget (US)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    }
+   ],
+   "title": "House Approves Spending Deal, Clearing a Hurdle to Avoid a Shutdown",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "House Approves Spending Deal, Clearing a Hurdle to Avoid a Shutdown"
+   }
+  },
+  {
+   "author": "THOMAS KAPLAN and ROBERT PEAR",
+   "author_detail": {
+    "name": "THOMAS KAPLAN and ROBERT PEAR"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/gop-eyes-8-billion-addition-to-win-a-crucial-vote-to-the-latest-health-bill.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/gop-eyes-8-billion-addition-to-win-a-crucial-vote-to-the-latest-health-bill.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/gop-eyes-8-billion-addition-to-win-a-crucial-vote-to-the-latest-health-bill.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/gop-eyes-8-billion-addition-to-win-a-crucial-vote-to-the-latest-health-bill.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04health2/04health2-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Stephen Crowley/The New York Times",
+   "media_description": "From left, Republican Representatives Fred Upton of Michigan; Michael C. Burgess of Texas; Greg Walden of Oregon and Billy Long of Missouri spoke to reporters after discussing health care legislation with President Trump at the White House on Wednesday.",
+   "published": "Wed, 03 May 2017 23:17:39 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    23,
+    17,
+    39,
+    2,
+    123,
+    0
+   ],
+   "summary": "A vote was scheduled for Thursday, and the majority leader sounded confident about its chances, as critics called the added funding inadequate.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "A vote was scheduled for Thursday, and the majority leader sounded confident about its chances, as critics called the added funding inadequate."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Health Insurance and Managed Care"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "House of Representatives"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Patient Protection and Affordable Care Act (2010)"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Upton, Fred"
+    }
+   ],
+   "title": "With $8 Billion Deal on Health Bill, House G.O.P. Leader Says \u2018We Have Enough Votes\u2019",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "With $8 Billion Deal on Health Bill, House G.O.P. Leader Says \u2018We Have Enough Votes\u2019"
+   }
+  },
+  {
+   "author": "CARL HULSE",
+   "author_detail": {
+    "name": "CARL HULSE"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "https://www.nytimes.com/2017/05/03/us/politics/trump-filibuster.html",
+   "link": "https://www.nytimes.com/2017/05/03/us/politics/trump-filibuster.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-filibuster.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "https://www.nytimes.com/2017/05/03/us/politics/trump-filibuster.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/05/04/us/04hulse1/04hulse1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Al Drago/The New York Times",
+   "media_description": "President Trump at a campaign-style rally last week in Harrisburg, Pa.",
+   "published": "Wed, 03 May 2017 09:00:23 GMT",
+   "published_parsed": [
+    2017,
+    5,
+    3,
+    9,
+    0,
+    23,
+    2,
+    123,
+    0
+   ],
+   "summary": "By demanding that the Senate change one of its signature rules, the president created a cause for bipartisan unity: preserving the 60-vote threshold on legislation.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "By demanding that the Senate change one of its signature rules, the president created a cause for bipartisan unity: preserving the 60-vote threshold on legislation."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Filibusters and Debate Curbs"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Senate"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Politics and Government"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Law and Legislation"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Republican Party"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_org_all",
+     "term": "Democratic Party"
+    }
+   ],
+   "title": "On Washington: Trump Gets a Win He Wasn\u2019t Counting On: He Saved the Filibuster",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "On Washington: Trump Gets a Win He Wasn\u2019t Counting On: He Saved the Filibuster"
+   }
+  },
+  {
+   "author": "DAVID E. SANGER and WILLIAM J. BROAD",
+   "author_detail": {
+    "name": "DAVID E. SANGER and WILLIAM J. BROAD"
+   },
+   "authors": [
+    {}
+   ],
+   "guidislink": false,
+   "id": "http://www.nytimes.com/2017/03/04/world/asia/north-korea-missile-program-sabotage.html",
+   "link": "http://www.nytimes.com/2017/03/04/world/asia/north-korea-missile-program-sabotage.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "http://www.nytimes.com/2017/03/04/world/asia/north-korea-missile-program-sabotage.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    },
+    {
+     "href": "http://www.nytimes.com/2017/03/04/world/asia/north-korea-missile-program-sabotage.html?partner=rss&emc=rss",
+     "rel": "standout",
+     "type": "text/html"
+    }
+   ],
+   "media_content": [
+    {
+     "height": "151",
+     "medium": "image",
+     "url": "https://static01.nyt.com/images/2017/01/14/science/14MISSILE1/14MISSILE1-moth.jpg",
+     "width": "151"
+    }
+   ],
+   "media_credit": "Korean Central News Agency, via Reuters",
+   "media_description": "An image distributed by the North Korean government showing the country\u2019s leader, Kim Jong-un, visiting a missile test center in North Pyongan Province. Analysts say the pair of engines he is standing in front of could power an intercontinental ballistic missile.",
+   "published": "Sat, 04 Mar 2017 12:05:25 GMT",
+   "published_parsed": [
+    2017,
+    3,
+    4,
+    12,
+    5,
+    25,
+    5,
+    63,
+    0
+   ],
+   "summary": "The United States has been trying to sabotage North Korea\u2019s missile program. President Trump must decide what to do next.",
+   "summary_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/html",
+    "value": "The United States has been trying to sabotage North Korea\u2019s missile program. President Trump must decide what to do next."
+   },
+   "tags": [
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_geo",
+     "term": "North Korea"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Kim Jong-un"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "Nuclear Weapons"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Missiles and Missile Defense Systems"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "Cyberwarfare and Defense"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/des",
+     "term": "United States Defense and Military Forces"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/mdes",
+     "term": "United States International Relations"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Obama, Barack"
+    },
+    {
+     "label": null,
+     "scheme": "http://www.nytimes.com/namespaces/keywords/nyt_per",
+     "term": "Trump, Donald J"
+    }
+   ],
+   "title": "Trump Inherits a Secret Cyberwar Against North Korean Missiles",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "Trump Inherits a Secret Cyberwar Against North Korean Missiles"
+   }
+  }
+ ],
+ "feed": {
+  "image": {
+   "href": "https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png",
+   "link": "http://www.nytimes.com/pages/politics/index.html?partner=rss&emc=rss",
+   "links": [
+    {
+     "href": "http://www.nytimes.com/pages/politics/index.html?partner=rss&emc=rss",
+     "rel": "alternate",
+     "type": "text/html"
+    }
+   ],
+   "title": "NYT > Politics",
+   "title_detail": {
+    "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "language": null,
+    "type": "text/plain",
+    "value": "NYT > Politics"
+   }
+  },
+  "language": "en-us",
+  "link": "http://www.nytimes.com/pages/politics/index.html?partner=rss&emc=rss",
+  "links": [
+   {
+    "href": "http://www.nytimes.com/pages/politics/index.html?partner=rss&emc=rss",
+    "rel": "alternate",
+    "type": "text/html"
+   },
+   {
+    "href": "http://www.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "rel": "self",
+    "type": "application/rss+xml"
+   }
+  ],
+  "rights": "Copyright 2017  The New York Times Company",
+  "rights_detail": {
+   "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+   "language": null,
+   "type": "text/plain",
+   "value": "Copyright 2017  The New York Times Company"
+  },
+  "subtitle": "",
+  "subtitle_detail": {
+   "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+   "language": null,
+   "type": "text/html",
+   "value": ""
+  },
+  "title": "NYT > Politics",
+  "title_detail": {
+   "base": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+   "language": null,
+   "type": "text/plain",
+   "value": "NYT > Politics"
+  },
+  "updated": "Fri, 05 May 2017 06:06:59 GMT",
+  "updated_parsed": [
+   2017,
+   5,
+   5,
+   6,
+   6,
+   59,
+   4,
+   125,
+   0
+  ]
+ },
+ "headers": {
+  "Accept-Ranges": "bytes",
+  "Cache-Control": "max-age=604800, public",
+  "Connection": "close",
+  "Content-Encoding": "gzip",
+  "Content-Length": "8121",
+  "Content-Type": "text/xml",
+  "Date": "Fri, 05 May 2017 07:03:39 GMT",
+  "Expires": "Fri, 12 May 2017 07:03:39 GMT",
+  "Last-Modified": "Fri, 05 May 2017 06:08:05 GMT",
+  "Server": "Apache",
+  "Vary": "Accept-Encoding",
+  "X-API-Version": "4"
+ },
+ "href": "http://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+ "namespaces": {
+  "": "http://www.w3.org/2005/Atom",
+  "dc": "http://purl.org/dc/elements/1.1/",
+  "media": "http://search.yahoo.com/mrss/",
+  "nyt": "http://www.nytimes.com/namespaces/rss/2.0"
+ },
+ "status": 301,
+ "updated": "Fri, 05 May 2017 06:08:05 GMT",
+ "updated_parsed": [
+  2017,
+  5,
+  5,
+  6,
+  8,
+  5,
+  4,
+  125,
+  0
+ ],
+ "version": "rss20"
+}

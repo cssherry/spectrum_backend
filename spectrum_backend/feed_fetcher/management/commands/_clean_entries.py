@@ -7,7 +7,7 @@ class CleanEntries:
     def clean(self):
         all_feed_items = FeedItem.objects.all()
         for start, end, total, batched_feed_items in batch_query_set(all_feed_items):
-            print "Parsing next %s items" % start
+            print("Parsing next %s items" % start)
             for feed_item in batched_feed_items:
                 feed_item = FeedItemProcessor().process(feed_item)
                 try:

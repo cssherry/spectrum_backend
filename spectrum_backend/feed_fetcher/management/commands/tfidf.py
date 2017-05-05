@@ -196,7 +196,7 @@ in association class dictionary. Must run update_df_and_cf_with_new_docs
 FIRST. N is number of total documents in corpus.
 
     """
-    print "Comparing documents to themselves and storing comparison data"
+    print("Comparing documents to themselves and storing comparison data")
     for start, end, total, doc_list_part in batch_query_set(doc_list):
         for i in range(len(doc_list_part)):
             doc_item_1_list = doc_list_part[i:i+1]
@@ -208,7 +208,7 @@ FIRST. N is number of total documents in corpus.
                                         pretty_print,
                                         storage_threshold)
 
-        print "%s items compared (single list)" % end
+        print("%s items compared (single list)" % end)
         print_mem_usage()
 
 def new_associations_comparison(doc_list_new, doc_list_old,
@@ -281,9 +281,9 @@ matching.
                 doc_item.save()
                 update_corpus_frequency(corpus_frequency, doc_frequency)
 
-        print "%s items processed, corpus frequency length: %s" % (end, len(corpus_frequency))
+        print("%s items processed, corpus frequency length: %s" % (end, len(corpus_frequency)))
         
-    print "Corpus processing finished, frequency length: %s" % len(corpus_frequency)
+    print("Corpus processing finished, frequency length: %s" % len(corpus_frequency))
     print_mem_usage()
     CorpusWordFrequency.set_corpus_dictionary(corpus_frequency)
 
@@ -291,7 +291,7 @@ matching.
     # print(CorpusWordFrequency.get_corpus_dictionary())
         
     # now that updated, for each document, add in tfidf self score
-    print "Calculating self scores"
+    print("Calculating self scores")
     for start, end, total, doc_list_part in batch_query_set(doc_list):
         for i in range(len(doc_list_part)):
                 doc_item = doc_list_part[i]
@@ -304,9 +304,9 @@ matching.
                     if tfidf_vec_length == 0 or tfidf_vec_length == float("inf"):
                         client.captureMessage("Invalid self_score %s" % tfidf_vec_length)
 
-        print "%s document self scores processed" % end
+        print("%s document self scores processed" % end)
 
-    print "%s document self scores processed" % (doc_list.count())
+    print("%s document self scores processed" % (doc_list.count()))
 
 def mark_feed_items_as_processed(doc_list):
     for start, end, total, doc_list_part in batch_query_set(doc_list):
@@ -418,7 +418,7 @@ So for 16k documents, this means 1 hour of computation time.
     threshold = 0.2  # threshold for storage of matches
 
     if not new_list.exists() and old_list.exists():
-        print "Running initial job to build associations for %s items" % old_list.count()
+        print("Running initial job to build associations for %s items" % old_list.count())
         corpus_frequency = {}
         n = old_list.count()  # total number of docs in corpus, right now
         update_df_and_cf_with_new_docs(old_list, corpus_frequency, n, redo_processed_docs=True)
@@ -431,7 +431,7 @@ So for 16k documents, this means 1 hour of computation time.
         mark_feed_items_as_processed(old_list)
 
     elif new_list.exists() and old_list.exists():
-        print "Running update for %s docs against %s corpus" % (new_list.count(), old_list.count())
+        print("Running update for %s docs against %s corpus" % (new_list.count(), old_list.count()))
         t1 = datetime.now()
         corpus_frequency = CorpusWordFrequency.get_corpus_dictionary()
         n = old_list.count() + new_list.count()  # set n to total number of docs
@@ -443,11 +443,11 @@ So for 16k documents, this means 1 hour of computation time.
                                     old_list,
                                     corpus_frequency, n)
         t2 = datetime.now()
-        print "Ellapsed time for job: %s seconds" % (t2 - t1).seconds
+        print("Ellapsed time for job: %s seconds" % (t2 - t1).seconds)
     else:
-        print "the first list must be populated with documents whose\
- associations have already been determined"
-        print "running test"
+        print("the first list must be populated with documents whose\
+ associations have already been determined")
+        print("running test")
         # Association.objects.all().delete()
         # test(threshold)
     return

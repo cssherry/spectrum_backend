@@ -40,6 +40,7 @@ mkvirtualenv -p python3 spectrum_backend
 add2virtualenv .
 workon spectrum_backend
 xcode-select --install
+pip install -U pip
 pip install -r requirements.txt
 ```
 
@@ -156,3 +157,7 @@ The following are the Celery commands for running the background jobs:
 
 KNOWN BUGS:
 `RuntimeError(u'Acquire on closed pool)` is a Celery bug and can be fixed by restarting the worker with `heroku ps:scale worker=0`
+
+If you have errors with psycopg2 let Jesse know (especially `Library not loaded: @rpath/libssl.1.0.0.dylib` or `Symbol not found: _PQbackendPID`) He's been through it all :) Specifically, make sure your version of Python matches your system architecture and try installing your virtualenv with the 32-bit version of Python.
+
+

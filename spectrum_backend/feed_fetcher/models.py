@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 from django.db.models import Count
-from management.commands._batch_query_set import batch_query_set
+from .management.commands._batch_query_set import batch_query_set
 
 class Publication(models.Model):
     BIASES = (
@@ -21,6 +21,10 @@ class Publication(models.Model):
     skip_scraping = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def bias_dict(cls):
+        return dict((k, v) for k, v in Publication.BIASES)
 
     def __str__(self):
         return u'%s (%s)' % (self.name, self.bias)
@@ -201,6 +205,9 @@ class FeedItem(models.Model):
         else:
             return ["L", "LC", "C", "RC", "R"]
 
+    def all_associated_feed_items(self): # TEST
+        self.base_associations.values_list('associated_feed_item', flat=True)
+        return FeedItem.objects.filter(pk__in=set(ids))
 
     def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
         associated_articles = []

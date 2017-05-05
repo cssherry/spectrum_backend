@@ -1,6 +1,6 @@
 import factory
 import random
-from . import models
+from spectrum_backend.feed_fetcher import models
 from django.utils import timezone
 
 class GenericPublicationFactory(factory.django.DjangoModelFactory):
@@ -16,13 +16,13 @@ class GenericPublicationFactory(factory.django.DjangoModelFactory):
     created_at = factory.LazyFunction(timezone.now)
     updated_at = factory.LazyFunction(timezone.now)
 
-class ModerateProfileFactory(GenericPublicationFactory):
+class ModeratePublicationFactory(GenericPublicationFactory):
     bias = u'C'
 
-class RightWingProfileFactory(GenericPublicationFactory):
+class RightWingPublicationFactory(GenericPublicationFactory):
     bias = u'R'
 
-class LeftWingProfileFactory(GenericPublicationFactory):
+class LeftWingPublicationFactory(GenericPublicationFactory):
     bias = u'L'
 
 class GenericFeedFactory(factory.django.DjangoModelFactory):

@@ -1,0 +1,1192 @@
+[
+ {
+  "fields": {
+   "base_url": "abcnews.go.com",
+   "bias": "LC",
+   "created_at": "2017-04-10T08:12:00Z",
+   "html_content_tag": ".article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/abc.png",
+   "name": "ABC News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.137Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 18
+ },
+ {
+  "fields": {
+   "base_url": "alternet.org",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.781Z",
+   "html_content_tag": ".body_story p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/alternet.png",
+   "name": "Alternet",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.150Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 161
+ },
+ {
+  "fields": {
+   "base_url": "americannews.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.786Z",
+   "html_content_tag": ".post-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/american_news.jpg",
+   "name": "American News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.159Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 162
+ },
+ {
+  "fields": {
+   "base_url": "hosted2.ap.org",
+   "bias": "C",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".ap_para",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/ap.png",
+   "name": "Associated Press",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.173Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 9
+ },
+ {
+  "fields": {
+   "base_url": "bbc.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.795Z",
+   "html_content_tag": ".story-body__inner",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/bbc.jpg",
+   "name": "BBC",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.196Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 163
+ },
+ {
+  "fields": {
+   "base_url": "bloomberg.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.800Z",
+   "html_content_tag": ".body-copy",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/bloomberg.png",
+   "name": "Bloomberg",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.207Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 164
+ },
+ {
+  "fields": {
+   "base_url": "breitbart.com",
+   "bias": "R",
+   "created_at": "2017-04-10T08:12:00Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/breitbart.jpg",
+   "name": "Breitbart News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.219Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 16
+ },
+ {
+  "fields": {
+   "base_url": "businessinsider.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.810Z",
+   "html_content_tag": ".post-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/business_insider.jpg",
+   "name": "Business Insider",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.231Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 165
+ },
+ {
+  "fields": {
+   "base_url": "buzzfeed.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.816Z",
+   "html_content_tag": ".subbuzz-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/buzzfeed.jpg",
+   "name": "Buzzfeed",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.242Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 166
+ },
+ {
+  "fields": {
+   "base_url": "cbsnews.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.820Z",
+   "html_content_tag": ".entry",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/cbs.jpg",
+   "name": "CBS",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.250Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 167
+ },
+ {
+  "fields": {
+   "base_url": "cnn.com",
+   "bias": "LC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".zn-body__paragraph",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/cnn.png",
+   "name": "CNN",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.278Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 6
+ },
+ {
+  "fields": {
+   "base_url": "cnsnews.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.839Z",
+   "html_content_tag": ".field-item",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/cns_news.jpeg",
+   "name": "CNS News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.287Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 170
+ },
+ {
+  "fields": {
+   "base_url": "chicagotribune.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.825Z",
+   "html_content_tag": ".trb_ar_page",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/chicago_tribune.jpeg",
+   "name": "Chicago Tribune",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.260Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 168
+ },
+ {
+  "fields": {
+   "base_url": "csmonitor.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:02.829Z",
+   "html_content_tag": ".eza-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/christian_science_monitor.png",
+   "name": "Christian Science Monitor",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.268Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 169
+ },
+ {
+  "fields": {
+   "base_url": "dailykos.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.844Z",
+   "html_content_tag": ".story-column",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/daily_kos.jpg",
+   "name": "Daily Kos",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.295Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 171
+ },
+ {
+  "fields": {
+   "base_url": "dailymail.co.uk",
+   "bias": "R",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".mol-para-with-font",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/dailymail.png",
+   "name": "Daily Mail",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.304Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 10
+ },
+ {
+  "fields": {
+   "base_url": "democracyjournal.org",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.863Z",
+   "html_content_tag": ".article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/democracy_journal.gif",
+   "name": "Democracy",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.313Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 172
+ },
+ {
+  "fields": {
+   "base_url": "democracynow.org",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.867Z",
+   "html_content_tag": ".story_text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/democracy_now.png",
+   "name": "Democracy Now",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.321Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 173
+ },
+ {
+  "fields": {
+   "base_url": "esquire.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.872Z",
+   "html_content_tag": ".body-el-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/esquire.jpeg",
+   "name": "Esquire",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.328Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 174
+ },
+ {
+  "fields": {
+   "base_url": "fivethirtyeight.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.876Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/538.jpg",
+   "name": "FiveThirtyEight",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.337Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 175
+ },
+ {
+  "fields": {
+   "base_url": "forbes.com",
+   "bias": "RC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".article-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/forbes.png",
+   "name": "Forbes",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.351Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 13
+ },
+ {
+  "fields": {
+   "base_url": "fortune.com",
+   "bias": "RC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": "article",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/fortune.jpg",
+   "name": "Fortune",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.361Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 14
+ },
+ {
+  "fields": {
+   "base_url": "foxnews.com",
+   "bias": "R",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".article-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/fox_news.jpg",
+   "name": "Fox News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.373Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 3
+ },
+ {
+  "fields": {
+   "base_url": "fusion.net",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.897Z",
+   "html_content_tag": ".post-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/fusion.jpg",
+   "name": "Fusion",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.388Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 176
+ },
+ {
+  "fields": {
+   "base_url": "pamelageller.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.901Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/geller_report.png",
+   "name": "Geller Report",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.407Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 177
+ },
+ {
+  "fields": {
+   "base_url": "huffingtonpost.com",
+   "bias": "L",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".content-list-component",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/huffington_post.jpg",
+   "name": "Huffington Post",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.416Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 5
+ },
+ {
+  "fields": {
+   "base_url": "inthesetimes.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.913Z",
+   "html_content_tag": ".content-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/in_these_times.jpg",
+   "name": "In These Times",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.441Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 178
+ },
+ {
+  "fields": {
+   "base_url": "infowars.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.918Z",
+   "html_content_tag": "article",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/infowars.jpg",
+   "name": "InfoWars",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.424Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 179
+ },
+ {
+  "fields": {
+   "base_url": "ibtimes.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:02.923Z",
+   "html_content_tag": ".article-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/ibt.png",
+   "name": "International Business Times",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.433Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 180
+ },
+ {
+  "fields": {
+   "base_url": "investors.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:02.928Z",
+   "html_content_tag": ".single-post-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/investors_business_daily.jpg",
+   "name": "Investor's Business Daily",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.450Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 181
+ },
+ {
+  "fields": {
+   "base_url": "jacobinmag.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.933Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/jacobin.jpg",
+   "name": "Jacobin",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.460Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 182
+ },
+ {
+  "fields": {
+   "base_url": "judicialwatch.org",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.938Z",
+   "html_content_tag": ".entrycontent",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/judicial_watch.jpg",
+   "name": "Judical Watch",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.469Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 183
+ },
+ {
+  "fields": {
+   "base_url": "lawfareblog.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:02.943Z",
+   "html_content_tag": ".field-item",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/lawfare.png",
+   "name": "Lawfare",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.487Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 184
+ },
+ {
+  "fields": {
+   "base_url": "latimes.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.949Z",
+   "html_content_tag": ".trb_ar_page",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/la_times.jpeg",
+   "name": "Los Angeles Times",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.507Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 185
+ },
+ {
+  "fields": {
+   "base_url": "msnbc.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.970Z",
+   "html_content_tag": ".article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/msnbc.jpg",
+   "name": "MSNBC",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.557Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 189
+ },
+ {
+  "fields": {
+   "base_url": "madworldnews.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:02.954Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/mad_world_news.jpeg",
+   "name": "Mad World News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.520Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 186
+ },
+ {
+  "fields": {
+   "base_url": "motherjones.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.964Z",
+   "html_content_tag": "#node-body-top p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/mother_jones.jpg",
+   "name": "Mother Jones",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.544Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 188
+ },
+ {
+  "fields": {
+   "base_url": "nbcnews.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:02.983Z",
+   "html_content_tag": ".article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/nbc_news.jpg",
+   "name": "NBC News",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.576Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 191
+ },
+ {
+  "fields": {
+   "base_url": "npr.org",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.009Z",
+   "html_content_tag": ".storytext",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/npr.jpg",
+   "name": "NPR",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.641Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 196
+ },
+ {
+  "fields": {
+   "base_url": "nationalaffairs.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:02.974Z",
+   "html_content_tag": ".article-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/national_affairs.png",
+   "name": "National Affairs",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T02:28:02.974Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 190
+ },
+ {
+  "fields": {
+   "base_url": "nationalreview.com",
+   "bias": "R",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".story p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/national_review.png",
+   "name": "National Review",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.565Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 11
+ },
+ {
+  "fields": {
+   "base_url": "newrepublic.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.987Z",
+   "html_content_tag": ".article-text-wrap",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/new_republic.jpg",
+   "name": "New Republic",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.586Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 192
+ },
+ {
+  "fields": {
+   "base_url": "nymag.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:02.991Z",
+   "html_content_tag": ".article-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/new_york_magazine.png",
+   "name": "New York Magazine",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.605Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 193
+ },
+ {
+  "fields": {
+   "base_url": "nypost.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:02.995Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/new_york_post.jpeg",
+   "name": "New York Post",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.619Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 194
+ },
+ {
+  "fields": {
+   "base_url": "nytimes.com",
+   "bias": "LC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".story-body-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/nytimes.jpg",
+   "name": "New York Times",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.627Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 1
+ },
+ {
+  "fields": {
+   "base_url": "newsweek.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.004Z",
+   "html_content_tag": ".article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/newsweek.jpg",
+   "name": "Newsweek",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.596Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 195
+ },
+ {
+  "fields": {
+   "base_url": "pbs.org",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.013Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/pbs.jpg",
+   "name": "PBS NewsHour",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.653Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 197
+ },
+ {
+  "fields": {
+   "base_url": "politico.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.018Z",
+   "html_content_tag": ".story-text p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/politico.png",
+   "name": "Politico",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.662Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 198
+ },
+ {
+  "fields": {
+   "base_url": "rawstory.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.022Z",
+   "html_content_tag": "#body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/raw_story.png",
+   "name": "Raw Story",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.672Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 199
+ },
+ {
+  "fields": {
+   "base_url": "reason.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.027Z",
+   "html_content_tag": ".postcontent",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/reason.jpg",
+   "name": "Reason",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.682Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 200
+ },
+ {
+  "fields": {
+   "base_url": "redstate.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.031Z",
+   "html_content_tag": ".article-text p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/red_state.png",
+   "name": "Red State",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.699Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 201
+ },
+ {
+  "fields": {
+   "base_url": "reuters.com",
+   "bias": "C",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": "#article-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/reuters.png",
+   "name": "Reuters",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.713Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 8
+ },
+ {
+  "fields": {
+   "base_url": "salon.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.040Z",
+   "html_content_tag": ".articleContent",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/salon.jpg",
+   "name": "Salon",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.736Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 202
+ },
+ {
+  "fields": {
+   "base_url": "slate.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.044Z",
+   "html_content_tag": ".newbody",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/slate.jpg",
+   "name": "Slate",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.756Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 203
+ },
+ {
+  "fields": {
+   "base_url": "theamericanconservative.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.048Z",
+   "html_content_tag": ".post-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/american_conservative.gif",
+   "name": "The American Conservative",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.767Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 204
+ },
+ {
+  "fields": {
+   "base_url": "spectator.org",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.053Z",
+   "html_content_tag": ".print-only p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/american_spectator.jpg",
+   "name": "The American Spectator",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.777Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 205
+ },
+ {
+  "fields": {
+   "base_url": "theatlantic.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.057Z",
+   "html_content_tag": ".article-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_atlantic.png",
+   "name": "The Atlantic",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.789Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 206
+ },
+ {
+  "fields": {
+   "base_url": "chronicle.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:03.060Z",
+   "html_content_tag": ".content-item__story",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/chronical_of_higher_education.png",
+   "name": "The Chronicle of Higher Education",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.809Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 207
+ },
+ {
+  "fields": {
+   "base_url": "thedailybeast.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.064Z",
+   "html_content_tag": ".BodyNodes",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/daily_beast.jpeg",
+   "name": "The Daily Beast",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.819Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 208
+ },
+ {
+  "fields": {
+   "base_url": "dailycaller.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.068Z",
+   "html_content_tag": ".article-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/daily_caller.jpeg",
+   "name": "The Daily Caller",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.827Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 209
+ },
+ {
+  "fields": {
+   "base_url": "dailywire.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.072Z",
+   "html_content_tag": ".field-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_daily_wire.png",
+   "name": "The Daily Wire",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.838Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 210
+ },
+ {
+  "fields": {
+   "base_url": "economist.com",
+   "bias": "C",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".blog-post__text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/economist.png",
+   "name": "The Economist",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.846Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 7
+ },
+ {
+  "fields": {
+   "base_url": "thefederalist.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.081Z",
+   "html_content_tag": ".entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_federalist.png",
+   "name": "The Federalist",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.871Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 211
+ },
+ {
+  "fields": {
+   "base_url": "theguardian.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.085Z",
+   "html_content_tag": ".content__article-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_guardian.png",
+   "name": "The Guardian",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.886Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 212
+ },
+ {
+  "fields": {
+   "base_url": "thehill.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.089Z",
+   "html_content_tag": ".field-item",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_hill.jpeg",
+   "name": "The Hill",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.899Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 213
+ },
+ {
+  "fields": {
+   "base_url": "theintercept.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.093Z",
+   "html_content_tag": ".PostContent",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_intercept.jpg",
+   "name": "The Intercept",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.914Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 214
+ },
+ {
+  "fields": {
+   "base_url": "thenation.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.099Z",
+   "html_content_tag": ".article-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_nation.jpg",
+   "name": "The Nation",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.928Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 215
+ },
+ {
+  "fields": {
+   "base_url": "nationalinterest.org",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.103Z",
+   "html_content_tag": ".node-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/national_interest.jpeg",
+   "name": "The National Interest",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.938Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 216
+ },
+ {
+  "fields": {
+   "base_url": "newyorker.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.107Z",
+   "html_content_tag": ".articleBody p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_new_yorker.jpeg",
+   "name": "The New Yorker",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.947Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 217
+ },
+ {
+  "fields": {
+   "base_url": "thesmartset.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:03.112Z",
+   "html_content_tag": ".entry-content p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_smart_set.png",
+   "name": "The Smart Set",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.955Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 218
+ },
+ {
+  "fields": {
+   "base_url": "theweek.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.117Z",
+   "html_content_tag": ".article-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_week.jpeg",
+   "name": "The Week",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.968Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 219
+ },
+ {
+  "fields": {
+   "base_url": "theblaze.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.121Z",
+   "html_content_tag": ".entry-content p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/the_blaze.png",
+   "name": "TheBlaze",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.799Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 220
+ },
+ {
+  "fields": {
+   "base_url": "thinkprogress.org",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.125Z",
+   "html_content_tag": ".section-content p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/think_progress.jpeg",
+   "name": "ThinkProgress",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.978Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 221
+ },
+ {
+  "fields": {
+   "base_url": "time.com",
+   "bias": "LC",
+   "created_at": "2017-04-17T02:28:03.128Z",
+   "html_content_tag": "article",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/times_of_london.png",
+   "name": "Time Magazine",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:36.988Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 222
+ },
+ {
+  "fields": {
+   "base_url": "thetimes.co.uk",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.132Z",
+   "html_content_tag": ".Article-content p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/time.png",
+   "name": "Times of London",
+   "skip_scraping": true,
+   "updated_at": "2017-04-17T06:28:37.004Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 223
+ },
+ {
+  "fields": {
+   "base_url": "townhall.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.136Z",
+   "html_content_tag": ".article-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/townhall.png",
+   "name": "Townhall",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.019Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 224
+ },
+ {
+  "fields": {
+   "base_url": "truthdig.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.140Z",
+   "html_content_tag": ".entry_body_wrapper",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/truth_dig.jpg",
+   "name": "TruthDig",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.029Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 225
+ },
+ {
+  "fields": {
+   "base_url": "usatoday.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:03.144Z",
+   "html_content_tag": ".blog-asset-double-wide",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/usa_today.png",
+   "name": "USA Today",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.040Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 226
+ },
+ {
+  "fields": {
+   "base_url": "vox.com",
+   "bias": "L",
+   "created_at": "2017-04-17T02:28:03.147Z",
+   "html_content_tag": ".c-entry-content",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/vox.png",
+   "name": "Vox.com",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.049Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 227
+ },
+ {
+  "fields": {
+   "base_url": "wsj.com",
+   "bias": "RC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".wsj-snippet-body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/wsj.jpg",
+   "name": "Wall Street Journal",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.057Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 12
+ },
+ {
+  "fields": {
+   "base_url": "warontherocks.com",
+   "bias": "C",
+   "created_at": "2017-04-17T02:28:03.157Z",
+   "html_content_tag": ".single-content-section",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/war_on_the_rocks.jpeg",
+   "name": "War on the Rocks",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.065Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 228
+ },
+ {
+  "fields": {
+   "base_url": "washingtonexaminer.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.161Z",
+   "html_content_tag": ".body",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/washington_examiner.jpg",
+   "name": "Washington Examiner",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.073Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 229
+ },
+ {
+  "fields": {
+   "base_url": "washingtonpost.com",
+   "bias": "LC",
+   "created_at": "2017-01-09T00:56:00Z",
+   "html_content_tag": ".article-body p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/wp.png",
+   "name": "Washington Post",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.080Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 2
+ },
+ {
+  "fields": {
+   "base_url": "washingtontimes.com",
+   "bias": "RC",
+   "created_at": "2017-04-17T02:28:03.170Z",
+   "html_content_tag": ".storyareawrapper p",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/washington_times.jpg",
+   "name": "Washington Times",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.088Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 230
+ },
+ {
+  "fields": {
+   "base_url": "weeklystandard.com",
+   "bias": "R",
+   "created_at": "2017-04-17T02:28:03.174Z",
+   "html_content_tag": ".body-text",
+   "logo_url": "https://spectrum-backend.herokuapp.com/static/images/weekly_standard.png",
+   "name": "Weekly Standard",
+   "skip_scraping": false,
+   "updated_at": "2017-04-17T06:28:37.097Z"
+  },
+  "model": "feed_fetcher.publication",
+  "pk": 231
+ }
+]

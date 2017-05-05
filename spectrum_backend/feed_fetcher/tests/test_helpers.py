@@ -1,7 +1,7 @@
 import sys, os, mock, dateutil, feedparser
 from mock import patch, Mock
 from datetime import datetime, timedelta
-from StringIO import StringIO
+from io import StringIO
 from django.utils import timezone
 from django.test import TestCase
 from django.conf import settings
@@ -15,11 +15,25 @@ import article_scraper.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import logging
+import json
 
 WORKING_NYTIMES_RSS_URL = 'http://www.nytimes.com/services/xml/rss/nyt/Politics.xml'
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())
+
+
+class FeedFetcherTestDataWrapper:
+    def __init__(self, entry):
+        self.summary = entry["summary"]
+        self.author = entry["author"]
+        self.link = entry["link"]
+        if hasattr(entry, "media_content"):
+            self.media_content = entry["media_content"]
+
+        self.published = entry["published"]
+        if hasattr(entry, "tags"):
+            self.tags = entry["tags"]
 
 class BatchQuerySetTestCase(TestCase):
     def setUp(self):
@@ -114,24 +128,24 @@ class FeedItemProcessorTestCase(TestCase):
 class RSSEntryWrapperTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory()
+        json_data = json.load(open('spectrum_backend/feed_fetcher/fixtures/feed.json'))
+
+        feedparser.parse = Mock(return_value=json_data)
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
 
     def test_pulls_correct_feeds(self):
-        for entry in self.rss_feed.entries: # TODO: get a mock here
-            wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
+        for entry in self.rss_feed["entries"]:
+            entry_wrapper = FeedFetcherTestDataWrapper(entry)
+            wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry_wrapper)
             self.assertEquals(wrapper.feed, self.feed)
-            if hasattr(entry, 'description'):
-                self.assertEquals(wrapper.raw_description, entry.description)
-            if hasattr(entry, 'author'):
-                self.assertEquals(wrapper.author, entry.author)
-            if hasattr(entry, 'link'):
-                self.assertEquals(wrapper.url, entry.link)
-            if hasattr(entry, 'media_content'):
-                self.assertEquals(wrapper.image_url, entry.media_content[0]["url"])
-            if hasattr(entry, 'published'):
-                self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry.published))
-            if hasattr(entry, 'tags'):
-                self.assertEquals(wrapper.tags, [tag.term for tag in entry.tags])
+            self.assertEquals(wrapper.raw_description, entry_wrapper.summary)
+            self.assertEquals(wrapper.author, entry_wrapper.author)
+            self.assertEquals(wrapper.url, entry_wrapper.link)
+            if hasattr(entry_wrapper, "media_content"):
+                self.assertEquals(wrapper.image_url, entry_wrapper.media_content[0]["url"])
+            self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry_wrapper.published))
+            if hasattr(entry_wrapper, "tags"):
+                self.assertEquals(wrapper.tags, [tag.term for tag in entry_wrapper.tags])
 
     def tests_key_error_in_job(TestCase):
         pass #TODO - test for media_content key error
@@ -139,6 +153,14 @@ class RSSEntryWrapperTestCase(TestCase):
 class RSSFetcherTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory(rss_url=WORKING_NYTIMES_RSS_URL)
+        json_data = json.load(open('spectrum_backend/feed_fetcher/fixtures/feed.json'))
+        entries = []
+        for entry in json_data["entries"]:
+            entries.append(FeedFetcherTestDataWrapper(entry))
+
+        result = Mock()
+        result.entries = entries
+        feedparser.parse = Mock(return_value=result)
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
         
         crawler_mock = Mock()
@@ -162,6 +184,7 @@ class RSSFetcherTestCase(TestCase):
         self.assertEquals(rss_fetcher.feeds.count(), 11)
 
     def test_mocked_module_calls(self):
+        self.rss_fetcher._fetch_from_feeds = Mock()
         self.rss_fetcher.fetch()
         _rss_fetcher.CrawlerProcess.assert_called_once()
         self.crawler_mock.crawl.assert_called_once()
@@ -226,8 +249,7 @@ class CleanEntriesTestCase(TestCase):
 class AssociationsJobsTestCase(TestCase):
     def setUp(self):
         factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=True)
-        _add_new_associations.main = Mock()
-        seed_base_associations.main = Mock()
+        _add_new_associations.tfidf.main = Mock()
         self.add_new_associations = _add_new_associations.AddNewAssociations()
 
     def test_proper_length_of_inputs(self):
@@ -241,24 +263,20 @@ class AssociationsJobsTestCase(TestCase):
     def test_tfidf_called_when_new_associations(self):
         with suppress_printed_output():
             self.add_new_associations.add()
-            _add_new_associations.main.assert_not_called()
+            _add_new_associations.tfidf.main.assert_not_called()
             already_checked = FeedItem.recent_items_eligible_for_association(settings.DAYS_TO_CHECK_FOR).filter(checked_for_associations=True)
             factories.GenericFeedItemFactory.create_batch(20, checked_for_associations=False)
             self.add_new_associations.add()
-            _add_new_associations.main.assert_called_once()
+            _add_new_associations.tfidf.main.assert_called_once()
 
     def test_add_associations_call_command(self):
         with suppress_printed_output():
-            call_command('add_new_associations') # broken
+            call_command('add_new_associations')
 
     def test_seed_base_associations_call_command(self):
+        seed_base_associations.task_seed_base_associations = Mock()
         with suppress_printed_output():
             call_command('seed_base_associations')
-
-class TFIDFTestCase(TestCase):
-    # TODO
-    def setUp(self):
-        pass
 
 class ScrapyTestCase(TestCase):
     def setUp(self):
@@ -358,7 +376,3 @@ class ScrapyTestCase(TestCase):
             process.crawl('articles')
             process.start()
             self.assertEquals(ScrapyLogItem.objects.count(), 1)
-
-
-
-

@@ -105,12 +105,15 @@ def download_bias_json():
     else:
       bias_hash["R"].append(item)
 
+  download_json('data.json', bias_hash)
+
+def download_json(file_name, input_dict):
   fileSystemEncoding = sys.getfilesystemencoding()
-  OUTPUT_FILE = os.path.expanduser(u'./' + 'data.json')
+  OUTPUT_FILE = os.path.expanduser(u'./' + file_name)
   with codecs.open(OUTPUT_FILE,
                    encoding=fileSystemEncoding,
                    mode="w") as f:
-    j = json.dumps(bias_hash, indent=1, sort_keys=True, separators=(',', ': '))
+    j = json.dumps(input_dict, indent=1, sort_keys=True, separators=(',', ': '))
     f.write(j)
 
 def seed_associations():

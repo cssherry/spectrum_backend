@@ -29,6 +29,14 @@ class PublicationTestCase(GlobalTestCase):
         self.assertIn(self.feed_item, feed_items)
         self.assertIn(feed_item2, feed_items)
 
+    def test_bias_dict(self):
+        self.assertEquals(Publication.bias_dict(), 
+            {'L': 'Left-Wing',
+             'LC': 'Left-Leaning',
+             'C': 'Moderate',
+             'RC': 'Right-Leaning',
+             'R': 'Right-Wing'})
+
 class FeedTestCase(GlobalTestCase):
     def test_feed_items_convenience_method(self):
         feed_items = self.feed.feed_items()

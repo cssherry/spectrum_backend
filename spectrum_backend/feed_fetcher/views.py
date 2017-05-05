@@ -42,7 +42,7 @@ def all_publications(request):
     publication_json = json.loads(serializers.serialize('json', publications))
     results = {
         'publications': publication_json,
-        'media_bias': dict((k, v) for k, v in Publication.BIASES),
+        'media_bias': Publication.bias_dict(),
     }
     return JsonResponse(results, safe=False)
 

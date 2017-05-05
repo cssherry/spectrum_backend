@@ -15,11 +15,25 @@ import article_scraper.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import logging
+import json
 
 WORKING_NYTIMES_RSS_URL = 'http://www.nytimes.com/services/xml/rss/nyt/Politics.xml'
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())
+
+
+class FeedFetcherTestDataWrapper:
+    def __init__(self, entry):
+        self.summary = entry["summary"]
+        self.author = entry["author"]
+        self.link = entry["link"]
+        if hasattr(entry, "media_content"):
+            self.media_content = entry["media_content"]
+
+        self.published = entry["published"]
+        if hasattr(entry, "tags"):    
+            self.tags = entry["tags"]
 
 class BatchQuerySetTestCase(TestCase):
     def setUp(self):
@@ -114,24 +128,24 @@ class FeedItemProcessorTestCase(TestCase):
 class RSSEntryWrapperTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory()
+        json_data = json.load(open('spectrum_backend/feed_fetcher/fixtures/feed.json'))
+
+        feedparser.parse = Mock(return_value=json_data)
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
 
     def test_pulls_correct_feeds(self):
-        for entry in self.rss_feed.entries: # TODO: get a mock here
-            wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
+        for entry in self.rss_feed["entries"]:
+            entry_wrapper = FeedFetcherTestDataWrapper(entry)
+            wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry_wrapper)
             self.assertEquals(wrapper.feed, self.feed)
-            if hasattr(entry, 'description'):
-                self.assertEquals(wrapper.raw_description, entry.description)
-            if hasattr(entry, 'author'):
-                self.assertEquals(wrapper.author, entry.author)
-            if hasattr(entry, 'link'):
-                self.assertEquals(wrapper.url, entry.link)
-            if hasattr(entry, 'media_content'):
-                self.assertEquals(wrapper.image_url, entry.media_content[0]["url"])
-            if hasattr(entry, 'published'):
-                self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry.published))
-            if hasattr(entry, 'tags'):
-                self.assertEquals(wrapper.tags, [tag.term for tag in entry.tags])
+            self.assertEquals(wrapper.raw_description, entry_wrapper.summary)
+            self.assertEquals(wrapper.author, entry_wrapper.author)
+            self.assertEquals(wrapper.url, entry_wrapper.link)
+            if hasattr(entry_wrapper, "media_content"):
+                self.assertEquals(wrapper.image_url, entry_wrapper.media_content[0]["url"])
+            self.assertEquals(wrapper.publication_date, dateutil.parser.parse(entry_wrapper.published))
+            if hasattr(entry_wrapper, "tags"):
+                self.assertEquals(wrapper.tags, [tag.term for tag in entry_wrapper.tags])
 
     def tests_key_error_in_job(TestCase):
         pass #TODO - test for media_content key error
@@ -358,7 +372,3 @@ class ScrapyTestCase(TestCase):
             process.crawl('articles')
             process.start()
             self.assertEquals(ScrapyLogItem.objects.count(), 1)
-
-
-
-

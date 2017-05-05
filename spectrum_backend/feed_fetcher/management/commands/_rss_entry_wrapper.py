@@ -27,6 +27,8 @@ class RSSEntryWrapper:
     def _parsed_description(self):
         if self._matches_element_format('description'):
             return self.entry.description
+        elif self._matches_element_format('summary'):
+            return self.entry.summary
         else:
             return ""
 

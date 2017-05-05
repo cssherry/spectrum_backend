@@ -22,6 +22,10 @@ class Publication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def bias_dict(cls):
+        return dict((k, v) for k, v in Publication.BIASES)
+
     def __str__(self):
         return u'%s (%s)' % (self.name, self.bias)
 

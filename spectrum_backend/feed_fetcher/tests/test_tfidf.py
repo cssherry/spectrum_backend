@@ -13,6 +13,6 @@ class TFIDFTestCase(TestCase):
         pass
 
     def testTestTest(self):
-        print(FeedItem.objects.count())
+        # print(FeedItem.objects.count())
 
     

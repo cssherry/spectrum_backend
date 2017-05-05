@@ -154,7 +154,13 @@ class RSSFetcherTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory(rss_url=WORKING_NYTIMES_RSS_URL)
         json_data = json.load(open('spectrum_backend/feed_fetcher/fixtures/feed.json'))
-        feedparser.parse = Mock(return_value=json_data)
+        entries = []
+        for entry in json_data["entries"]:
+            entries.append(FeedFetcherTestDataWrapper(entry))
+
+        result = Mock()
+        result.entries = entries
+        feedparser.parse = Mock(return_value=result)
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
         
         crawler_mock = Mock()
@@ -188,7 +194,6 @@ class RSSFetcherTestCase(TestCase):
     def test_database_persistence(self):
         self.rss_fetcher.fetch()
         for entry in self.rss_feed.entries:
-            entry_wrapper = FeedFetcherTestDataWrapper(entry)
             wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
             url = _url_parser.URLParser().clean_url(wrapper.url)
             feed_item = FeedItem.objects.get(url=url)
@@ -272,11 +277,6 @@ class AssociationsJobsTestCase(TestCase):
         seed_base_associations.task_seed_base_associations = Mock()
         with suppress_printed_output():
             call_command('seed_base_associations')
-
-class TFIDFTestCase(TestCase):
-    # TODO
-    def setUp(self):
-        pass
 
 class ScrapyTestCase(TestCase):
     def setUp(self):

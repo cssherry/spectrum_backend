@@ -1,0 +1,1562 @@
+[
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-10T08:15:00Z",
+   "publication": 18,
+   "rss_url": "http://feeds.abcnews.com/abcnews/politicsheadlines",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.049Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 37
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-10T08:15:00Z",
+   "publication": 18,
+   "rss_url": "http://feeds.abcnews.com/abcnews/internationalheadlines",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.029Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 38
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.570Z",
+   "publication": 161,
+   "rss_url": "http://feeds.feedblitz.com/alternet",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.069Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 97
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.665Z",
+   "publication": 162,
+   "rss_url": "http://americannews.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.091Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 112
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 9,
+   "rss_url": "http://hosted2.ap.org/atom/APDEFAULT/89ae8247abe8493fae24405546e9a1aa",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.118Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 14
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 9,
+   "rss_url": "http://hosted2.ap.org/atom/APDEFAULT/386c25518f464186bf7a2ac026580ce7",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.132Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 12
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-14T00:51:00Z",
+   "publication": 9,
+   "rss_url": "http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.105Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 30
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.576Z",
+   "publication": 163,
+   "rss_url": "http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.189Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 98
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.589Z",
+   "publication": 163,
+   "rss_url": "http://www.bloomberg.com/politics/feeds/site.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.146Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 100
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.582Z",
+   "publication": 163,
+   "rss_url": "http://feeds.bbci.co.uk/news/politics/rss.xml?edition=uk",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.159Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 99
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-10T08:15:00Z",
+   "publication": 16,
+   "rss_url": "http://feeds.feedburner.com/breitbart",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.209Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 36
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.595Z",
+   "publication": 165,
+   "rss_url": "http://feeds.feedburner.com/businessinsider",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.225Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 101
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.607Z",
+   "publication": 166,
+   "rss_url": "https://www.buzzfeed.com/world.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.240Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 103
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.601Z",
+   "publication": 166,
+   "rss_url": "https://www.buzzfeed.com/politics.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.255Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 102
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.622Z",
+   "publication": 167,
+   "rss_url": "http://www.cbsnews.com/latest/rss/politics",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.292Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 105
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.629Z",
+   "publication": 167,
+   "rss_url": "http://www.cbsnews.com/latest/rss/world",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.270Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 106
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-14T00:48:00Z",
+   "publication": 6,
+   "rss_url": "http://rss.cnn.com/rss/cnn_world.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.355Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 29
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-14T00:48:00Z",
+   "publication": 6,
+   "rss_url": "http://rss.cnn.com/rss/cnn_us.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.372Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 28
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-14T00:48:00Z",
+   "publication": 6,
+   "rss_url": "http://rss.cnn.com/rss/cnn_allpolitics.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.386Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 27
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.614Z",
+   "publication": 170,
+   "rss_url": "http://www.cnsnews.com/feeds/all",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.400Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 104
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.674Z",
+   "publication": 168,
+   "rss_url": "http://www.chicagotribune.com/news/nationworld/rss2.0.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.314Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 114
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.679Z",
+   "publication": 169,
+   "rss_url": "http://rss.csmonitor.com/feeds/csm",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.331Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 115
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.720Z",
+   "publication": 171,
+   "rss_url": "http://feeds.dailykos.com/dailykos/index.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.415Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 123
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.315Z",
+   "publication": 10,
+   "rss_url": "http://www.dailymail.co.uk/news/worldnews/index.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.433Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 91
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 10,
+   "rss_url": "http://www.dailymail.co.uk/ushome/index.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.481Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 15
+ },
+ {
+  "fields": {
+   "category": "U.K.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 10,
+   "rss_url": "http://www.dailymail.co.uk/news/headlines/index.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.464Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 16
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.725Z",
+   "publication": 172,
+   "rss_url": "http://democracyjournal.org/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.495Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 124
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.729Z",
+   "publication": 173,
+   "rss_url": "https://www.democracynow.org/democracynow.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.508Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 125
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.734Z",
+   "publication": 174,
+   "rss_url": "http://www.esquire.com/rss/news-politics.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.523Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 126
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.466Z",
+   "publication": 175,
+   "rss_url": "https://fivethirtyeight.com/all/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.466Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 293
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 13,
+   "rss_url": "http://www.forbes.com/politics/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.541Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 25
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 14,
+   "rss_url": "http://fortune.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.555Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 26
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 3,
+   "rss_url": "http://feeds.foxnews.com/foxnews/world",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.602Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 6
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T03:59:04.381Z",
+   "publication": 3,
+   "rss_url": "http://feeds.foxnews.com/foxnews/opinion",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.567Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 92
+ },
+ {
+  "fields": {
+   "category": "National",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 3,
+   "rss_url": "http://feeds.foxnews.com/foxnews/national",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.582Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 7
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 3,
+   "rss_url": "http://feeds.foxnews.com/foxnews/politics",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.619Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 5
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.738Z",
+   "publication": 176,
+   "rss_url": "http://fusion.net/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.634Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 127
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.743Z",
+   "publication": 177,
+   "rss_url": "http://pamelageller.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.648Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 128
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 5,
+   "rss_url": "http://www.huffingtonpost.com/feeds/verticals/politics/news.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.675Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 23
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.395Z",
+   "publication": 5,
+   "rss_url": "http://www.huffingtonpost.com/feeds/verticals/world/index.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.662Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 93
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.766Z",
+   "publication": 178,
+   "rss_url": "http://www.inthesetimes.com/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.737Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 132
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.748Z",
+   "publication": 179,
+   "rss_url": "https://www.infowars.com/feed/custom_feed_rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.689Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 129
+ },
+ {
+  "fields": {
+   "category": "National",
+   "created_at": "2017-04-17T03:59:04.761Z",
+   "publication": 180,
+   "rss_url": "http://www.ibtimes.com/rss/national",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.703Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 131
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.753Z",
+   "publication": 180,
+   "rss_url": "http://www.ibtimes.com/rss/world",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.721Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 130
+ },
+ {
+  "fields": {
+   "category": "Editorials",
+   "created_at": "2017-04-17T03:59:04.777Z",
+   "publication": 181,
+   "rss_url": "http://feeds2.feedburner.com/EditorialRss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.766Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 134
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T03:59:04.771Z",
+   "publication": 181,
+   "rss_url": "http://feeds2.feedburner.com/PoliticRss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.780Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 133
+ },
+ {
+  "fields": {
+   "category": "Economy",
+   "created_at": "2017-04-17T03:59:04.782Z",
+   "publication": 181,
+   "rss_url": "http://feeds2.feedburner.com/EconomyRss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.751Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 135
+ },
+ {
+  "fields": {
+   "category": "Issues",
+   "created_at": "2017-04-17T03:59:04.792Z",
+   "publication": 182,
+   "rss_url": "https://www.jacobinmag.com/issue/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.799Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 137
+ },
+ {
+  "fields": {
+   "category": "Blogs",
+   "created_at": "2017-04-17T03:59:04.787Z",
+   "publication": 182,
+   "rss_url": "https://www.jacobinmag.com/category/blogs/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.816Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 136
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.797Z",
+   "publication": 183,
+   "rss_url": "http://www.judicialwatch.org/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.831Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 138
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.802Z",
+   "publication": 184,
+   "rss_url": "http://www.lawfareblog.com/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.845Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 139
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T03:59:04.811Z",
+   "publication": 185,
+   "rss_url": "http://www.latimes.com/opinion/rss2.0.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.875Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 141
+ },
+ {
+  "fields": {
+   "category": "Nation",
+   "created_at": "2017-04-17T03:59:04.820Z",
+   "publication": 185,
+   "rss_url": "http://www.latimes.com/nation/rss2.0.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.861Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 142
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.807Z",
+   "publication": 185,
+   "rss_url": "http://www.latimes.com/world/rss2.0.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.893Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 140
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.509Z",
+   "publication": 189,
+   "rss_url": "http://www.msnbc.com/feeds/latest",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.509Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 296
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.669Z",
+   "publication": 186,
+   "rss_url": "http://madworldnews.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.913Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 113
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.493Z",
+   "publication": 188,
+   "rss_url": "http://feeds.feedburner.com/motherjones/BlogsAndArticles",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.493Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 295
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.522Z",
+   "publication": 191,
+   "rss_url": "http://feeds.nbcnews.com/feeds/topstories",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.522Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 297
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.633Z",
+   "publication": 196,
+   "rss_url": "http://www.npr.org/sections/thetwo-way/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.633Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 305
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 11,
+   "rss_url": "http://www.nationalreview.com/corner/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.926Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 17
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.536Z",
+   "publication": 192,
+   "rss_url": "https://www.newrepublic.com/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.536Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 298
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T06:17:40.567Z",
+   "publication": 193,
+   "rss_url": "http://nymag.com/rss/Politics.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.567Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 300
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T06:17:40.591Z",
+   "publication": 194,
+   "rss_url": "http://nypost.com/opinion/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.591Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 302
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.579Z",
+   "publication": 194,
+   "rss_url": "http://nypost.com/news/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.579Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 301
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 1,
+   "rss_url": "http://www.nytimes.com/services/xml/rss/nyt/US.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.955Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 9
+ },
+ {
+  "fields": {
+   "category": "Editorial",
+   "created_at": "2017-04-17T06:17:40.608Z",
+   "publication": 1,
+   "rss_url": "http://topics.nytimes.com/top/opinion/editorialsandoped/editorials/index.html?rss=1",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.608Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 303
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T06:17:40.620Z",
+   "publication": 1,
+   "rss_url": "http://topics.nytimes.com/top/opinion/editorialsandoped/oped/contributors/index.html?rss=1",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.620Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 304
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 1,
+   "rss_url": "http://www.nytimes.com/services/xml/rss/nyt/World.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.974Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 8
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 1,
+   "rss_url": "http://www.nytimes.com/services/xml/rss/nyt/Politics.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:39.939Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 10
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.549Z",
+   "publication": 195,
+   "rss_url": "http://www.newsweek.com/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.549Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 299
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.657Z",
+   "publication": 197,
+   "rss_url": "http://www.pbs.org/newshour/rundown/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.657Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 306
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.671Z",
+   "publication": 199,
+   "rss_url": "http://www.rawstory.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.671Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 307
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.684Z",
+   "publication": 200,
+   "rss_url": "http://feeds.feedburner.com/reason/AllArticles",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.684Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 308
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.708Z",
+   "publication": 201,
+   "rss_url": "http://www.redstate.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.708Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 310
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 8,
+   "rss_url": "http://feeds.reuters.com/Reuters/domesticNews",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.025Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 21
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 8,
+   "rss_url": "http://feeds.reuters.com/Reuters/PoliticsNews",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.040Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 20
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 8,
+   "rss_url": "http://feeds.reuters.com/Reuters/worldNews",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.008Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 22
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.727Z",
+   "publication": 202,
+   "rss_url": "http://www.salon.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.727Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 311
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.741Z",
+   "publication": 203,
+   "rss_url": "http://feeds.slate.com/slate",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.741Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 312
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.563Z",
+   "publication": 204,
+   "rss_url": "http://theamericanconservative.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.055Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 96
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.762Z",
+   "publication": 204,
+   "rss_url": "http://www.theamericanconservative.com/articles/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.762Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 313
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.557Z",
+   "publication": 205,
+   "rss_url": "http://spectator.org/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.069Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 95
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.775Z",
+   "publication": 206,
+   "rss_url": "https://www.theatlantic.com/feed/all/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.775Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 314
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T06:17:40.811Z",
+   "publication": 207,
+   "rss_url": "http://www.chronicle.com/section/Global/433/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.811Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 317
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.800Z",
+   "publication": 207,
+   "rss_url": "http://www.chronicle.com/section/News/6/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.800Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 316
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T06:17:40.825Z",
+   "publication": 207,
+   "rss_url": "http://www.chronicle.com/section/Opinion-Ideas/40/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.825Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 318
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.836Z",
+   "publication": 208,
+   "rss_url": "http://www.thedailybeast.com/feed/articles.rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.836Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 319
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.849Z",
+   "publication": 209,
+   "rss_url": "http://feeds.feedburner.com/dailycaller",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.849Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 320
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.866Z",
+   "publication": 210,
+   "rss_url": "http://www.dailywire.com/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.866Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 321
+ },
+ {
+  "fields": {
+   "category": "Britain",
+   "created_at": "2017-04-17T03:59:04.715Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/britain/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.083Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 122
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/international/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.210Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 19
+ },
+ {
+  "fields": {
+   "category": "U.S.",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/united-states/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.231Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 18
+ },
+ {
+  "fields": {
+   "category": "Americas",
+   "created_at": "2017-04-17T03:59:04.705Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/americas/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.111Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 120
+ },
+ {
+  "fields": {
+   "category": "Middle East/Africa",
+   "created_at": "2017-04-17T03:59:04.699Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/middle-east-africa/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.127Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 119
+ },
+ {
+  "fields": {
+   "category": "Leaders",
+   "created_at": "2017-04-17T03:59:04.694Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/leaders/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.143Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 118
+ },
+ {
+  "fields": {
+   "category": "Europe",
+   "created_at": "2017-04-17T03:59:04.690Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/europe/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.159Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 117
+ },
+ {
+  "fields": {
+   "category": "Asia",
+   "created_at": "2017-04-17T03:59:04.685Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/asia/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.177Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 116
+ },
+ {
+  "fields": {
+   "category": "Special Reports",
+   "created_at": "2017-04-17T03:59:04.499Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/feeds/print-sections/103/special-reports.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.193Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 94
+ },
+ {
+  "fields": {
+   "category": "China",
+   "created_at": "2017-04-17T03:59:04.710Z",
+   "publication": 7,
+   "rss_url": "http://www.economist.com/sections/china/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.097Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 121
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.880Z",
+   "publication": 211,
+   "rss_url": "http://thefederalist.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.881Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 322
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.893Z",
+   "publication": 212,
+   "rss_url": "https://www.theguardian.com/uk/rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.893Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 323
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.697Z",
+   "publication": 213,
+   "rss_url": "http://thehill.com/rss/syndicator/19109",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.697Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 309
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.924Z",
+   "publication": 214,
+   "rss_url": "https://theintercept.com/feed/?rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.924Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 324
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.940Z",
+   "publication": 215,
+   "rss_url": "https://www.thenation.com/feed/?post_type=article",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.940Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 325
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.951Z",
+   "publication": 216,
+   "rss_url": "http://nationalinterest.org/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.951Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 326
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.975Z",
+   "publication": 217,
+   "rss_url": "http://www.newyorker.com/feed/everything",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.975Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 327
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.995Z",
+   "publication": 218,
+   "rss_url": "http://thesmartset.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.995Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 328
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:41.047Z",
+   "publication": 219,
+   "rss_url": "http://theweek.com/rss.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.047Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 329
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:40.787Z",
+   "publication": 220,
+   "rss_url": "http://www.theblaze.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.787Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 315
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:41.068Z",
+   "publication": 221,
+   "rss_url": "https://thinkprogress.org/feed",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.068Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 330
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T06:17:41.098Z",
+   "publication": 222,
+   "rss_url": "http://feeds2.feedburner.com/time/world",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.098Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 332
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T06:17:41.083Z",
+   "publication": 222,
+   "rss_url": "http://feeds.feedburner.com/timeblogs/swampland",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.083Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 331
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T06:17:41.114Z",
+   "publication": 224,
+   "rss_url": "https://townhall.com/api/openaccess/columnists/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.114Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 333
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T06:17:41.128Z",
+   "publication": 224,
+   "rss_url": "https://townhall.com/api/openaccess/news/us/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.128Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 334
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T06:17:41.142Z",
+   "publication": 224,
+   "rss_url": "https://townhall.com/api/openaccess/news/world/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.142Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 335
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:41.153Z",
+   "publication": 225,
+   "rss_url": "http://feeds.feedburner.com/Truthdig",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.153Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 336
+ },
+ {
+  "fields": {
+   "category": "Washington",
+   "created_at": "2017-04-17T03:59:04.635Z",
+   "publication": 226,
+   "rss_url": "http://rssfeeds.usatoday.com/UsatodaycomWashington-TopStories",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.283Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 107
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T03:59:04.642Z",
+   "publication": 226,
+   "rss_url": "http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.267Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 108
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.648Z",
+   "publication": 227,
+   "rss_url": "http://www.vox.com/rss/index.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.303Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 109
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 12,
+   "rss_url": "http://www.wsj.com/xml/rss/3_7085.xml",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.322Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 24
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T06:17:41.165Z",
+   "publication": 228,
+   "rss_url": "https://warontherocks.com/feed/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.165Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 337
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.655Z",
+   "publication": 229,
+   "rss_url": "http://www.washingtonexaminer.com/rss/all",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.338Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 110
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-10T08:15:00Z",
+   "publication": 2,
+   "rss_url": "http://hosted.ap.org/lineups/WORLDHEADS.rss",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.358Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 13
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 2,
+   "rss_url": "http://feeds.washingtonpost.com/rss/world",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.382Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 4
+ },
+ {
+  "fields": {
+   "category": "National",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 2,
+   "rss_url": "http://feeds.washingtonpost.com/rss/national",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.402Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 3
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-01-09T00:56:00Z",
+   "publication": 2,
+   "rss_url": "http://feeds.washingtonpost.com/rss/politics",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.421Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 2
+ },
+ {
+  "fields": {
+   "category": "Politics",
+   "created_at": "2017-04-17T06:17:41.179Z",
+   "publication": 230,
+   "rss_url": "http://www.washingtontimes.com/rss/headlines/news/politics/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.179Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 338
+ },
+ {
+  "fields": {
+   "category": "World",
+   "created_at": "2017-04-17T06:17:41.190Z",
+   "publication": 230,
+   "rss_url": "http://www.washingtontimes.com/rss/headlines/news/world/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.190Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 339
+ },
+ {
+  "fields": {
+   "category": "Opinion",
+   "created_at": "2017-04-17T06:17:41.219Z",
+   "publication": 230,
+   "rss_url": "http://www.washingtontimes.com/rss/headlines/opinion/",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:41.219Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 340
+ },
+ {
+  "fields": {
+   "category": "News",
+   "created_at": "2017-04-17T03:59:04.660Z",
+   "publication": 231,
+   "rss_url": "http://www.weeklystandard.com/rss/all",
+   "should_ignore": false,
+   "updated_at": "2017-04-17T06:17:40.443Z"
+  },
+  "model": "feed_fetcher.feed",
+  "pk": 111
+ }
+]

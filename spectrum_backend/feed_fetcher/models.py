@@ -205,6 +205,9 @@ class FeedItem(models.Model):
         else:
             return ["L", "LC", "C", "RC", "R"]
 
+    def all_associated_feed_items(self): # TEST
+        self.base_associations.values_list('associated_feed_item', flat=True)
+        return FeedItem.objects.filter(pk__in=set(ids))
 
     def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
         associated_articles = []

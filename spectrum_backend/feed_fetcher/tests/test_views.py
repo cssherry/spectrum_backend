@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.test import TestCase, RequestFactory
 from . import factories
-from .views import get_associated_articles, test_api, all_publications
+from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
 from io import StringIO
 from django.http import JsonResponse

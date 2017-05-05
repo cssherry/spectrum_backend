@@ -32,7 +32,7 @@ class FeedFetcherTestDataWrapper:
             self.media_content = entry["media_content"]
 
         self.published = entry["published"]
-        if hasattr(entry, "tags"):    
+        if hasattr(entry, "tags"):
             self.tags = entry["tags"]
 
 class BatchQuerySetTestCase(TestCase):
@@ -153,6 +153,8 @@ class RSSEntryWrapperTestCase(TestCase):
 class RSSFetcherTestCase(TestCase):
     def setUp(self):
         self.feed = factories.GenericFeedFactory(rss_url=WORKING_NYTIMES_RSS_URL)
+        json_data = json.load(open('spectrum_backend/feed_fetcher/fixtures/feed.json'))
+        feedparser.parse = Mock(return_value=json_data)
         self.rss_feed = feedparser.parse(WORKING_NYTIMES_RSS_URL)
         
         crawler_mock = Mock()
@@ -176,6 +178,7 @@ class RSSFetcherTestCase(TestCase):
         self.assertEquals(rss_fetcher.feeds.count(), 11)
 
     def test_mocked_module_calls(self):
+        self.rss_fetcher._fetch_from_feeds = Mock()
         self.rss_fetcher.fetch()
         _rss_fetcher.CrawlerProcess.assert_called_once()
         self.crawler_mock.crawl.assert_called_once()
@@ -185,6 +188,7 @@ class RSSFetcherTestCase(TestCase):
     def test_database_persistence(self):
         self.rss_fetcher.fetch()
         for entry in self.rss_feed.entries:
+            entry_wrapper = FeedFetcherTestDataWrapper(entry)
             wrapper = _rss_entry_wrapper.RSSEntryWrapper(self.feed, entry)
             url = _url_parser.URLParser().clean_url(wrapper.url)
             feed_item = FeedItem.objects.get(url=url)

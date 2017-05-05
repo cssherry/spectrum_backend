@@ -1,6 +1,6 @@
 import factory
 import random
-from . import models
+from spectrum_backend.feed_fetcher import models
 from django.utils import timezone
 
 class GenericPublicationFactory(factory.django.DjangoModelFactory):

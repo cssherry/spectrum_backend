@@ -1,5 +1,5 @@
 import json, re
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
@@ -31,11 +31,11 @@ def get_associated_articles(request):
         if current_article:
             top_associations = current_article.top_associations(count=12, check_bias=True)
 
-            return HttpResponse(json.dumps(top_associations), content_type='application/json') # TODO: JsonResponse({'foo':'bar'})
+            return JsonResponse(top_associations, safe=False)
         else:
-            return HttpResponse(json.dumps({"message": "URL not found"}), content_type='application/json')
+            return JsonResponse({"message": "URL not found"}, safe=False)
     else:
-        return HttpResponse(json.dumps({"message": "Base URL, Spectrum modal skipped"}), content_type='application/json')
+        return JsonResponse({"message": "Base URL, Spectrum modal skipped"}, safe=False)
 
 def all_publications(request):
     publications = Publication.objects.all()
@@ -44,14 +44,14 @@ def all_publications(request):
         'publications': publication_json,
         'media_bias': dict((k, v) for k, v in Publication.BIASES),
     }
-    return HttpResponse(json.dumps(results), content_type='application/json')
+    return JsonResponse(results, safe=False)
 
 def test_api(request=None):
     recent_articles = []
     for feed_item in FeedItem.objects.all()[:3]:
         recent_articles.append(feed_item.base_object())
 
-    return HttpResponse(json.dumps(recent_articles), content_type='application/json')
+    return JsonResponse(recent_articles, safe=False)
 
 def _clean_url(url_string):
     return URLParser().clean_url(url_string)
@@ -61,9 +61,3 @@ def _shorten_url(url_string):
 
 def _is_not_base_url(url_string):
     return not URLParser().is_base_url(url_string)
-
-# # return first 100 articles
-# def return_recent_articles(request):
-#   recent_articles = get_articles(FeedItem.objects.order_by('publication_date').all()[:30], True)
-#   article_string = json.dumps(_recent_articles(request))
-#   return HttpResponse(article_string, content_type='application/json')

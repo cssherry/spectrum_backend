@@ -24,14 +24,16 @@ class RSSFetcher:
             self.feeds = Feed.objects.all()
 
     def fetch(self):    
+        self._fetch_from_feeds()
+        self._crawl_articles()
+        self._add_new_associations()
+
+    def _fetch_from_feeds(self):
         for feed in self.feeds:
             self._fetch_rss_and_parse(feed)
     
             if self.stdout and self.style:
                 self.stdout.write(self.style.SUCCESS(self._parse_message(feed)))
-    
-        self._crawl_articles()
-        self._add_new_associations()
 
     def _fetch_rss_and_parse(self, feed):
         feed_result = feedparser.parse(feed.rss_url)

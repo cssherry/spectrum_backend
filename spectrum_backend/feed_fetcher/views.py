@@ -1,7 +1,7 @@
 import json, re
 from django.http import JsonResponse
 from django.core import serializers
-from spectrum_backend.feed_fetcher.models import FeedItem, Publication
+from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 
 def get_associated_articles(request):
@@ -13,29 +13,34 @@ def get_associated_articles(request):
 
         try:
             current_article = FeedItem.objects.get(lookup_url=lookup_url)
+            lookup_code = "1"
         except FeedItem.DoesNotExist:
             pass
 
         if not current_article:
             try:
                 current_article = FeedItem.objects.filter(redirected_url__icontains=url)[0]
+                lookup_code = "2"
             except IndexError:
                 pass
 
         if not current_article:
             try:
                 current_article = FeedItem.objects.filter(url__icontains=url)[0]
+                lookup_code = "3"
             except IndexError:
                 pass
 
         if current_article:
             top_associations = current_article.top_associations(count=12, check_bias=True)
-
+            URLLookUpRecord.objects.create(code=lookup_code, url=url, feed_item=current_article, associations_found=len(top_associations))
             return JsonResponse(top_associations, safe=False)
         else:
-            return JsonResponse({"message": "URL not found"}, safe=False)
+            URLLookUpRecord.objects.create(code="N/A", url=url)
+            return JsonResponse({"message": "URL not found"}, status=404, safe=False)
     else:
-        return JsonResponse({"message": "Base URL, Spectrum modal skipped"}, safe=False)
+        URLLookUpRecord.objects.create(code="Base", url=url)
+        return JsonResponse({"message": "Base URL, Spectrum modal skipped"}, status=422, safe=False)
 
 def all_publications(request):
     publications = Publication.objects.all()

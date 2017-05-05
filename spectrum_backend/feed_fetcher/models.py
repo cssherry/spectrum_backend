@@ -264,9 +264,9 @@ class URLLookUpRecord(models.Model):
     )
     url = models.CharField(max_length=1000)
     code = models.CharField(max_length=10, choices=CODES)
-    feed_item = models.ForeignKey('FeedItem')
-    associations_found = models.IntegerField(default=0)
-    internal_user = models.BooleanField()
+    feed_item = models.ForeignKey('FeedItem', null=True)
+    associations_found = models.IntegerField(null=True)
+    internal_user = models.BooleanField(default=False)
 
 class UserFeedback(models.Model):
     association = models.ForeignKey('Association')

@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.test import TestCase, RequestFactory
 from . import factories
 from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications
-from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency
+from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency, URLLookUpRecord
 from io import StringIO
 from django.http import JsonResponse
 from django.core import serializers
@@ -48,8 +48,8 @@ class GetAssociationsTestCase(TestCase):
     def setUp(self):
         self.url = "https://www.planetnews.com/rss/1/example.html"
         self.redirected_url = "https://planetnews.com/1/example.html"
-        self.redirected_url_with_different_scheme = "http://planetnews.com/1/example.html"
-        self.lookup_url = "planetnews.com/1/example.html"
+        self.url_for_lookup_url = "http://planetnews.com/2/example.html"
+        self.lookup_url = "planetnews.com/2/example.html"
         self.factory = RequestFactory()
         self.feed_item = factories.GenericFeedItemFactory(url=self.url,
                                                           redirected_url=self.redirected_url,
@@ -57,27 +57,52 @@ class GetAssociationsTestCase(TestCase):
         self.association = factories.GenericAssociationFactory(base_feed_item=self.feed_item,
                                                                similarity_score=0.5)
 
-    def _shared_assertion_response_contains_feed_item(self, url_to_find):
+    def _shared_assertion_response_contains_feed_item(self, url_to_find, code):
         request_url = '/feeds/associations?url=%s' % urllib.parse.quote(url_to_find)
         request = self.factory.get(request_url, format='json')
         response = get_associated_articles(request)
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(json.loads(response.content.decode())[0], self.association.associated_feed_item.base_object(similarity_score=0.5))
+        self.assertEquals(json.loads(response.content.decode())[0], self.association.associated_feed_item.base_object(similarity_score=0.5, association_id=self.association.id))
+        self.assertEquals(self.feed_item.urllookuprecord_set.count(), 1)
+        self.assertEquals(self.feed_item.urllookuprecord_set.last().code, code)
+        self.assertEquals(self.feed_item.urllookuprecord_set.last().feed_item, self.feed_item)
+        self.assertEquals(self.feed_item.urllookuprecord_set.last().associations_found, 1)
+        self.assertEquals(self.feed_item.urllookuprecord_set.last().url, url_to_find)
 
     def test_finds_article_associations_with_lookup_url(self):
-        self.feed_item.redirected_url = Mock(return_value="")
-        self.feed_item.url = Mock(return_value="")
-        self._shared_assertion_response_contains_feed_item(self.redirected_url_with_different_scheme)
+        self._shared_assertion_response_contains_feed_item(self.url_for_lookup_url, "1")
 
     def test_finds_article_associations_with_redirected_url(self):
-        self.feed_item.lookup_url = Mock(return_value="")
-        self.feed_item.url = Mock(return_value="")
-        self._shared_assertion_response_contains_feed_item(self.redirected_url)
+        self._shared_assertion_response_contains_feed_item(self.redirected_url, "2")
 
     def test_finds_article_associations_with_regular_url(self):
-        self.feed_item.lookup_url = Mock(return_value="")
-        self.feed_item.redirect_url = Mock(return_value="")
-        self._shared_assertion_response_contains_feed_item(self.url)
+        self._shared_assertion_response_contains_feed_item(self.url, "3")
+
+    def test_returns_message_if_url_not_found(self):
+        request_url = '/feeds/associations?url=%s' % 'https://blahblahblah.com/thing'
+        request = self.factory.get(request_url, format='json')
+        response = get_associated_articles(request)
+        self.assertEquals(response.status_code, 404)
+        self.assertEquals(json.loads(response.content.decode())["message"], "URL not found")
+        self.assertEquals(URLLookUpRecord.objects.count(), 1)
+        self.assertEquals(URLLookUpRecord.objects.last().code, "N/A")
+        self.assertEquals(URLLookUpRecord.objects.last().associations_found, None)
+        self.assertEquals(URLLookUpRecord.objects.last().feed_item, None)
+        self.assertEquals(URLLookUpRecord.objects.last().url, 'https://blahblahblah.com/thing')
+
+    def test_returns_message_if_base_url(self):
+        request_url = '/feeds/associations?url=%s' % 'https://planetnews.com'
+        request = self.factory.get(request_url, format='json')
+        response = get_associated_articles(request)
+        self.assertEquals(response.status_code, 422)
+        self.assertEquals(json.loads(response.content.decode())["message"], "Base URL, Spectrum modal skipped")
+        self.assertEquals(URLLookUpRecord.objects.count(), 1)
+        self.assertEquals(URLLookUpRecord.objects.last().code, "Base")
+        self.assertEquals(URLLookUpRecord.objects.last().associations_found, None)
+        self.assertEquals(URLLookUpRecord.objects.last().feed_item, None)
+        self.assertEquals(URLLookUpRecord.objects.last().url, 'https://planetnews.com')
+
+
 
 
 

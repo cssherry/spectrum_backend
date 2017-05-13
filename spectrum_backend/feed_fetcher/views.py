@@ -6,6 +6,8 @@ from spectrum_backend.feed_fetcher.management.commands._url_parser import URLPar
 
 def get_associated_articles(request):
     url = _clean_url(request.GET.get('url', None))
+    new_api = request.GET.get('new_api', None)
+
     if _is_not_base_url(url):
         lookup_url = _shorten_url(url)
 
@@ -32,7 +34,11 @@ def get_associated_articles(request):
                 pass
 
         if current_article:
-            top_associations = current_article.top_associations(count=12, check_bias=True)
+            use_new_api = False
+            if new_api:
+                use_new_api = True
+
+            top_associations = current_article.top_associations(count=12, check_bias=True, new_api=use_new_api)
             URLLookUpRecord.objects.create(code=lookup_code, url=url, feed_item=current_article, associations_found=len(top_associations))
             return JsonResponse(top_associations, safe=False)
         else:

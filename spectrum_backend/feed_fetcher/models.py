@@ -212,7 +212,7 @@ class FeedItem(models.Model):
         self.base_associations.values_list('associated_feed_item', flat=True)
         return FeedItem.objects.filter(pk__in=set(ids))
 
-    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
+    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9, new_api=False):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item
@@ -236,7 +236,18 @@ class FeedItem(models.Model):
                 extra_articles.append(article)
 
         all_articles = unique_publication_articles + extra_articles
-        return all_articles[:count]
+        if new_api:
+            return {
+                "articles": all_articles[:count],
+                "order_index": [
+                    [0],
+                    [0, 1],
+                    [0, 1, 2],
+                    [0, 1, 3, 2]
+                ]
+            }
+        else:
+            return all_articles[:count]
 
 
     def pretty_print_associations(self):
@@ -267,6 +278,8 @@ class URLLookUpRecord(models.Model):
     feed_item = models.ForeignKey('FeedItem', null=True)
     associations_found = models.IntegerField(null=True)
     internal_user = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class UserFeedback(models.Model):
     association = models.ForeignKey('Association')
@@ -275,6 +288,14 @@ class UserFeedback(models.Model):
     feedback_dict = JSONField()
     other_feedback = models.TextField(default="")
     free_text_feedback = models.TextField(default="")
+    internal_user = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class UserClick(models.Model):
+    association = models.ForeignKey('Association')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Tag(models.Model):
     name = models.TextField(default="")

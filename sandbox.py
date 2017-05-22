@@ -17,10 +17,22 @@ from spectrum_backend.feed_fetcher.management.commands._batch_query_set import b
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
 def associations_by_day_count:
-  total = 0
+  association_total = 0
+  feed_item_total = 0
+  scrapy_log_total = 0
   for num in [1..24]:
-    print("%s hour ago: %s associations" % (num, Association.recent_items_count(num) - total))
-    total = Association.recent_items_count(num)
+    associations_count = Association.recent_items_count(num)
+    feed_item_count = FeedItem.recent_items_count(num)
+    scrapy_count = ScrapyLogItem.recent_items_count(num)
+
+    print("%s hour ago: %s associations" % (num, associations_count - association_total))
+    association_total = associations_count
+
+    print("%s hour ago: %s feed_items" % (num, feed_item_count - feed_item_total))
+    feed_item_total = feed_item_count
+
+    print("%s hour ago: %s scraping log items" % (num, scrapy_count - scrapy_total))
+    scrapy_total = scrapy_count
 
 def single_article_association(url):
   tfidf.main(FeedItem.recent_items_eligible_for_association(), FeedItem.objects.filter(redirected_url=url))

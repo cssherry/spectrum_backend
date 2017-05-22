@@ -13,7 +13,7 @@ import os
 import codecs
 import sys
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
-from spectrum_backend.feed_fetcher.management.commands import _batch_query_set
+from spectrum_backend.feed_fetcher.management.commands._batch_query_set import batch_query_set
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
 def single_article_association(url):

@@ -61,6 +61,7 @@ def debug_publication_content_tags(show_failures=False):
   other_error = set()
 
   for start, end, total, log_items in batch_query_set(ScrapyLogItem.objects.all()):
+    print "processing next %s items" % end
     for scrapyLogItem in log_items:
       feed_item = scrapyLogItem.feed_item
       if scrapyLogItem.status_code != 200:
@@ -71,6 +72,8 @@ def debug_publication_content_tags(show_failures=False):
         other_error.add(feed_item)
       else:
         success.add(feed_item)
+
+  print "Printing publications"
 
   pub_dict = {}
   for publication in Publication.objects.all():

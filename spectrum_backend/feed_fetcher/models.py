@@ -372,7 +372,7 @@ class ScrapyLogItem(models.Model):
     @classmethod
     def recent_items(cls, days=7):
         time_threshold = timezone.now() - timedelta(days=days)
-        return cls.objects.filter(created_at__gt=time_threshold).count()
+        return cls.objects.filter(created_at__gt=time_threshold)
 
     @classmethod
     def recent_items_count(cls, hours=24):

@@ -13,6 +13,7 @@ import os
 import codecs
 import sys
 from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLParser
+from spectrum_backend.feed_fetcher.management.commands import _batch_query_set
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
 def single_article_association(url):
@@ -59,16 +60,17 @@ def debug_publication_content_tags(show_failures=False):
   http_failure = set()
   other_error = set()
 
-  for scrapyLogItem in ScrapyLogItem.objects.all():
-    feed_item = scrapyLogItem.feed_item
-    if scrapyLogItem.status_code != 200:
-      http_failure.add(feed_item)
-    elif not scrapyLogItem.content_tag_found:
-      content_failure.add(feed_item)
-    elif scrapyLogItem.other_error:
-      other_error.add(feed_item)
-    else:
-      success.add(feed_item)
+  for start, end, total, log_items in batch_query_set(ScrapyLogItem.objects.all()):
+    for scrapyLogItem in log_items:
+      feed_item = scrapyLogItem.feed_item
+      if scrapyLogItem.status_code != 200:
+        http_failure.add(feed_item)
+      elif not scrapyLogItem.content_tag_found:
+        content_failure.add(feed_item)
+      elif scrapyLogItem.other_error:
+        other_error.add(feed_item)
+      else:
+        success.add(feed_item)
 
   pub_dict = {}
   for publication in Publication.objects.all():

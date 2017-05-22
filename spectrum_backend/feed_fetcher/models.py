@@ -321,6 +321,12 @@ class Association(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def recent_items_count(cls, hours=24):
+        time_threshold = timezone.now() - timedelta(hours=hours)
+        return cls.objects.filter(created_at__gt=time_threshold).count()
+
+
     def __str__(self):
         return u'*BASE* %s *ASSOCIATION* %s (%s)' % (
             self.base_feed_item.title,

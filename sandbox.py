@@ -16,6 +16,12 @@ from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLP
 from spectrum_backend.feed_fetcher.management.commands._batch_query_set import batch_query_set
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
+def associations_by_day_count:
+  total = 0
+  for num in [1..24]:
+    print("%s hour ago: %s associations" % (num, Association.recent_items_count(num) - total))
+    total = Association.recent_items_count(num)
+
 def single_article_association(url):
   tfidf.main(FeedItem.recent_items_eligible_for_association(), FeedItem.objects.filter(redirected_url=url))
 

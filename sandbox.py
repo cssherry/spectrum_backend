@@ -20,7 +20,7 @@ def associations_by_day_count():
   association_total = 0
   feed_item_total = 0
   scrapy_log_total = 0
-  for num in range(1..24):
+  for num in range(1, 24):
     associations_count = Association.recent_items_count(num)
     feed_item_count = FeedItem.recent_items_count(num)
     scrapy_count = ScrapyLogItem.recent_items_count(num)

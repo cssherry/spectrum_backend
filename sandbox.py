@@ -16,11 +16,11 @@ from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLP
 from spectrum_backend.feed_fetcher.management.commands._batch_query_set import batch_query_set
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
-def associations_by_day_count():
+def associations_by_hour_count(hours = 24):
   association_total = 0
   feed_item_total = 0
   scrapy_log_total = 0
-  for num in range(1, 24):
+  for num in range(1, hours):
     associations_count = Association.recent_items_count(num)
     feed_item_count = FeedItem.recent_items_count(num)
     scrapy_count = ScrapyLogItem.recent_items_count(num)
@@ -82,14 +82,15 @@ def debug_publication_content_tags(show_failures=False):
     print("processing next %s items" % end)
     for scrapyLogItem in log_items:
       feed_item = scrapyLogItem.feed_item
+      feed_item_dict = {"id": feed_item, "publication_name": feed_item.publication_name()}
       if scrapyLogItem.status_code != 200:
-        http_failure.add(feed_item)
+        http_failure.add(feed_item_dict)
       elif not scrapyLogItem.content_tag_found:
-        content_failure.add(feed_item)
+        content_failure.add(feed_item_dict)
       elif scrapyLogItem.other_error:
-        other_error.add(feed_item)
+        other_error.add(feed_item_dict)
       else:
-        success.add(feed_item)
+        success.add(feed_item_dict)
 
   print("Printing publications")
 
@@ -98,26 +99,26 @@ def debug_publication_content_tags(show_failures=False):
     pub_dict[publication.name] = {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
 
   for start, end, total, feed_items in batch_query_set(content_failure):
-    for feed_item in feed_items:
-      pub_dict[feed_item.publication_name()]["content_failure"] += 1
+    for feed_item_dict in feed_items:
+      pub_dict[feed_item_dict["publication_name"]]["content_failure"] += 1
 
   for start, end, total, feed_items in batch_query_set(success):
-    for feed_item in feed_items:
-      pub_dict[feed_item.publication_name()]["success"] += 1
+    for feed_item_dict in feed_items:
+      pub_dict[feed_item_dict["publication_name"]]["success"] += 1
 
   for start, end, total, feed_items in batch_query_set(http_failure):
-    for feed_item in feed_items:
-      pub_dict[feed_item.publication_name()]["http_failure"] += 1
+    for feed_item_dict in feed_items:
+      pub_dict[feed_item_dict["publication_name"]]["http_failure"] += 1
 
   for start, end, total, feed_items in batch_query_set(other_error):
-    for feed_item in feed_items:
-      pub_dict[feed_item.publication_name()]["other_error"] += 1
+    for feed_item_dict in feed_items:
+      pub_dict[feed_item_dict["publication_name"]]["other_error"] += 1
 
   pprint.PrettyPrinter(indent=2, width=200).pprint(pub_dict)
 
-  if show_failures:
-    for feed_item in content_failure:
-      print("%s %s" % (feed_item.publication_name(), feed_item.url))
+  # if show_failures:
+  #   for feed_item_dict in content_failure:
+  #     print("%s %s" % (feed_item_dict["publication_name"], feed_item.url))
 
 def download_bias_json():
   """ Downloads bias JSON by bias """

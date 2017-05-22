@@ -31,8 +31,8 @@ def associations_by_day_count():
     print("%s hour ago: %s feed_items" % (num, feed_item_count - feed_item_total))
     feed_item_total = feed_item_count
 
-    print("%s hour ago: %s scraping log items" % (num, scrapy_count - scrapy_total))
-    scrapy_total = scrapy_count
+    print("%s hour ago: %s scraping log items" % (num, scrapy_count - scrapy_log_total))
+    scrapy_log_total = scrapy_count
 
 def single_article_association(url):
   tfidf.main(FeedItem.recent_items_eligible_for_association(), FeedItem.objects.filter(redirected_url=url))

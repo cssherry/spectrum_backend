@@ -170,7 +170,8 @@ class FeedItem(models.Model):
             return self.raw_description
 
     def friendly_publication_date(self):
-        return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
+        if self.publication_date:
+            return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
     def under_max_scraping_cap(self):
         return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS

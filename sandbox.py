@@ -77,42 +77,33 @@ def debug_publication_content_tags(show_failures=False):
   content_failure = set()
   http_failure = set()
   other_error = set()
+  pub_dict = {}
 
   for start, end, total, log_items in batch_query_set(ScrapyLogItem.objects.all()):
     print("processing next %s items" % end)
     for scrapyLogItem in log_items:
       feed_item = scrapyLogItem.feed_item
-      feed_item_dict = {"id": feed_item, "publication_name": feed_item.publication_name()}
+      feed_item_id = feed_item.id
+      pub_dict[feed_item.publication_name()] = pub_dict[feed_item.publication_name()] or {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
+      feed_dict = pub_dict[feed_item.publication_name()]
       if scrapyLogItem.status_code != 200:
-        http_failure.add(feed_item_dict)
+        if feed_item_id not in http_failure:
+          feed_dict["http_failure"] += 1
+          http_failure.add(feed_item_id)
       elif not scrapyLogItem.content_tag_found:
-        content_failure.add(feed_item_dict)
+        if feed_item_id not in content_failure:
+          content_failure.add(feed_item_id)
+          feed_dict["content_failure"] += 1
       elif scrapyLogItem.other_error:
-        other_error.add(feed_item_dict)
+        if feed_item_id not in other_error:
+          other_error.add(feed_item_id)
+          feed_dict["other_error"] += 1
       else:
-        success.add(feed_item_dict)
+        if feed_item_id not in success:
+          success.add(feed_item_id)
+          feed_dict["success"] += 1
 
   print("Printing publications")
-
-  pub_dict = {}
-  for publication in Publication.objects.all():
-    pub_dict[publication.name] = {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
-
-  for start, end, total, feed_items in batch_query_set(content_failure):
-    for feed_item_dict in feed_items:
-      pub_dict[feed_item_dict["publication_name"]]["content_failure"] += 1
-
-  for start, end, total, feed_items in batch_query_set(success):
-    for feed_item_dict in feed_items:
-      pub_dict[feed_item_dict["publication_name"]]["success"] += 1
-
-  for start, end, total, feed_items in batch_query_set(http_failure):
-    for feed_item_dict in feed_items:
-      pub_dict[feed_item_dict["publication_name"]]["http_failure"] += 1
-
-  for start, end, total, feed_items in batch_query_set(other_error):
-    for feed_item_dict in feed_items:
-      pub_dict[feed_item_dict["publication_name"]]["other_error"] += 1
 
   pprint.PrettyPrinter(indent=2, width=200).pprint(pub_dict)
 

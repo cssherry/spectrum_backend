@@ -84,8 +84,11 @@ def debug_publication_content_tags(show_failures=False):
     for scrapyLogItem in log_items:
       feed_item = scrapyLogItem.feed_item
       feed_item_id = feed_item.id
-      pub_dict[feed_item.publication_name()] = pub_dict[feed_item.publication_name()] or {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
-      feed_dict = pub_dict[feed_item.publication_name()]
+      try: 
+        feed_dict = pub_dict[feed_item.publication_name()]
+      except:
+        feed_dict = pub_dict[feed_item.publication_name()] = {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
+        
       if scrapyLogItem.status_code != 200:
         if feed_item_id not in http_failure:
           feed_dict["http_failure"] += 1

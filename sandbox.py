@@ -72,14 +72,14 @@ def empty_content_report():
   for feed in Feed.objects.all():
     feed.display_empty_content_report()
 
-def debug_publication_content_tags(show_failures=False):
+def debug_publication_content_tags(days_since=7, show_failures=False):
   success = set()
   content_failure = set()
   http_failure = set()
   other_error = set()
   pub_dict = {}
 
-  for start, end, total, log_items in batch_query_set(ScrapyLogItem.objects.all()):
+  for start, end, total, log_items in batch_query_set(ScrapyLogItem.recent_items(days_since)):
     print("processing next %s items" % end)
     for scrapyLogItem in log_items:
       feed_item = scrapyLogItem.feed_item

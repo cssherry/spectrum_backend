@@ -16,7 +16,7 @@ from spectrum_backend.feed_fetcher.management.commands._html_parser import HTMLP
 from spectrum_backend.feed_fetcher.management.commands._batch_query_set import batch_query_set
 from spectrum_backend.feed_fetcher.management.commands import tfidf
 
-def associations_by_day_count:
+def associations_by_day_count():
   association_total = 0
   feed_item_total = 0
   scrapy_log_total = 0

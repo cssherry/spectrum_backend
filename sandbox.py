@@ -4,6 +4,7 @@ from spectrum_backend.feed_fetcher.models import FeedItem
 from spectrum_backend.feed_fetcher.models import Tag
 from spectrum_backend.feed_fetcher.models import Association
 from spectrum_backend.feed_fetcher.models import ScrapyLogItem
+from spectrum_backend.feed_fetcher.models import URLLookUpRecord
 from django.core import serializers
 from datetime import datetime, timedelta
 import random

@@ -1,8 +1,9 @@
 import json, re
 from django.http import JsonResponse
 from django.core import serializers
-from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord
+from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, UserFeedback, Association
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
+from raven.contrib.django.raven_compat.models import client
 
 def get_associated_articles(request):
     url = _clean_url(request.GET.get('url', None))
@@ -56,6 +57,32 @@ def all_publications(request):
         'media_bias': Publication.bias_dict(),
     }
     return JsonResponse(results, safe=False)
+
+def track_click
+    association_id = request.POST.get('association_id', None)
+    try:
+        association = Association.objects.filter(pk=association_id)[0]
+        Association.objects.create(association=association)
+        return JsonResponse({"message": "success", status=200, safe=False})
+    except IndexError:
+        client.captureException()
+        return JsonResponse({"message": "association not found"}, status=422, safe=False)
+
+def track_feedback
+    association_id = request.POST.get('association_id', None) # Integer
+    is_negative = request.POST.get('is_negative', None) == "true" # Boolean - will parse correctly?
+    feedback_version = request.POST.get('feedback_version', None) # Integer
+    feedback_dict = request.POST.get('feedback_dict', None) # Dictionary - pop right into feedback_dict?
+    other_feedback = request.POST.get('other_feedback', None) # String
+    free_text_feedback = request.POST.get('free_text_feedback', None) # String
+
+    try:
+        association = Association.objects.filter(pk=association_id)[0]
+        UserFeedback.objects.create(association=association, is_negative=is_negative, feedback_version=feedback_version, feedback_dict=feedback_dict, other_feedback=other_feedback, free_text_feedback=free_text_feedback)
+        return JsonResponse({"message": "success", status=200, safe=False})
+    except IndexError:
+        client.captureException()
+        return JsonResponse({"message": "association not found"}, status=422, safe=False)
 
 def test_api(request=None):
     recent_articles = []

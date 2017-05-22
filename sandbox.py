@@ -79,17 +79,21 @@ def debug_publication_content_tags(show_failures=False):
   for publication in Publication.objects.all():
     pub_dict[publication.name] = {"success": 0, "content_failure": 0, "http_failure": 0, "other_error": 0}
 
-  for feed_item in content_failure:
-    pub_dict[feed_item.publication_name()]["content_failure"] += 1
+  for start, end, total, feed_items in batch_query_set(content_failure):
+    for feed_item in feed_items:
+      pub_dict[feed_item.publication_name()]["content_failure"] += 1
 
-  for feed_item in success:
-    pub_dict[feed_item.publication_name()]["success"] += 1
+  for start, end, total, feed_items in batch_query_set(success):
+    for feed_item in feed_items:
+      pub_dict[feed_item.publication_name()]["success"] += 1
 
-  for feed_item in http_failure:
-    pub_dict[feed_item.publication_name()]["http_failure"] += 1
+  for start, end, total, feed_items in batch_query_set(http_failure):
+    for feed_item in feed_items:
+      pub_dict[feed_item.publication_name()]["http_failure"] += 1
 
-  for feed_item in other_error:
-    pub_dict[feed_item.publication_name()]["other_error"] += 1
+  for start, end, total, feed_items in batch_query_set(other_error):
+    for feed_item in feed_items:
+      pub_dict[feed_item.publication_name()]["other_error"] += 1
 
   pprint.PrettyPrinter(indent=2, width=200).pprint(pub_dict)
 

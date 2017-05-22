@@ -53,7 +53,6 @@ class ArticleSpider(scrapy.Spider):
             feed_item.save()
             self.content_found += 1
         except IntegrityError as e:
-            client.captureException()
             feed_item.delete()
             return
         
@@ -63,13 +62,10 @@ class ArticleSpider(scrapy.Spider):
     def error(self, failure):
         if failure.check(HttpError):
             response = failure.value.response
-            # client.context.merge({'feed_item': response.meta['feed_item'], 'status': response.status})
             ScrapyLogItem.objects.create(feed_item=response.meta['feed_item'], status_code=response.status, content_tag_found=False)
             self.error_code_received += 1
         else:
-            # client.context.merge({'feed_item': failure.request.meta['feed_item'], 'status': 0, 'message': repr(failure)})
             ScrapyLogItem.objects.create(feed_item=failure.request.meta['feed_item'], status_code=0, content_tag_found=False, other_error=repr(failure))
-            client.captureMessage('Scrapy - Other Error')
             self.other_error += 1
         
         # client.context.clear()

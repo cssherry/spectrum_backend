@@ -27,18 +27,18 @@ def logs_by_hour_count(hours = 24):
     association_total = 0
     feed_item_total = 0
     scrapy_log_total = 0
-    for num in range(1, hours):
-        associations_count = Association.recent_items_count(num)
-        feed_item_count = FeedItem.recent_items_count(num)
-        scrapy_count = ScrapyLogItem.recent_items_count(num)
+    for hour_num in range(1, hours):
+        associations_count = Association.recent_items(hour_num).count()
+        feed_item_count = FeedItem.recent_items(hour_num).count()
+        scrapy_count = ScrapyLogItem.recent_items(hour_num).count()
 
-        print("%s hour ago: %s associations" % (num, associations_count - association_total))
+        print("%s hour ago: %s associations" % (hour_num, associations_count - association_total))
         association_total = associations_count
 
-        print("%s hour ago: %s feed_items" % (num, feed_item_count - feed_item_total))
+        print("%s hour ago: %s feed_items" % (hour_num, feed_item_count - feed_item_total))
         feed_item_total = feed_item_count
 
-        print("%s hour ago: %s scraping log items" % (num, scrapy_count - scrapy_log_total))
+        print("%s hour ago: %s scraping log items" % (hour_num, scrapy_count - scrapy_log_total))
         scrapy_log_total = scrapy_count
 
 def debug_publication_content_tags(days_since=7, show_failures=False):

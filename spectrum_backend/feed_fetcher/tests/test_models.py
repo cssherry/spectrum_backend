@@ -129,6 +129,10 @@ class FeedItemTestCase(GlobalTestCase):
         feed_item.pretty_print_associations()
         sys.stdout = sys.__stdout__
 
+    def test_all_associated_feed_items(self):
+        association = factories.GenericAssociationFactory()
+        self.assertIn(association.associated_feed_item, association.base_feed_item.all_associated_feed_items()) 
+
     def test_top_associations_should_order_by_similarity_score(self):
         feed_item = self.feed_item
         factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item)
@@ -205,6 +209,23 @@ class FeedItemTestCase(GlobalTestCase):
         factories.GenericFeedItemFactory.create_batch(5, raw_content="")
         self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 5)
 
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericFeedItemFactory.create_batch(5)
+        not_recent_feed_item = factories.GenericFeedItemFactory()
+        not_recent_feed_item.created_at = hours_ago
+        not_recent_feed_item.save()
+        self.assertNotIn(not_recent_feed_item, FeedItem.recent_items(hours=5))
+
+class AssociationTestCase(GlobalTestCase):
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericAssociationFactory.create_batch(5)
+        not_recent_association = factories.GenericAssociationFactory()
+        not_recent_association.created_at = hours_ago
+        not_recent_association.save()
+        self.assertNotIn(not_recent_association, Association.recent_items(hours=5))
+
 class CorpusWordFrequencyTestCase(GlobalTestCase):
     def test_get_and_set_corpus_word_dictionary(self):
         corpus_word_frequency = factories.CorpusWordFrequencyFactory(dictionary={"a": 3})
@@ -212,4 +233,12 @@ class CorpusWordFrequencyTestCase(GlobalTestCase):
         new_dict = {"h": 20}
         CorpusWordFrequency.set_corpus_dictionary(new_dict)
         self.assertEquals(CorpusWordFrequency.get_corpus_dictionary(), new_dict)
+
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericScrapyLogItemFactory.create_batch(5)
+        not_recent_scrapy_log = factories.GenericScrapyLogItemFactory()
+        not_recent_scrapy_log.created_at = hours_ago
+        not_recent_scrapy_log.save()
+        self.assertNotIn(not_recent_scrapy_log, ScrapyLogItem.recent_items(hours=5))
 

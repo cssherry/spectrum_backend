@@ -104,9 +104,9 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def recent_items_count(cls, hours=24):
+    def recent_items(cls, hours):
         time_threshold = timezone.now() - timedelta(hours=hours)
-        return cls.objects.filter(created_at__gt=time_threshold).count()
+        return cls.objects.filter(created_at__gt=time_threshold)
         
     @classmethod
     def pluck(cls, field_name):
@@ -115,8 +115,7 @@ class FeedItem(models.Model):
 
     @classmethod
     def recent_items_eligible_for_association(cls, days=7):
-        time_threshold = timezone.now() - timedelta(days=days)
-        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
+        return cls.recent_items(days * 24).exclude(content__exact="")
 
     @classmethod
     def get_fields(cls, list):
@@ -214,11 +213,11 @@ class FeedItem(models.Model):
         else:
             return ["L", "LC", "C", "RC", "R"]
 
-    def all_associated_feed_items(self): # TEST
-        self.base_associations.values_list('associated_feed_item', flat=True)
+    def all_associated_feed_items(self):
+        ids = self.base_associations.values_list('associated_feed_item', flat=True)
         return FeedItem.objects.filter(pk__in=set(ids))
 
-    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9, new_api=False):
+    def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
         associated_articles = []
         for association in self.base_associations.all():
             associated_feed_item = association.associated_feed_item
@@ -242,18 +241,7 @@ class FeedItem(models.Model):
                 extra_articles.append(article)
 
         all_articles = unique_publication_articles + extra_articles
-        if new_api:
-            return {
-                "articles": all_articles[:count],
-                "order_index": [
-                    [0],
-                    [0, 1],
-                    [0, 1, 2],
-                    [0, 1, 3, 2]
-                ]
-            }
-        else:
-            return all_articles[:count]
+        return all_articles[:count]
 
 
     def pretty_print_associations(self):
@@ -327,9 +315,9 @@ class Association(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def recent_items_count(cls, hours=24):
+    def recent_items(cls, hours):
         time_threshold = timezone.now() - timedelta(hours=hours)
-        return cls.objects.filter(created_at__gt=time_threshold).count()
+        return cls.objects.filter(created_at__gt=time_threshold)
 
     def __str__(self):
         return u'*BASE* %s *ASSOCIATION* %s (%s)' % (
@@ -370,11 +358,6 @@ class ScrapyLogItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def recent_items(cls, days=7):
-        time_threshold = timezone.now() - timedelta(days=days)
-        return cls.objects.filter(created_at__gt=time_threshold)
-
-    @classmethod
-    def recent_items_count(cls, hours=24):
+    def recent_items(cls, hours):
         time_threshold = timezone.now() - timedelta(hours=hours)
-        return cls.objects.filter(created_at__gt=time_threshold).count()
+        return cls.objects.filter(created_at__gt=time_threshold)

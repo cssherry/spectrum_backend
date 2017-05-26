@@ -123,6 +123,12 @@ class GetTrackClickTestCase(TestCase):
         self.assertEquals(response.status_code, 404)
         self.assertEquals(UserClick.objects.count(), 0)
 
+    def test_tracks_feedback_returns_missing_status_if_fields_missing(self):
+        request = self.factory.post(self.request_url, {}, format='json')
+        response = track_click(request)
+        self.assertEquals(response.status_code, 422)
+        self.assertEquals(UserFeedback.objects.count(), 0)
+
 class GetTrackUserFeedbackTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -137,11 +143,10 @@ class GetTrackUserFeedbackTestCase(TestCase):
                 "more": "fields"
             }),
         }
+        self.request_url = '/feeds/feedback'
 
     def test_tracks_feedback_finds_association(self):
-        request_url = '/feeds/feedback'
-        
-        request = self.factory.post(request_url, self.request_object, format='json')
+        request = self.factory.post(self.request_url, self.request_object, format='json')
         response = track_feedback(request)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(UserFeedback.objects.count(), 1)
@@ -150,19 +155,23 @@ class GetTrackUserFeedbackTestCase(TestCase):
         self.assertEquals(UserFeedback.objects.last().feedback_version, self.request_object["feedback_version"])
         self.assertEquals(UserFeedback.objects.last().feedback_dict, self.request_object["feedback_dict"])
 
+    def test_tracks_internal_user(self):
+        self.request_object["internal_user"] = True
+        request = self.factory.post(self.request_url, self.request_object, format='json')
+        response = track_feedback(request)
+        self.assertEquals(UserFeedback.objects.last().internal_user, True)
+
     def test_tracks_feedback_returns_correct_status_if_not_found(self):
         self.request_object["association_id"] = 10000000
-        request_url = '/feeds/feedback'
-        request = self.factory.post(request_url, self.request_object, format='json')
+        request = self.factory.post(self.request_url, self.request_object, format='json')
         response = track_feedback(request)
         self.assertEquals(response.status_code, 404)
         self.assertEquals(UserFeedback.objects.count(), 0)
         views.client.captureException.assert_called_once()
 
-    def test_tracks_feedback_returns_correct_status_if_fields_missing(self):
+    def test_tracks_feedback_returns_missing_status_if_fields_missing(self):
         self.request_object["association_id"] = ""
-        request_url = '/feeds/feedback'
-        request = self.factory.post(request_url, self.request_object, format='json')
+        request = self.factory.post(self.request_url, self.request_object, format='json')
         response = track_feedback(request)
         self.assertEquals(response.status_code, 422)
         self.assertEquals(UserFeedback.objects.count(), 0)

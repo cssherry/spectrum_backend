@@ -271,7 +271,6 @@ class URLLookUpRecord(models.Model):
     code = models.CharField(max_length=10, choices=CODES)
     feed_item = models.ForeignKey('FeedItem', null=True)
     associations_found = models.IntegerField(null=True)
-    internal_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -280,13 +279,12 @@ class UserFeedback(models.Model):
     is_negative = models.BooleanField()
     feedback_version = models.IntegerField()
     feedback_dict = JSONField()
-    internal_user = models.BooleanField(default=False)
+    is_internal_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class UserClick(models.Model):
     association = models.ForeignKey('Association')
-    internal_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

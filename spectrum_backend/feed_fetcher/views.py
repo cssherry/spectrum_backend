@@ -35,14 +35,19 @@ def get_associated_articles(request):
 
         if current_article:
             top_associations = current_article.top_associations(count=12, check_bias=True)
-            URLLookUpRecord.objects.create(code=lookup_code, url=url, feed_item=current_article, associations_found=len(top_associations))
+            URLLookUpRecord.objects.create(code=lookup_code,
+                                           url=url,
+                                           feed_item=current_article,
+                                           associations_found=len(top_associations))
             return JsonResponse(top_associations, safe=False)
         else:
             URLLookUpRecord.objects.create(code="N/A", url=url)
             return JsonResponse({"message": "URL not found"}, status=404, safe=False)
     else:
         URLLookUpRecord.objects.create(code="Base", url=url)
-        return JsonResponse({"message": "Base URL, Spectrum modal skipped"}, status=422, safe=False)
+        return JsonResponse({"message": "Base URL, Spectrum modal skipped"},
+                            status=422,
+                            safe=False)
 
 def all_publications(request):
     publications = Publication.objects.all()
@@ -55,26 +60,35 @@ def all_publications(request):
 
 def track_click(request):
     association_id = request.POST.get('association_id', None)
+    is_internal_user = request.POST.get('is_internal_user', False)
 
-    try:
-        association = Association.objects.filter(pk=association_id)[0]
-        UserClick.objects.create(association=association)
-        return JsonResponse({"message": "success"}, status=200, safe=False)
-    except IndexError:
-        client.captureException()
-        return JsonResponse({"message": "association not found"}, status=404, safe=False)
+    if association_id:
+        try:
+            association = Association.objects.filter(pk=association_id)[0]
+            UserClick.objects.create(association=association, is_internal_user=is_internal_user)
+            return JsonResponse({"message": "success"}, status=200, safe=False)
+        except IndexError:
+            client.captureException()
+            return JsonResponse({"message": "association not found"}, status=404, safe=False)
+    else:
+        return JsonResponse({"message": "invalid request"}, status=422, safe=False)
 
 def track_feedback(request):
-    association_id = request.POST.get('association_id', None) # Integer
-    is_negative = request.POST.get('is_negative', None) # Boolean - will parse correctly?
-    feedback_version = request.POST.get('feedback_version', None) # Integer
-    feedback_dict = request.POST.get('feedback_dict', None) # Dictionary - pop right into feedback_dict?
+    association_id = request.POST.get('association_id', None)
+    is_negative = request.POST.get('is_negative', None)
+    feedback_version = request.POST.get('feedback_version', None)
+    feedback_dict = request.POST.get('feedback_dict', None)
     is_internal_user = request.POST.get('is_internal_user', False)
 
     if association_id and feedback_version and feedback_dict and is_negative is not None:
         try:
             association = Association.objects.filter(pk=association_id)[0]
-            UserFeedback.objects.create(association=association, is_negative=is_negative, feedback_version=feedback_version, feedback_dict=feedback_dict)
+            UserFeedback.objects.create(association=association,
+                                        is_negative=is_negative,
+                                        feedback_version=feedback_version,
+                                        feedback_dict=feedback_dict,
+                                        is_internal_user=is_internal_user)
+
             return JsonResponse({"message": "success"}, status=200, safe=False)
         except IndexError:
             client.captureException()

@@ -217,6 +217,16 @@ class FeedItemTestCase(GlobalTestCase):
         not_recent_feed_item.save()
         self.assertNotIn(not_recent_feed_item, FeedItem.recent_items(hours=5))
 
+    def test_associations_by_url(self):
+        feed_item = factories.GenericFeedItemFactory(url="https://www.google.com/1")
+        feed_item2 = factories.GenericFeedItemFactory(url="https://www.google.com/2")
+        with suppress_printed_output():
+            FeedItem.see_associations_by_url(feed_item.url)
+            FeedItem.see_associations_by_url(feed_item.redirected_url)
+            FeedItem.see_associations_by_url("www.google.com")
+            FeedItem.see_associations_by_url("www.blahlbah.com")
+
+
 class AssociationTestCase(GlobalTestCase):
     def test_recent_items(self):
         hours_ago = timezone.now() - timedelta(hours=12)

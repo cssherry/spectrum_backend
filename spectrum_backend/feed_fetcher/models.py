@@ -104,6 +104,20 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
+    def see_associations_by_url(cls, url):
+        feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
+        if not url:
+            feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
+
+        if url:
+            if len(url) > 1:
+                print("More than one URL found")
+            else:
+                feed_item.first().pretty_print_associations()
+        else:
+            print("URL not found")
+
+    @classmethod
     def recent_items(cls, hours):
         time_threshold = timezone.now() - timedelta(hours=hours)
         return cls.objects.filter(created_at__gt=time_threshold)

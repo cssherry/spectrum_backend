@@ -60,7 +60,7 @@ class RSSFetcher:
             for tag in entry_wrapper.tags:
                 Tag.objects.get_or_create(name=tag, feed_item=feed_item)
         except IntegrityError:
-            client.captureException()
+            pass # TODO: Missing data - anything else? No Sentry here, too many events
 
     def _parse_message(self, feed):
          return 'Parsing items from %s (%s) - %s' % (feed.publication.name, feed.category, feed.rss_url)

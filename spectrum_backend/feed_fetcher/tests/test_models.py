@@ -88,9 +88,11 @@ class FeedItemTestCase(GlobalTestCase):
         self.assertEqual(feed_item.image_url, base_object["image_url"])
         self.assertEqual(feed_item.friendly_publication_date(), base_object["publication_date"])
 
-    def test_base_object_can_have_association_similarity_score_passed(self):
+    def test_base_object_can_have_association_similarity_score_and_id_passed(self):
         feed_item = self.feed_item
-        base_object = feed_item.base_object(similarity_score=0.3)
+        base_object = feed_item.base_object(similarity_score=0.3, association_id=12)
+        self.assertEqual(base_object["similarity_score"], 0.3)
+        self.assertEqual(base_object["association_id"], 12)
 
     def test_should_scrape_if_under_max_scraping_cap_and_no_raw_content(self):
         feed_item = factories.GenericFeedItemFactory(raw_content="")
@@ -127,6 +129,10 @@ class FeedItemTestCase(GlobalTestCase):
         feed_item.pretty_print_associations()
         sys.stdout = sys.__stdout__
 
+    def test_all_associated_feed_items(self):
+        association = factories.GenericAssociationFactory()
+        self.assertIn(association.associated_feed_item, association.base_feed_item.all_associated_feed_items()) 
+
     def test_top_associations_should_order_by_similarity_score(self):
         feed_item = self.feed_item
         factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item)
@@ -141,10 +147,14 @@ class FeedItemTestCase(GlobalTestCase):
     def test_top_associations_should_use_new_publications_first_but_exclude_capped_scores(self):
         feed_item = self.feed_item
         same_publications_with_high_score = factories.GenericAssociationFactory.create_batch(5, base_feed_item=feed_item, associated_feed_item__feed=self.feed, similarity_score=0.9)
-        different_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5).associated_feed_item.base_object(0.5)
-        another_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5).associated_feed_item.base_object(0.5)
-        another_association_with_score_below_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.15).associated_feed_item.base_object(0.15)
-        another_association_with_score_above_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.95).associated_feed_item.base_object(0.95)
+        different_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5)
+        different_association_with_low_score = different_association_with_low_score.associated_feed_item.base_object(0.5, different_association_with_low_score.id)
+        another_association_with_low_score = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.5)
+        another_association_with_low_score = another_association_with_low_score.associated_feed_item.base_object(0.5, another_association_with_low_score.id)
+        another_association_with_score_below_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.15)
+        another_association_with_score_below_threshold = another_association_with_score_below_threshold.associated_feed_item.base_object(0.15, another_association_with_score_below_threshold.id)
+        another_association_with_score_above_threshold = factories.GenericAssociationFactory(base_feed_item=feed_item, similarity_score=0.95)
+        another_association_with_score_above_threshold = another_association_with_score_above_threshold.associated_feed_item.base_object(0.95, another_association_with_score_above_threshold.id)
         first_five_associations = feed_item.top_associations(5)
         self.assertIn(different_association_with_low_score, first_five_associations)
         self.assertIn(another_association_with_low_score, first_five_associations)
@@ -199,6 +209,23 @@ class FeedItemTestCase(GlobalTestCase):
         factories.GenericFeedItemFactory.create_batch(5, raw_content="")
         self.assertEquals(len(FeedItem.feed_items_urls_to_scrape()), 5)
 
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericFeedItemFactory.create_batch(5)
+        not_recent_feed_item = factories.GenericFeedItemFactory()
+        not_recent_feed_item.created_at = hours_ago
+        not_recent_feed_item.save()
+        self.assertNotIn(not_recent_feed_item, FeedItem.recent_items(hours=5))
+
+class AssociationTestCase(GlobalTestCase):
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericAssociationFactory.create_batch(5)
+        not_recent_association = factories.GenericAssociationFactory()
+        not_recent_association.created_at = hours_ago
+        not_recent_association.save()
+        self.assertNotIn(not_recent_association, Association.recent_items(hours=5))
+
 class CorpusWordFrequencyTestCase(GlobalTestCase):
     def test_get_and_set_corpus_word_dictionary(self):
         corpus_word_frequency = factories.CorpusWordFrequencyFactory(dictionary={"a": 3})
@@ -206,4 +233,12 @@ class CorpusWordFrequencyTestCase(GlobalTestCase):
         new_dict = {"h": 20}
         CorpusWordFrequency.set_corpus_dictionary(new_dict)
         self.assertEquals(CorpusWordFrequency.get_corpus_dictionary(), new_dict)
+
+    def test_recent_items(self):
+        hours_ago = timezone.now() - timedelta(hours=12)
+        factories.GenericScrapyLogItemFactory.create_batch(5)
+        not_recent_scrapy_log = factories.GenericScrapyLogItemFactory()
+        not_recent_scrapy_log.created_at = hours_ago
+        not_recent_scrapy_log.save()
+        self.assertNotIn(not_recent_scrapy_log, ScrapyLogItem.recent_items(hours=5))
 

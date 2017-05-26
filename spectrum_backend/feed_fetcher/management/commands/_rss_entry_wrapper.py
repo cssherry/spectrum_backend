@@ -49,7 +49,7 @@ class RSSEntryWrapper:
             try:
                 return self.entry.media_content[0]["url"]
             except KeyError:
-                client.captureException()
+                pass # Not a common error
         else:
             return ""
 
@@ -60,7 +60,7 @@ class RSSEntryWrapper:
             else:
                 return timezone.now() # TODO: find a better solution to this - maybe URL matching for date? Washington Post is culprit. Media Matters also has date problems
         except ValueError:
-            client.captureException()
+            pass # TODO - fix this. Error seen on Sentry
 
     def _parsed_tags(self):
         tags = []

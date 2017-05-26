@@ -104,14 +104,18 @@ class FeedItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @classmethod
+    def recent_items(cls, hours):
+        time_threshold = timezone.now() - timedelta(hours=hours)
+        return cls.objects.filter(created_at__gt=time_threshold)
+        
+    @classmethod
     def pluck(cls, field_name):
         ids = FeedItem.objects.values_list(field_name, flat=True)
         my_models = FeedItem.objects.filter(pk__in=set(ids))
 
     @classmethod
     def recent_items_eligible_for_association(cls, days=7):
-        time_threshold = timezone.now() - timedelta(days=days)
-        return cls.objects.exclude(content__exact="").filter(created_at__gt=time_threshold)
+        return cls.recent_items(days * 24).exclude(content__exact="")
 
     @classmethod
     def get_fields(cls, list):
@@ -170,7 +174,8 @@ class FeedItem(models.Model):
             return self.raw_description
 
     def friendly_publication_date(self):
-        return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
+        if self.publication_date:
+            return self.publication_date.strftime("%Y-%m-%d %H:%M:%S")
 
     def under_max_scraping_cap(self):
         return self.scrapylogitem_set.count() < self.MAX_SCRAPING_ATTEMPTS
@@ -178,7 +183,7 @@ class FeedItem(models.Model):
     def should_scrape(self, ignore_scraping_cap = False):
         return self.raw_content == "" and (ignore_scraping_cap or self.under_max_scraping_cap())
 
-    def base_object(self, similarity_score=None):
+    def base_object(self, similarity_score=None, association_id=None):
         base_object = {
             "publication_name": self.publication_name(),
             "publication_bias": self.publication_bias(),
@@ -195,6 +200,9 @@ class FeedItem(models.Model):
         if similarity_score:
             base_object["similarity_score"] = similarity_score
 
+        if association_id:
+            base_object["association_id"] = association_id
+
         return base_object
 
     def opposing_biases(self):
@@ -205,8 +213,8 @@ class FeedItem(models.Model):
         else:
             return ["L", "LC", "C", "RC", "R"]
 
-    def all_associated_feed_items(self): # TEST
-        self.base_associations.values_list('associated_feed_item', flat=True)
+    def all_associated_feed_items(self):
+        ids = self.base_associations.values_list('associated_feed_item', flat=True)
         return FeedItem.objects.filter(pk__in=set(ids))
 
     def top_associations(self, count, check_bias=True, similarity_floor=0.2, similarity_ceiling=0.9):
@@ -219,7 +227,7 @@ class FeedItem(models.Model):
             if association.similarity_score >= similarity_floor and association.similarity_score <= similarity_ceiling:
                 associated_articles.append(
                     associated_feed_item.base_object(
-                        association.similarity_score))
+                        similarity_score=association.similarity_score, association_id=association.id))
 
         unique_publication_articles = []
         unique_publication_names = []
@@ -251,6 +259,34 @@ class FeedItem(models.Model):
     class Meta:
         ordering = ['-publication_date']
 
+class URLLookUpRecord(models.Model):
+    CODES = (
+        ('1', 'Found with lookup URL'),
+        ('2', 'Found with redirect URL'),
+        ('3', 'Found with normal URL'),
+        ('N/A', 'Not found'),
+        ('Base', 'Base URL'),
+    )
+    url = models.CharField(max_length=1000)
+    code = models.CharField(max_length=10, choices=CODES)
+    feed_item = models.ForeignKey('FeedItem', null=True)
+    associations_found = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class UserFeedback(models.Model):
+    association = models.ForeignKey('Association')
+    is_negative = models.BooleanField()
+    feedback_version = models.IntegerField()
+    feedback_dict = JSONField()
+    is_internal_user = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class UserClick(models.Model):
+    association = models.ForeignKey('Association')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Tag(models.Model):
     name = models.TextField(default="")
@@ -274,6 +310,11 @@ class Association(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def recent_items(cls, hours):
+        time_threshold = timezone.now() - timedelta(hours=hours)
+        return cls.objects.filter(created_at__gt=time_threshold)
 
     def __str__(self):
         return u'*BASE* %s *ASSOCIATION* %s (%s)' % (
@@ -313,3 +354,7 @@ class ScrapyLogItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def recent_items(cls, hours):
+        time_threshold = timezone.now() - timedelta(hours=hours)
+        return cls.objects.filter(created_at__gt=time_threshold)

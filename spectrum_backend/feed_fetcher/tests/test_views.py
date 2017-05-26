@@ -4,8 +4,9 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.test import TestCase, RequestFactory
 from . import factories
-from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications
-from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency, URLLookUpRecord
+from spectrum_backend.feed_fetcher import views
+from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications, track_click, track_feedback
+from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency, URLLookUpRecord, UserClick, UserFeedback
 from io import StringIO
 from django.http import JsonResponse
 from django.core import serializers
@@ -102,8 +103,67 @@ class GetAssociationsTestCase(TestCase):
         self.assertEquals(URLLookUpRecord.objects.last().feed_item, None)
         self.assertEquals(URLLookUpRecord.objects.last().url, 'https://planetnews.com')
 
+class GetTrackClickTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
 
+    def test_tracks_click_finds_association(self):
+        association = factories.GenericAssociationFactory()
+        request_url = '/feeds/click'
+        request = self.factory.post(request_url, {'association_id': association.id}, format='json')
+        response = track_click(request)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(UserClick.objects.count(), 1)
 
+    def test_tracks_click_returns_correct_status_if_association_not_found(self):
+        association = factories.GenericAssociationFactory()
+        request_url = '/feeds/click'
+        request = self.factory.post(request_url, {'association_id': 400000}, format='json')
+        response = track_click(request)
+        self.assertEquals(response.status_code, 404)
+        self.assertEquals(UserClick.objects.count(), 0)
 
+class GetTrackUserFeedbackTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        views.client.captureException = Mock()
+        association = factories.GenericAssociationFactory()
+        self.request_object = {
+            "association_id": association.id,
+            "is_negative": True,
+            "feedback_version": 2,
+            "feedback_dict": json.dumps({
+                "something": "arbitrary",
+                "more": "fields"
+            }),
+        }
 
+    def test_tracks_feedback_finds_association(self):
+        request_url = '/feeds/feedback'
+        
+        request = self.factory.post(request_url, self.request_object, format='json')
+        response = track_feedback(request)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(UserFeedback.objects.count(), 1)
+        self.assertEquals(UserFeedback.objects.last().association_id, self.request_object["association_id"])
+        self.assertEquals(UserFeedback.objects.last().is_negative, self.request_object["is_negative"])
+        self.assertEquals(UserFeedback.objects.last().feedback_version, self.request_object["feedback_version"])
+        self.assertEquals(UserFeedback.objects.last().feedback_dict, self.request_object["feedback_dict"])
+
+    def test_tracks_feedback_returns_correct_status_if_not_found(self):
+        self.request_object["association_id"] = 10000000
+        request_url = '/feeds/feedback'
+        request = self.factory.post(request_url, self.request_object, format='json')
+        response = track_feedback(request)
+        self.assertEquals(response.status_code, 404)
+        self.assertEquals(UserFeedback.objects.count(), 0)
+        views.client.captureException.assert_called_once()
+
+    def test_tracks_feedback_returns_correct_status_if_fields_missing(self):
+        self.request_object["association_id"] = ""
+        request_url = '/feeds/feedback'
+        request = self.factory.post(request_url, self.request_object, format='json')
+        response = track_feedback(request)
+        self.assertEquals(response.status_code, 422)
+        self.assertEquals(UserFeedback.objects.count(), 0)
 

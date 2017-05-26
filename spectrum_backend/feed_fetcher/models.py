@@ -280,14 +280,13 @@ class UserFeedback(models.Model):
     is_negative = models.BooleanField()
     feedback_version = models.IntegerField()
     feedback_dict = JSONField()
-    other_feedback = models.TextField(default="")
-    free_text_feedback = models.TextField(default="")
     internal_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class UserClick(models.Model):
     association = models.ForeignKey('Association')
+    internal_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

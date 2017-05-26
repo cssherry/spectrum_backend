@@ -1,13 +1,12 @@
 import json, re
 from django.http import JsonResponse
 from django.core import serializers
-from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, UserFeedback, Association
+from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, UserFeedback, Association, UserClick
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 from raven.contrib.django.raven_compat.models import client
 
 def get_associated_articles(request):
     url = _clean_url(request.GET.get('url', None))
-    new_api = request.GET.get('new_api', None)
 
     if _is_not_base_url(url):
         lookup_url = _shorten_url(url)
@@ -35,11 +34,7 @@ def get_associated_articles(request):
                 pass
 
         if current_article:
-            use_new_api = False
-            if new_api:
-                use_new_api = True
-
-            top_associations = current_article.top_associations(count=12, check_bias=True, new_api=use_new_api)
+            top_associations = current_article.top_associations(count=12, check_bias=True)
             URLLookUpRecord.objects.create(code=lookup_code, url=url, feed_item=current_article, associations_found=len(top_associations))
             return JsonResponse(top_associations, safe=False)
         else:
@@ -58,31 +53,34 @@ def all_publications(request):
     }
     return JsonResponse(results, safe=False)
 
-def track_click
+def track_click(request):
     association_id = request.POST.get('association_id', None)
+
     try:
         association = Association.objects.filter(pk=association_id)[0]
-        Association.objects.create(association=association)
-        return JsonResponse({"message": "success", status=200, safe=False})
+        UserClick.objects.create(association=association)
+        return JsonResponse({"message": "success"}, status=200, safe=False)
     except IndexError:
         client.captureException()
-        return JsonResponse({"message": "association not found"}, status=422, safe=False)
+        return JsonResponse({"message": "association not found"}, status=404, safe=False)
 
-def track_feedback
+def track_feedback(request):
     association_id = request.POST.get('association_id', None) # Integer
-    is_negative = request.POST.get('is_negative', None) == "true" # Boolean - will parse correctly?
+    is_negative = request.POST.get('is_negative', None) # Boolean - will parse correctly?
     feedback_version = request.POST.get('feedback_version', None) # Integer
     feedback_dict = request.POST.get('feedback_dict', None) # Dictionary - pop right into feedback_dict?
-    other_feedback = request.POST.get('other_feedback', None) # String
-    free_text_feedback = request.POST.get('free_text_feedback', None) # String
+    is_internal_user = request.POST.get('is_internal_user', False)
 
-    try:
-        association = Association.objects.filter(pk=association_id)[0]
-        UserFeedback.objects.create(association=association, is_negative=is_negative, feedback_version=feedback_version, feedback_dict=feedback_dict, other_feedback=other_feedback, free_text_feedback=free_text_feedback)
-        return JsonResponse({"message": "success", status=200, safe=False})
-    except IndexError:
-        client.captureException()
-        return JsonResponse({"message": "association not found"}, status=422, safe=False)
+    if association_id and feedback_version and feedback_dict and is_negative is not None:
+        try:
+            association = Association.objects.filter(pk=association_id)[0]
+            UserFeedback.objects.create(association=association, is_negative=is_negative, feedback_version=feedback_version, feedback_dict=feedback_dict)
+            return JsonResponse({"message": "success"}, status=200, safe=False)
+        except IndexError:
+            client.captureException()
+            return JsonResponse({"message": "association not found"}, status=404, safe=False)
+    else:
+        return JsonResponse({"message": "invalid request"}, status=422, safe=False)
 
 def test_api(request=None):
     recent_articles = []

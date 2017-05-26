@@ -107,7 +107,7 @@ class FeedItem(models.Model):
     def see_associations_by_url(cls, url):
         feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
         if not feed_item:
-            feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
+            feed_item = FeedItem.objects.filter(url__icontains=url)
 
         if feed_item:
             if len(feed_item) > 1:

@@ -37,6 +37,9 @@ class PublicationTestCase(GlobalTestCase):
              'RC': 'Right-Leaning',
              'R': 'Right-Wing'})
 
+    def test_pub_stats(self):
+        self.assertEquals(Publication.pub_stats(), "<body><p>%s (%s) - %s items</p></body>" % (self.publication.name, self.publication.base_url, self.publication.feed_items().count())) 
+
 class FeedTestCase(GlobalTestCase):
     def test_feed_items_convenience_method(self):
         feed_items = self.feed.feed_items()
@@ -225,7 +228,6 @@ class FeedItemTestCase(GlobalTestCase):
             FeedItem.see_associations_by_url(feed_item.redirected_url)
             FeedItem.see_associations_by_url("www.google.com")
             FeedItem.see_associations_by_url("www.blahlbah.com")
-
 
 class AssociationTestCase(GlobalTestCase):
     def test_recent_items(self):

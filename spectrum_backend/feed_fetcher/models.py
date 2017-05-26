@@ -29,6 +29,16 @@ class Publication(models.Model):
     def __str__(self):
         return u'%s (%s)' % (self.name, self.bias)
 
+    @classmethod
+    def pub_stats(cls):
+        string = "<body>"
+        for publication in Publication.objects.all():
+            entry = "<p>%s (%s) - %s items</p>" % (publication.name, publication.base_url, publication.feed_items().count())
+            string += entry
+
+        string += "</body>"
+        return string
+
     class Meta:
         ordering = ['name']
 
@@ -40,7 +50,6 @@ class Publication(models.Model):
 
     def feed_items(self, include_ignored=True, include_empty=True):
         return FeedItem.objects.filter(feed__publication=self)
-
 
 class Feed(models.Model):
     publication = models.ForeignKey('Publication')

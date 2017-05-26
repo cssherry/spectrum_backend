@@ -5,15 +5,28 @@ from django.utils import timezone
 from django.test import TestCase, RequestFactory
 from . import factories
 from spectrum_backend.feed_fetcher import views
-from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications, track_click, track_feedback
+from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications, track_click, track_feedback, pub_stats
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency, URLLookUpRecord, UserClick, UserFeedback
 from io import StringIO
 from django.http import JsonResponse
 from django.core import serializers
 import urllib, json
+from spectrum_backend.feed_fetcher.models import Publication
+
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())
+
+class TestPubStatsTestCase(TestCase):
+    def setUp(self):
+        Publication.pub_stats = Mock()
+
+    def test_pub_stats_returns_pub_numbers(self):
+        request_url = '/feeds/pub_stats'
+        request = RequestFactory().get(request_url)
+        response = pub_stats(request)
+        self.assertEquals(response.status_code, 200)
+        Publication.pub_stats.assert_called_once()
 
 class TestApiTestCase(TestCase):
     def setUp(self):

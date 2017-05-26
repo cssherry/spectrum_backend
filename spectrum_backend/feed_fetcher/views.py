@@ -1,5 +1,5 @@
 import json, re
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, UserFeedback, Association, UserClick
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
@@ -52,6 +52,9 @@ def get_associated_articles(request):
         return JsonResponse({"message": "Base URL, Spectrum modal skipped"},
                             status=422,
                             safe=False)
+
+def pub_stats(request):
+    return HttpResponse(Publication.pub_stats())
 
 def all_publications(request):
     publications = Publication.objects.all()

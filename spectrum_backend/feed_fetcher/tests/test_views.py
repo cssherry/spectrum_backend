@@ -106,19 +106,18 @@ class GetAssociationsTestCase(TestCase):
 class GetTrackClickTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+        self.request_url = '/feeds/click'
 
     def test_tracks_click_finds_association(self):
         association = factories.GenericAssociationFactory()
-        request_url = '/feeds/click'
-        request = self.factory.post(request_url, {'association_id': association.id}, format='json')
+        request = self.factory.post(self.request_url, {'association_id': association.id}, format='json')
         response = track_click(request)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(UserClick.objects.count(), 1)
 
     def test_tracks_click_returns_correct_status_if_association_not_found(self):
         association = factories.GenericAssociationFactory()
-        request_url = '/feeds/click'
-        request = self.factory.post(request_url, {'association_id': 400000}, format='json')
+        request = self.factory.post(self.request_url, {'association_id': 400000}, format='json')
         response = track_click(request)
         self.assertEquals(response.status_code, 404)
         self.assertEquals(UserClick.objects.count(), 0)
@@ -156,10 +155,10 @@ class GetTrackUserFeedbackTestCase(TestCase):
         self.assertEquals(UserFeedback.objects.last().feedback_dict, self.request_object["feedback_dict"])
 
     def test_tracks_internal_user(self):
-        self.request_object["internal_user"] = True
+        self.request_object["is_internal_user"] = True
         request = self.factory.post(self.request_url, self.request_object, format='json')
         response = track_feedback(request)
-        self.assertEquals(UserFeedback.objects.last().internal_user, True)
+        self.assertEquals(UserFeedback.objects.last().is_internal_user, True)
 
     def test_tracks_feedback_returns_correct_status_if_not_found(self):
         self.request_object["association_id"] = 10000000

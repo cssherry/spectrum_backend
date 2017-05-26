@@ -60,12 +60,11 @@ def all_publications(request):
 
 def track_click(request):
     association_id = request.POST.get('association_id', None)
-    is_internal_user = request.POST.get('is_internal_user', False)
 
     if association_id:
         try:
             association = Association.objects.filter(pk=association_id)[0]
-            UserClick.objects.create(association=association, is_internal_user=is_internal_user)
+            UserClick.objects.create(association=association)
             return JsonResponse({"message": "success"}, status=200, safe=False)
         except IndexError:
             client.captureException()

@@ -316,7 +316,6 @@ class ScrapyTestCase(TestCase):
         self.feed_item.delete = Mock()
         self.spider.save_content(self.response_mock)
         self.feed_item.delete.assert_called_once()
-        article_spider.client.captureException.assert_called_once()
 
         self.assertEquals(ScrapyLogItem.objects.count(), 0)
 
@@ -357,7 +356,6 @@ class ScrapyTestCase(TestCase):
         failure_mock.request = self.response_mock
 
         self.spider.error(failure_mock)
-        article_spider.client.captureMessage.assert_called_once()
         self.assertEquals(self.spider.other_error, 1)
 
         created_log_item = ScrapyLogItem.objects.last()

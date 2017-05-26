@@ -6,7 +6,11 @@ from spectrum_backend.feed_fetcher.management.commands._url_parser import URLPar
 from raven.contrib.django.raven_compat.models import client
 
 def get_associated_articles(request):
-    url = _clean_url(request.GET.get('url', None))
+    if request.POST:
+        url = _clean_url(request.POST.get('url', None))
+    elif request.GET:
+        url = _clean_url(request.GET.get('url', None))
+
 
     if _is_not_base_url(url):
         lookup_url = _shorten_url(url)

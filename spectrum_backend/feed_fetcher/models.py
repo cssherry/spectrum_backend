@@ -106,11 +106,11 @@ class FeedItem(models.Model):
     @classmethod
     def see_associations_by_url(cls, url):
         feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
-        if not url:
+        if not feed_item:
             feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
 
-        if url:
-            if len(url) > 1:
+        if feed_item:
+            if len(feed_item) > 1:
                 print("More than one URL found")
             else:
                 feed_item.first().pretty_print_associations()

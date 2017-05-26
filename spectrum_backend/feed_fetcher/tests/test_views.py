@@ -79,6 +79,12 @@ class GetAssociationsTestCase(TestCase):
     def test_finds_article_associations_with_regular_url(self):
         self._shared_assertion_response_contains_feed_item(self.url, "3")
 
+    def test_works_with_post(self):
+        request_url = '/feeds/associations?url=%s' % urllib.parse.quote(self.url_for_lookup_url)
+        request = self.factory.post(request_url, format='json')
+        response = get_associated_articles(request)
+        self.assertEquals(response.status_code, 200)
+
     def test_returns_message_if_url_not_found(self):
         request_url = '/feeds/associations?url=%s' % 'https://blahblahblah.com/thing'
         request = self.factory.get(request_url, format='json')

@@ -402,7 +402,7 @@ class SpectrumUser(models.Model):
 
             # Assume previous is_internal_use
             if is_internal_user is None:
-                previous_spectrum_user = user.spectrumuser_set.first()
+                previous_spectrum_user = user.spectrumuser_set.last()
                 if previous_spectrum_user:
                     is_internal_user = previous_spectrum_user.is_internal_use
                 else:
@@ -437,7 +437,7 @@ class SpectrumUser(models.Model):
 
             if spectrum_users.exists():
                 return {
-                    'spectrum_user': spectrum_users.first(),
+                    'spectrum_user': spectrum_users.last(),
                     'is_new': False
                 }
             else:

@@ -396,12 +396,14 @@ class SpectrumUser(models.Model):
 
             if user.exists():
                 user = user.first()
+                is_new = True
             else:
                 user = User.objects.create(username=username)
+                is_new = False
 
             # Assume previous is_internal_use
             if is_internal_user is None:
-                previous_spectrum_user = user.spectrum_user_set.first()
+                previous_spectrum_user = user.spectrumuser_set.first()
                 if previous_spectrum_user:
                     is_internal_user = previous_spectrum_user.is_internal_use
                 else:
@@ -411,11 +413,11 @@ class SpectrumUser(models.Model):
 
             spectrum_user = cls.objects.create(unique_id=unique_id,
                                                user=user,
-                                               is_internal_use=is_internal_user)
+                                               is_internal_user=is_internal_user)
 
             return {
                 'spectrum_user': spectrum_user,
-                'is_new': True
+                'is_new': is_new
             }
         else:
             return {
@@ -443,13 +445,12 @@ class SpectrumUser(models.Model):
             else:
                 return cls._try_create(unique_id=unique_id,
                                        username=username,
-                                       is_internal_use=is_internal_user)
+                                       is_internal_user=is_internal_user)
 
         else:
             return {
                 'message': 'No unique_id specified'
             }
-
 
 class UserFeedback(models.Model):
     # Can be either be on associated article or publication (feed_item)

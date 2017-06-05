@@ -129,7 +129,7 @@ def save_options(request=None):
       }
 
     unique_id = params.get('unique_id', None)
-    is_internal_user = params.get('is_internal_user', None)
+    is_internal_user = params.get('is_internal_user', None) == 'true'
     username = params.get('username', None)
 
     test_user_text = ''
@@ -141,9 +141,13 @@ def save_options(request=None):
     if not spectrum_user:
         return JsonResponse({ 'message': spectrum_user_data.get('message') }, status=404)
 
-    action_type = 'updated'
     if spectrum_user_data.get('is_new'):
         action_type = 'updated'
+    else:
+        action_type = 'updated'
+        spectrum_user.user.username = username
+        spectrum_user.user.is_staff = is_internal_user
+        spectrum_user.user.save()
 
     message = '%s %s successfully %s' % (username, test_user_text, action_type)
 

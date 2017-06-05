@@ -101,7 +101,6 @@ def track_feedback(request):
     is_negative = request.POST.get('is_negative', None)
     feedback_version = request.POST.get('feedback_version', None)
     feedback_dict = request.POST.get('feedback_dict', None)
-    is_internal_user = request.POST.get('is_internal_user', False)
 
     if association_id and feedback_version and feedback_dict and is_negative is not None:
         try:
@@ -109,8 +108,7 @@ def track_feedback(request):
             UserFeedback.objects.create(association=association,
                                         is_negative=is_negative,
                                         feedback_version=feedback_version,
-                                        feedback_dict=feedback_dict,
-                                        is_internal_user=is_internal_user)
+                                        feedback_dict=feedback_dict)
 
             return JsonResponse({"message": "success"}, status=200, safe=False)
         except IndexError:

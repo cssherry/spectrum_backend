@@ -4,7 +4,9 @@ from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, SpectrumUser, UserFeedback, Association, UserClick
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 from raven.contrib.django.raven_compat.models import client
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def get_associated_articles(request):
     if request.method == 'GET':
       params = request.GET

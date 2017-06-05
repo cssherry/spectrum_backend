@@ -82,17 +82,34 @@ def all_publications(request):
     }
     return JsonResponse(results, safe=False)
 
+@csrf_exempt
 def track_click(request):
+    element_selector = request.POST.get('element_selector', None)
     association_id = request.POST.get('association_id', None)
+    clicked_item_dict = json.loads(request.POST.get('clicked_item_dict', '{}'))
+    clicked_version = request.POST.get('clicked_version', None)
+    unique_id = request.POST.get('unique_id', None)
 
-    if association_id:
-        try:
-            association = Association.objects.filter(pk=association_id)[0]
-            UserClick.objects.create(association=association)
-            return JsonResponse({"message": "success"}, status=200, safe=False)
-        except IndexError:
-            client.captureException()
-            return JsonResponse({"message": "association not found"}, status=404, safe=False)
+    if element_selector:
+        if association_id:
+            try:
+                association = Association.objects.filter(pk=association_id)[0]
+            except IndexError:
+                client.captureException()
+                return JsonResponse({"message": "association not found"}, status=404, safe=False)
+        else:
+            association = None
+
+        spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id)
+
+        spectrum_user = spectrum_user_data.get('spectrum_user', None)
+
+        UserClick.objects.create(association=association,
+                                 spectrum_user=spectrum_user,
+                                 element_selector=element_selector,
+                                 clicked_item_dict=clicked_item_dict,
+                                 clicked_version=clicked_version)
+        return JsonResponse({"message": "success"}, status=200, safe=False)
     else:
         return JsonResponse({"message": "invalid request"}, status=422, safe=False)
 

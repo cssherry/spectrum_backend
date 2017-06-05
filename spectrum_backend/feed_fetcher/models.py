@@ -377,7 +377,6 @@ Unique id linked to user
 """
 class SpectrumUser(models.Model):
     user = models.ForeignKey(User)
-    is_internal_user = models.BooleanField(default=False)
     unique_id = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -412,8 +411,7 @@ class SpectrumUser(models.Model):
                     }
 
             spectrum_user = cls.objects.create(unique_id=unique_id,
-                                               user=user,
-                                               is_internal_user=is_internal_user)
+                                               user=user)
 
             return {
                 'spectrum_user': spectrum_user,

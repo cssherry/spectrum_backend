@@ -22,9 +22,11 @@ def get_associated_articles(request):
     is_internal_user = params.get('is_internal_user', None)
     username = params.get('username', None)
 
-    spectrum_user = SpectrumUser.get_spectrum_user(unique_id=unique_id,
-                                                   username=username,
-                                                   is_internal_use=is_internal_user)
+    spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id,
+                                                        username=username,
+                                                        is_internal_use=is_internal_user)
+
+    spectrum_user = spectrum_user_data.get('spectrum_user', None)
 
     if _is_not_base_url(url):
         lookup_url = _shorten_url(url)

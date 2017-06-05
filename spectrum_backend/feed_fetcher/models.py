@@ -390,49 +390,65 @@ class SpectrumUser(models.Model):
         unique_id = kwargs.get('unique_id', None)
         username = kwargs.get('username', None)
         is_internal_user = kwargs.get('is_internal_user', None)
-        spectrum_user = None
 
         if unique_id and username:
             user = User.objects.filter(username=username)
 
             if user.exists():
                 user = user.first()
+            else:
+                user = User.objects.create(username=username)
 
-                # Assume previous is_internal_use
-                if is_internal_user is None:
-                    previous_spectrum_user = user.spectrum_user_set.first()
-                    if previous_spectrum_user:
-                        is_internal_user = previous_spectrum_user.is_internal_use
-                    else:
-                        return None
+            # Assume previous is_internal_use
+            if is_internal_user is None:
+                previous_spectrum_user = user.spectrum_user_set.first()
+                if previous_spectrum_user:
+                    is_internal_user = previous_spectrum_user.is_internal_use
+                else:
+                    return {
+                        'message': 'No is_internal_user for new user'
+                    }
 
-                spectrum_user = cls.objects.create(unique_id=unique_id,
-                                                   user=user,
-                                                   is_internal_use=is_internal_user)
+            spectrum_user = cls.objects.create(unique_id=unique_id,
+                                               user=user,
+                                               is_internal_use=is_internal_user)
 
-        return spectrum_user
+            return {
+                'spectrum_user': spectrum_user,
+                'is_new': True
+            }
+        else:
+            return {
+                'message': 'No username and unique_id'
+            }
 
     """
     Returns spectrum user instance or None if no unique_id
+    expects unique_id, username, is_internal_user
     """
     @classmethod
     def get_spectrum_user(cls, **kwargs):
         unique_id = kwargs.get('unique_id', None)
         username = kwargs.get('username', None)
         is_internal_user = kwargs.get('is_internal_user', None)
-        spectrum_user = None
 
         if unique_id:
-            spectrum_user = SpectrumUser.objects.filter(unique_id=unique_id)
+            spectrum_users = SpectrumUser.objects.filter(unique_id=unique_id)
 
-            if spectrum_user.exists():
-                spectrum_user = spectrum_user.first()
+            if spectrum_users.exists():
+                return {
+                    'spectrum_user': spectrum_users.first(),
+                    'is_new': False
+                }
             else:
-                spectrum_user = cls._try_create(unique_id=unique_id,
-                                                username=username,
-                                                is_internal_use=is_internal_user)
+                return cls._try_create(unique_id=unique_id,
+                                       username=username,
+                                       is_internal_use=is_internal_user)
 
-        return spectrum_user
+        else:
+            return {
+                'message': 'No unique_id specified'
+            }
 
 
 class UserFeedback(models.Model):

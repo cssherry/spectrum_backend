@@ -430,7 +430,7 @@ class SpectrumUser(models.Model):
     def get_spectrum_user(cls, **kwargs):
         unique_id = kwargs.get('unique_id', None)
         username = kwargs.get('username', None)
-        is_internal_user = kwargs.get('is_internal_user', None)
+        is_internal_user = kwargs.get('is_internal_user', None) == 'true'
 
         if unique_id:
             spectrum_users = SpectrumUser.objects.filter(unique_id=unique_id)

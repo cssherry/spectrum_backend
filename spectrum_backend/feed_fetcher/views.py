@@ -129,7 +129,7 @@ def save_options(request=None):
       }
 
     unique_id = params.get('unique_id', None)
-    is_internal_user = params.get('is_internal_user', None) == 'true'
+    is_internal_user = params.get('is_internal_user', None)
     username = params.get('username', None)
 
     test_user_text = ''

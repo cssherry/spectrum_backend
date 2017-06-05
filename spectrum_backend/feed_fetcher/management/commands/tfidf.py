@@ -117,7 +117,7 @@ If the term is not in the doc_frequency dictionary, return 0"""
             tfidf = doc_frequency[term] * np.log(float(n) / corpus_frequency[term])
         except KeyError as e:
             tfidf = 0
-            client.captureException()
+            # client.captureException() #TODO - restore after fix
     else:
         return 0
     return tfidf

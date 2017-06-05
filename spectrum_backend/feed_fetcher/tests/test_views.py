@@ -5,15 +5,28 @@ from django.utils import timezone
 from django.test import TestCase, RequestFactory
 from . import factories
 from spectrum_backend.feed_fetcher import views
-from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications, track_click, track_feedback
+from spectrum_backend.feed_fetcher.views import get_associated_articles, test_api, all_publications, track_click, track_feedback, pub_stats
 from spectrum_backend.feed_fetcher.models import Publication, Feed, FeedItem, Tag, Association, ScrapyLogItem, CorpusWordFrequency, URLLookUpRecord, UserClick, UserFeedback
 from io import StringIO
 from django.http import JsonResponse
 from django.core import serializers
 import urllib, json
+from spectrum_backend.feed_fetcher.models import Publication
+
 
 def suppress_printed_output():
     return patch('sys.stdout', new=StringIO())
+
+class TestPubStatsTestCase(TestCase):
+    def setUp(self):
+        Publication.pub_stats = Mock()
+
+    def test_pub_stats_returns_pub_numbers(self):
+        request_url = '/feeds/pub_stats'
+        request = RequestFactory().get(request_url)
+        response = pub_stats(request)
+        self.assertEquals(response.status_code, 200)
+        Publication.pub_stats.assert_called_once()
 
 class TestApiTestCase(TestCase):
     def setUp(self):
@@ -78,6 +91,12 @@ class GetAssociationsTestCase(TestCase):
 
     def test_finds_article_associations_with_regular_url(self):
         self._shared_assertion_response_contains_feed_item(self.url, "3")
+
+    def test_works_with_post(self):
+        request_url = '/feeds/associations?url=%s' % urllib.parse.quote(self.url_for_lookup_url)
+        request = self.factory.post(request_url, format='json')
+        response = get_associated_articles(request)
+        self.assertEquals(response.status_code, 200)
 
     def test_returns_message_if_url_not_found(self):
         request_url = '/feeds/associations?url=%s' % 'https://blahblahblah.com/thing'

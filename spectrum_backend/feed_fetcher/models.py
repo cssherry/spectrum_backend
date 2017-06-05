@@ -29,6 +29,16 @@ class Publication(models.Model):
     def __str__(self):
         return u'%s (%s)' % (self.name, self.bias)
 
+    @classmethod
+    def pub_stats(cls):
+        string = "<body>"
+        for publication in Publication.objects.all():
+            entry = "<p>%s (%s) - %s items</p>" % (publication.name, publication.base_url, publication.feed_items().count())
+            string += entry
+
+        string += "</body>"
+        return string
+
     class Meta:
         ordering = ['name']
 
@@ -40,7 +50,6 @@ class Publication(models.Model):
 
     def feed_items(self, include_ignored=True, include_empty=True):
         return FeedItem.objects.filter(feed__publication=self)
-
 
 class Feed(models.Model):
     publication = models.ForeignKey('Publication')
@@ -102,6 +111,20 @@ class FeedItem(models.Model):
     frequency_dictionary = JSONField(default={})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def see_associations_by_url(cls, url):
+        feed_item = FeedItem.objects.filter(redirected_url__icontains=url)
+        if not feed_item:
+            feed_item = FeedItem.objects.filter(url__icontains=url)
+
+        if feed_item:
+            if len(feed_item) > 1:
+                print("More than one URL found")
+            else:
+                feed_item.first().pretty_print_associations()
+        else:
+            print("URL not found")
 
     @classmethod
     def recent_items(cls, hours):

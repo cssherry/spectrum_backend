@@ -1,12 +1,16 @@
 import json, re
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookUpRecord, UserFeedback, Association, UserClick
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 from raven.contrib.django.raven_compat.models import client
 
 def get_associated_articles(request):
-    url = _clean_url(request.GET.get('url', None))
+    if request.POST:
+        url = _clean_url(request.POST.get('url', None))
+    elif request.GET:
+        url = _clean_url(request.GET.get('url', None))
+
 
     if _is_not_base_url(url):
         lookup_url = _shorten_url(url)
@@ -48,6 +52,9 @@ def get_associated_articles(request):
         return JsonResponse({"message": "Base URL, Spectrum modal skipped"},
                             status=422,
                             safe=False)
+
+def pub_stats(request):
+    return HttpResponse(Publication.pub_stats())
 
 def all_publications(request):
     publications = Publication.objects.all()

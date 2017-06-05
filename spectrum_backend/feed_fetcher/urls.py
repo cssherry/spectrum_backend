@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^associations$', views.get_associated_articles, name='associations'),
     url(r'^click$', views.track_click, name='click'),
     url(r'^feedback$', views.track_feedback, name='feedback'),
+    url(r'^pub_stats$', views.pub_stats, name='pub_stats'),
 ]

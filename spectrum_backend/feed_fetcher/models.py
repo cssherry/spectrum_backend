@@ -377,7 +377,7 @@ Unique id linked to user
 """
 class SpectrumUser(models.Model):
     user = models.ForeignKey(User)
-    unique_id = models.TextField(default="")
+    unique_id = models.TextField(default="", unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -466,6 +466,7 @@ class UserFeedback(models.Model):
 
 class UserClick(models.Model):
     association = models.ForeignKey('Association', null=True, blank=True)
+    element_selector = models.CharField(max_length=1000, null=True, blank=True)
 
     # Only allow null/blank because of old created before SpectrumUser
     spectrum_user = models.ForeignKey('SpectrumUser', null=True, blank=True)

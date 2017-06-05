@@ -117,6 +117,38 @@ def track_feedback(request):
     else:
         return JsonResponse({"message": "invalid request"}, status=422, safe=False)
 
+@csrf_exempt
+def save_options(request=None):
+    if request.method == 'GET':
+      params = request.GET
+    elif request.method == 'POST':
+      params = request.POST
+    else:
+      return {
+        'error': 'Invalid request method %s' % request.method
+      }
+
+    unique_id = params.get('unique_id', None)
+    is_internal_user = params.get('is_internal_user', None)
+    username = params.get('username', None)
+
+    test_user_text = ''
+    if is_internal_user:
+        test_user_text = '(beta tester)'
+
+    spectrum_user_data = SpectrumUser.get_spectrum_user(username=username, unique_id=unique_id, is_internal_user=is_internal_user)
+    spectrum_user = spectrum_user_data.get('spectrum_user')
+    if not spectrum_user:
+        return JsonResponse({ 'message': spectrum_user_data.get('message') }, status=404)
+
+    action_type = 'updated'
+    if spectrum_user_data.get('is_new'):
+        action_type = 'updated'
+
+    message = '%s %s successfully %s' % (username, test_user_text, action_type)
+
+    return JsonResponse({ 'message': message }, safe=False)
+
 def test_api(request=None):
     recent_articles = []
     for feed_item in FeedItem.objects.all()[:3]:

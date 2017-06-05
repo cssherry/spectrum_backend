@@ -63,7 +63,7 @@ def get_associated_articles(request):
             return JsonResponse(top_associations, safe=False)
         else:
             URLLookUpRecord.objects.create(code="N/A", url=url, spectrum_user=spectrum_user)
-            return JsonResponse({"message": "URL not found"}, status=404, safe=False)
+            return JsonResponse([], safe=False)
     else:
         URLLookUpRecord.objects.create(code="Base", url=url, spectrum_user=spectrum_user)
         return JsonResponse({"message": "Base URL, Spectrum modal skipped"},

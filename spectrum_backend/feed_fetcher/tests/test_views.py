@@ -106,8 +106,8 @@ class GetAssociationsTestCase(TestCase):
         request_url = '/feeds/associations?url=%s' % 'https://blahblahblah.com/thing'
         request = self.factory.get(request_url, format='json')
         response = get_associated_articles(request)
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(json.loads(response.content.decode())["message"], "URL not found")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(json.loads(response.content.decode()), [])
         self.assertEquals(URLLookUpRecord.objects.count(), 1)
         self.assertEquals(URLLookUpRecord.objects.last().code, "N/A")
         self.assertEquals(URLLookUpRecord.objects.last().associations_found, None)

@@ -1,9 +1,10 @@
 from django.db import models
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 from django.db.models import Count
 from .management.commands._batch_query_set import batch_query_set
+from django.contrib.auth.models import User
 
 class Publication(models.Model):
     BIASES = (
@@ -296,20 +297,7 @@ class URLLookUpRecord(models.Model):
     associations_found = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-class UserFeedback(models.Model):
-    association = models.ForeignKey('Association')
-    is_negative = models.BooleanField()
-    feedback_version = models.IntegerField()
-    feedback_dict = JSONField()
-    is_internal_user = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-class UserClick(models.Model):
-    association = models.ForeignKey('Association')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    spectrum_user = models.ForeignKey('SpectrumUser', null=True, blank=True)
 
 class Tag(models.Model):
     name = models.TextField(default="")
@@ -381,3 +369,93 @@ class ScrapyLogItem(models.Model):
     def recent_items(cls, hours):
         time_threshold = timezone.now() - timedelta(hours=hours)
         return cls.objects.filter(created_at__gt=time_threshold)
+
+
+# Click and feedback recording models
+"""
+Unique id linked to user
+"""
+class SpectrumUser(models.Model):
+    user = models.ForeignKey(User)
+    is_internal_user = models.BooleanField(default=False)
+    unique_id = models.TextField(default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    """
+    Creates new spectrum user instance or None if no username or is_internal_use
+    """
+    @classmethod
+    def _try_create(cls, **kwargs):
+        unique_id = kwargs.get('unique_id', None)
+        username = kwargs.get('username', None)
+        is_internal_user = kwargs.get('is_internal_user', None)
+        spectrum_user = None
+
+        if unique_id and username:
+            user = User.objects.filter(username=username)
+
+            if user.exists():
+                user = user.first()
+
+                # Assume previous is_internal_use
+                if is_internal_user is None:
+                    previous_spectrum_user = user.spectrum_user_set.first()
+                    if previous_spectrum_user:
+                        is_internal_user = previous_spectrum_user.is_internal_use
+                    else:
+                        return None
+
+                spectrum_user = cls.objects.create(unique_id=unique_id,
+                                                   user=user,
+                                                   is_internal_use=is_internal_user)
+
+        return spectrum_user
+
+    """
+    Returns spectrum user instance or None if no unique_id
+    """
+    @classmethod
+    def get_spectrum_user(cls, **kwargs):
+        unique_id = kwargs.get('unique_id', None)
+        username = kwargs.get('username', None)
+        is_internal_user = kwargs.get('is_internal_user', None)
+        spectrum_user = None
+
+        if unique_id:
+            spectrum_user = SpectrumUser.objects.filter(unique_id=unique_id)
+
+            if spectrum_user.exists():
+                spectrum_user = spectrum_user.first()
+            else:
+                spectrum_user = cls._try_create(unique_id=unique_id,
+                                                username=username,
+                                                is_internal_use=is_internal_user)
+
+        return spectrum_user
+
+
+class UserFeedback(models.Model):
+    # Can be either be on associated article or publication (feed_item)
+    association = models.ForeignKey('Association', null=True, blank=True)
+    feed_item = models.ForeignKey('FeedItem', null=True, blank=True)
+
+    # Only allow null/blank because of old created before SpectrumUser
+    spectrum_user = models.ForeignKey('SpectrumUser', null=True, blank=True)
+
+    is_negative = models.BooleanField()
+    feedback_version = models.IntegerField()
+    feedback_dict = JSONField(default={})
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class UserClick(models.Model):
+    association = models.ForeignKey('Association', null=True, blank=True)
+
+    # Only allow null/blank because of old created before SpectrumUser
+    spectrum_user = models.ForeignKey('SpectrumUser', null=True, blank=True)
+
+    clicked_version = models.FloatField(default=0.2)
+    clicked_item_dict = JSONField(default={})
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

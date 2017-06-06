@@ -462,7 +462,7 @@ class UserFeedback(models.Model):
     spectrum_user = models.ForeignKey('SpectrumUser', null=True, blank=True)
 
     is_negative = models.BooleanField()
-    feedback_version = models.IntegerField()
+    feedback_version = models.FloatField(default=0.2)
     feedback_dict = JSONField(default={})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

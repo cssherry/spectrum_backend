@@ -113,6 +113,7 @@ def track_click(request):
     else:
         return JsonResponse({"message": "invalid request"}, status=422, safe=False)
 
+@csrf_exempt
 def track_feedback(request):
     association_id = request.POST.get('association_id', None)
     is_negative = request.POST.get('is_negative', None)

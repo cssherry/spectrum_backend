@@ -89,6 +89,8 @@ def track_click(request):
     clicked_item_dict = json.loads(request.POST.get('clicked_item_dict', '{}'))
     clicked_version = request.POST.get('clicked_version', None)
     unique_id = request.POST.get('unique_id', None)
+    username = request.POST.get('username', '')
+    is_internal_user = request.POST.get('is_internal_user', 'false')
 
     if element_selector:
         if association_id:
@@ -100,7 +102,9 @@ def track_click(request):
         else:
             association = None
 
-        spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id)
+        spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id,
+                                                            username=username,
+                                                            is_internal_user=is_internal_user)
 
         spectrum_user = spectrum_user_data.get('spectrum_user', None)
 

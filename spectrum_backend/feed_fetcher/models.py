@@ -390,7 +390,7 @@ class SpectrumUser(models.Model):
         username = kwargs.get('username', None)
         is_internal_user = kwargs.get('is_internal_user', None)
 
-        if unique_id and username:
+        if unique_id and username != None:
             user = User.objects.filter(username=username)
 
             if user.exists():

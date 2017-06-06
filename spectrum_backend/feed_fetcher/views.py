@@ -126,25 +126,38 @@ def track_click(request):
 
 @csrf_exempt
 def track_feedback(request):
-    association_id = request.POST.get('association_id', None)
-    is_negative = request.POST.get('is_negative', None)
+    association_id = request.POST.get('associationId', None)
+    feed_item_id = request.POST.get('feedItemId', None)
+    is_negative = request.POST.get('isNegative', None) == 'true'
     feedback_version = request.POST.get('feedback_version', None)
-    feedback_dict = request.POST.get('feedback_dict', None)
+    feedback_dict = json.loads(request.POST.get('feedback_dict', '{}'))
+    unique_id = request.POST.get('unique_id', None)
+    username = request.POST.get('username', None)
+    is_internal_user = request.POST.get('is_internal_user', None) == 'true'
 
-    if association_id and feedback_version and feedback_dict and is_negative is not None:
-        try:
-            association = Association.objects.filter(pk=association_id)[0]
-            UserFeedback.objects.create(association=association,
-                                        is_negative=is_negative,
-                                        feedback_version=feedback_version,
-                                        feedback_dict=feedback_dict)
+    try:
+      association = Association.objects.filter(id=association_id).first()
+    except:
+      association = None
 
-            return JsonResponse({"message": "success"}, status=200, safe=False)
-        except IndexError:
-            client.captureException()
-            return JsonResponse({"message": "association not found"}, status=404, safe=False)
-    else:
-        return JsonResponse({"message": "invalid request"}, status=422, safe=False)
+    try:
+      feed_item = FeedItem.objects.filter(id=feed_item_id).first()
+    except:
+      feed_item = None
+
+    spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id,
+                                                        username=username,
+                                                        is_internal_user=is_internal_user)
+    spectrum_user = spectrum_user_data.get('spectrum_user')
+
+    UserFeedback.objects.create(association=association,
+                                feed_item=feed_item,
+                                spectrum_user=spectrum_user,
+                                is_negative=is_negative,
+                                feedback_version=feedback_version,
+                                feedback_dict=feedback_dict)
+
+    return JsonResponse({"message": "Thank you for your feedback!"}, status=200, safe=False)
 
 @csrf_exempt
 def save_options(request=None):

@@ -5,6 +5,7 @@ from spectrum_backend.feed_fetcher.models import FeedItem, Publication, URLLookU
 from spectrum_backend.feed_fetcher.management.commands._url_parser import URLParser
 from raven.contrib.django.raven_compat.models import client
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 @csrf_exempt
 def get_associated_articles(request):
@@ -167,7 +168,11 @@ def save_options(request=None):
     if not spectrum_user:
         return JsonResponse({ 'message': spectrum_user_data.get('message') }, status=404)
 
-    if spectrum_user_data.get('is_new'):
+    user_with_same_name = User.objects.filter(username=username)
+    if user_with_same_name.exists() and user_with_same_name.first().id != spectrum_user.user.id:
+      return JsonResponse({'message': 'Username already exists'},
+                          status=404)
+    elif spectrum_user_data.get('is_new'):
         action_type = 'updated'
     else:
         action_type = 'updated'

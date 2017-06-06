@@ -61,10 +61,16 @@ def get_associated_articles(request):
                                            feed_item=current_article,
                                            associations_found=len(top_associations),
                                            spectrum_user=spectrum_user)
-            return JsonResponse(top_associations, safe=False)
+            return JsonResponse({
+              'top_associations': top_associations,
+              'current_article': current_article.base_object()
+            }, safe=False)
         else:
             URLLookUpRecord.objects.create(code="N/A", url=url, spectrum_user=spectrum_user)
-            return JsonResponse([], safe=False)
+            return JsonResponse({
+              'top_associations': [],
+              'current_article': None
+            }, safe=False)
     else:
         URLLookUpRecord.objects.create(code="Base", url=url, spectrum_user=spectrum_user)
         return JsonResponse({"message": "Base URL, Spectrum modal skipped"},

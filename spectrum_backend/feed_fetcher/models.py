@@ -209,6 +209,7 @@ class FeedItem(models.Model):
 
     def base_object(self, similarity_score=None, association_id=None):
         base_object = {
+            "id": self.id,
             "publication_name": self.publication_name(),
             "publication_bias": self.publication_bias(),
             "publication_logo": self.publication_logo(),

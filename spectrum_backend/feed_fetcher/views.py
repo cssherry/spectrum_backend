@@ -19,8 +19,8 @@ def get_associated_articles(request):
 
     url = _clean_url(params.get('url', None))
     unique_id = params.get('unique_id', None)
-    is_internal_user = params.get('is_internal_user', None)
-    username = params.get('username', None)
+    is_internal_user = params.get('is_internal_user', 'false')
+    username = params.get('username', '')
 
     spectrum_user_data = SpectrumUser.get_spectrum_user(unique_id=unique_id,
                                                         username=username,

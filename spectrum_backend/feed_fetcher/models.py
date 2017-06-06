@@ -395,10 +395,10 @@ class SpectrumUser(models.Model):
 
             if user.exists():
                 user = user.first()
-                is_new = True
+                is_new = False
             else:
                 user = User.objects.create(username=username)
-                is_new = False
+                is_new = True
 
             # Assume previous is_internal_use
             if is_internal_user is None:

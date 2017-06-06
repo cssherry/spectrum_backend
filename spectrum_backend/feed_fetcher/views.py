@@ -149,12 +149,16 @@ def save_options(request=None):
     is_internal_user = params.get('is_internal_user', None)
     username = params.get('username', None)
 
+    spectrum_user_data = SpectrumUser.get_spectrum_user(username=username,
+                                                        unique_id=unique_id,
+                                                        is_internal_user=is_internal_user)
+    spectrum_user = spectrum_user_data.get('spectrum_user')
+    is_internal_user = spectrum_user_data.get('is_internal_user')
+
     test_user_text = ''
     if is_internal_user:
         test_user_text = '(beta tester)'
 
-    spectrum_user_data = SpectrumUser.get_spectrum_user(username=username, unique_id=unique_id, is_internal_user=is_internal_user)
-    spectrum_user = spectrum_user_data.get('spectrum_user')
     if not spectrum_user:
         return JsonResponse({ 'message': spectrum_user_data.get('message') }, status=404)
 

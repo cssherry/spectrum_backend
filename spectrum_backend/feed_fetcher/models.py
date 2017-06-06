@@ -415,6 +415,7 @@ class SpectrumUser(models.Model):
 
             return {
                 'spectrum_user': spectrum_user,
+                'is_internal_user': is_internal_user,
                 'is_new': is_new
             }
         else:
@@ -438,7 +439,8 @@ class SpectrumUser(models.Model):
             if spectrum_users.exists():
                 return {
                     'spectrum_user': spectrum_users.last(),
-                    'is_new': False
+                    'is_new': False,
+                    'is_internal_user': is_internal_user
                 }
             else:
                 return cls._try_create(unique_id=unique_id,

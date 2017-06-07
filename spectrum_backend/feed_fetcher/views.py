@@ -191,8 +191,9 @@ def save_options(request=None):
     if user_with_same_name.exists() and user_with_same_name.first().id != spectrum_user.user.id:
       return JsonResponse({'message': 'Username already exists'},
                           status=404)
+
     elif spectrum_user_data.get('is_new'):
-        action_type = 'updated'
+        action_type = 'created'
     else:
         action_type = 'updated'
         spectrum_user.user.username = username

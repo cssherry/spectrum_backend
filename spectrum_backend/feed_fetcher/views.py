@@ -196,8 +196,18 @@ def save_options(request=None):
         action_type = 'created'
     else:
         action_type = 'updated'
-        spectrum_user.user.username = username
-        spectrum_user.user.is_staff = is_internal_user
+
+        # If the username was previously empty, let's assume this user accidentally
+        # was linked to empty username and create a new user for him/her
+        if not spectrum_user.user.username and username:
+          new_user = User.objects.create(username=username,
+                                         is_staff=is_internal_user)
+          spectrum_user.user = new_user
+        else:
+          # otherwise, just update username/is_staff properties
+          spectrum_user.user.username = username
+          spectrum_user.user.is_staff = is_internal_user
+
         spectrum_user.user.save()
 
     message = '%s %s successfully %s' % (username, test_user_text, action_type)
